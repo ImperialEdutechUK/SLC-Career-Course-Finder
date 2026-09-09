@@ -1,0 +1,104 @@
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+/* The college's own top bar: blue on the left, lime on the right. */
+.rule {
+  height: 4px;
+  background: var(--brand-rule);
+}
+
+.inner {
+  display: grid;
+  grid-template-areas: 'brand nav';
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  padding-block: 0.7rem;
+}
+
+.brand {
+  grid-area: brand;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  gap: 0.8rem;
+  text-decoration: none;
+  color: inherit;
+  min-height: 44px;
+}
+
+.logo {
+  flex: none;
+  width: auto;
+  height: 46px;
+}
+
+/* The service name sits behind a hairline, so the shield reads as the mark. */
+.service {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.98rem;
+  line-height: 1.2;
+  color: var(--ink-600);
+  padding-left: 0.8rem;
+  border-left: 1px solid var(--line);
+}
+
+.tagline {
+  grid-area: tagline;
+  display: none;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--ink-400);
+}
+
+.nav {
+  grid-area: nav;
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.4rem 0.7rem;
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink-700);
+  text-decoration: none;
+}
+.navLink:hover { background: var(--blue-50); color: var(--blue-800); }
+
+/* On the narrowest screens, keep only the primary catalogue link. */
+@media (max-width: 34rem) {
+  .navLink:last-child { display: none; }
+  .navLink { padding-inline: 0.4rem; font-size: 0.85rem; }
+  .logo { height: 38px; }
+  .service { font-size: 0.82rem; padding-left: 0.6rem; }
+  .brand { gap: 0.6rem; }
+}
+
+/* At the narrowest supported width the shield carries the meaning. */
+@media (max-width: 22rem) {
+  .navLink { display: none; }
+  .service { display: none; }
+}
+
+@media (min-width: 62rem) {
+  .inner {
+    grid-template-areas: 'brand tagline nav';
+    grid-template-columns: auto 1fr auto;
+  }
+  .tagline {
+    display: block;
+    justify-self: start;
+    padding-left: 1.25rem;
+    margin-left: 0.25rem;
+    border-left: 1px solid var(--line);
+  }
+}

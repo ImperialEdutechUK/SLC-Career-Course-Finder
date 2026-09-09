@@ -1,0 +1,23 @@
+# Dependency trees are anchored rather than matched at any depth. CloudWatch Synthetics
+# requires the canary's source to sit at infra/canary/nodejs/node_modules/journey.js, and
+# a bare "node_modules/" rule would silently drop it from the repository.
+/node_modules/
+/infra/node_modules/
+
+/.next/
+/out/
+/infra/cdk.out/
+
+# Never committed: real configuration and the AWS account id.
+.env
+.env.local
+.env*.local
+/infra/cdk.context.json
+
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+coverage/
+
+# Local agent tooling. Kept on disk, out of the repository.
+CLAUDE.md

@@ -1,0 +1,16 @@
+.wrap { display: grid; gap: 0.15rem; }
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+.amount { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--ink-900); }
+.unknown {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--amber-800);
+}
+.note { font-size: 0.83rem; color: var(--ink-500); line-height: 1.45; }

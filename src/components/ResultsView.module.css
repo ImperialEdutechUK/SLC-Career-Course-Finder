@@ -1,0 +1,44 @@
+.page { padding-block: clamp(1.5rem, 1rem + 2vw, 2.75rem) 2rem; display: grid; gap: 1.75rem; }
+
+.header { max-width: 44rem; }
+.title { margin-bottom: 0.75rem; }
+.lede { max-width: 40rem; }
+.totals { margin: 0.85rem 0 0; font-size: 0.9rem; color: var(--ink-500); }
+
+.loading { padding-block: 4rem; color: var(--ink-500); }
+
+.notices {
+  list-style: none;
+  margin: 0;
+  padding: 0.9rem 1.1rem;
+  display: grid;
+  gap: 0.5rem;
+  background: var(--teal-100);
+  border: 1px solid #bcdbe3;
+  border-radius: var(--radius-lg);
+  font-size: 0.92rem;
+  color: #0a4453;
+}
+
+.section { display: grid; gap: 1rem; }
+
+.sectionHeading {
+  font-size: 1.15rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.sectionNote { margin: 0; font-size: 0.94rem; color: var(--ink-600); max-width: 44rem; }
+
+.cards { display: grid; gap: 1rem; }
+
+.next { display: grid; gap: 1rem; }
+
+.provenance {
+  margin: 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  color: var(--ink-400);
+  max-width: none;
+}

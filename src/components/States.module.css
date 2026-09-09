@@ -1,0 +1,41 @@
+.state {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-left: 4px solid var(--amber-300);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.25rem, 0.9rem + 1.4vw, 2rem);
+}
+
+.heading { font-size: clamp(1.2rem, 1.05rem + 0.8vw, 1.6rem); margin-bottom: 0.75rem; }
+.detail { color: var(--ink-600); font-size: 0.98rem; }
+
+.options { margin: 1rem 0 1.5rem; padding-left: 1.2rem; display: grid; gap: 0.6rem; max-width: 38rem; }
+.options li { color: var(--ink-700); font-size: 0.96rem; }
+.options strong { color: var(--ink-900); }
+
+.actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+.empty {
+  padding: 2.5rem 1.25rem;
+  text-align: center;
+  background: var(--surface-sunk);
+  border-radius: var(--radius-lg);
+}
+.emptyHeading { font-size: 1.15rem; margin-bottom: 0.5rem; }
+.empty .detail { margin-inline: auto; }
+
+.adviser {
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+  padding: clamp(1.15rem, 0.9rem + 1vw, 1.6rem);
+  background: var(--green-50);
+  border: 1px solid var(--green-200);
+  border-radius: var(--radius-lg);
+}
+.adviserHeading { font-size: 1.1rem; margin-bottom: 0.3rem; }
+.adviserCopy { margin: 0; font-size: 0.94rem; color: var(--ink-600); }
+
+@media (min-width: 46rem) {
+  .adviser { grid-template-columns: 1fr auto; gap: 2rem; }
+}

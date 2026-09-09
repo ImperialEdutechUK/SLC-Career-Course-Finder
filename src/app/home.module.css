@@ -1,0 +1,157 @@
+.page { padding-bottom: 1rem; }
+
+.hero {
+  background:
+    linear-gradient(180deg, var(--green-50) 0%, var(--paper) 100%);
+  border-bottom: 1px solid var(--line);
+  padding-block: clamp(2.25rem, 1.5rem + 3.5vw, 4.25rem) clamp(2rem, 1.4rem + 3vw, 3.5rem);
+}
+
+.heroInner { display: grid; gap: 1.75rem; align-items: start; }
+.heroInner > div { max-width: 40rem; }
+
+.assurances {
+  list-style: none;
+  margin: 0;
+  padding: 1.15rem 1.25rem;
+  display: grid;
+  gap: 0.7rem;
+  background: var(--surface);
+  border: 1px solid var(--green-200);
+  border-radius: var(--radius-lg);
+  font-size: 0.93rem;
+  color: var(--ink-700);
+}
+.assurances li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.6rem;
+  align-items: start;
+}
+.assurances li::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  margin-top: 0.5rem;
+  border-radius: 50%;
+  background: var(--green-600);
+}
+
+.title { margin-bottom: 1rem; }
+
+.lede { max-width: 38rem; }
+
+.choices { padding-block: clamp(1.75rem, 1.2rem + 2.5vw, 3rem); }
+
+.journeys {
+  display: grid;
+  gap: 1rem;
+}
+
+.journey {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  padding: clamp(1.15rem, 0.85rem + 1.3vw, 1.75rem);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--step) ease, transform var(--step) ease, box-shadow var(--step) ease;
+}
+
+.journey:hover {
+  border-color: var(--green-600);
+  box-shadow: var(--shadow-raised);
+  transform: translateY(-1px);
+}
+
+.journeyTop {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.35rem;
+}
+
+.journeyIndex {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--green-600);
+  letter-spacing: 0.05em;
+}
+
+.journeyTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem);
+  font-weight: 600;
+  color: var(--ink-900);
+  line-height: 1.2;
+}
+
+.journeyCopy { color: var(--ink-600); max-width: 34rem; }
+
+.journeyEffort {
+  font-size: 0.85rem;
+  color: var(--ink-500);
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.journeyGo {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--green-50);
+  color: var(--green-800);
+  flex: none;
+}
+.journey:hover .journeyGo { background: var(--green-800); color: #fff; }
+
+.secondary {
+  margin-top: 1.5rem;
+  color: var(--ink-600);
+  font-size: 0.98rem;
+  max-width: none;
+}
+
+.explain {
+  padding-block: clamp(1.5rem, 1rem + 2vw, 2.5rem) 0;
+}
+
+.explainHeading {
+  font-size: 1.15rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
+  margin-bottom: 1.25rem;
+}
+
+.explainGrid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.explainItem h3 {
+  font-family: var(--font-text);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--ink-900);
+  margin-bottom: 0.35rem;
+}
+
+.explainItem p { font-size: 0.95rem; color: var(--ink-600); margin: 0; }
+
+@media (min-width: 62rem) {
+  .heroInner { grid-template-columns: minmax(0, 1.65fr) minmax(17rem, 1fr); gap: 3.5rem; }
+  .assurances { margin-top: 0.5rem; }
+}
+
+@media (min-width: 46rem) {
+  .journeys { grid-template-columns: 1fr 1fr; }
+  .explainGrid { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+}

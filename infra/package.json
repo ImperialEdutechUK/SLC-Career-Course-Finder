@@ -1,0 +1,27 @@
+{
+  "name": "slc-career-course-finder-infra",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Infrastructure as code for the South London College Career & Course Finder. Kept out of the application package so nothing here can reach the Lambda bundle or the browser.",
+  "bin": {
+    "slc-infra": "bin/slc.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "synth": "npm run build && cdk synth",
+    "diff": "npm run build && cdk diff",
+    "deploy": "npm run build && cdk deploy --all",
+    "destroy": "npm run build && cdk destroy --all"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "aws-cdk": "^2.1000.0",
+    "typescript": "^5.7.2",
+    "@types/aws-lambda": "^8.10.145"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.170.0",
+    "constructs": "^10.3.0",
+    "source-map-support": "^0.5.21"
+  }
+}

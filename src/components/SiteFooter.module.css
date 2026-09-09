@@ -1,0 +1,56 @@
+.footer {
+  margin-top: 4rem;
+  background: var(--blue-900);
+  color: #cfe0e9;
+  padding-block: 0 1.75rem;
+}
+
+/* The college closes its pages with the same blue-to-lime rule it opens them with. */
+.rule {
+  height: 4px;
+  background: var(--brand-rule);
+  margin-bottom: 2.25rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 0.4rem;
+}
+
+.copy { font-size: 0.92rem; margin: 0; max-width: 32rem; color: #bcd2de; }
+
+.links { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.15rem; }
+.links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.35rem 0;
+  color: #e6f2f8;
+  font-size: 0.94rem;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.links a:hover { color: #fff; border-bottom-color: rgba(255, 255, 255, 0.5); }
+.links a:focus-visible { outline-color: #96d3ef; }
+
+.release {
+  margin: 1.75rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 0.78rem;
+  color: #93aebd;
+  max-width: none;
+}
+
+@media (min-width: 48rem) {
+  .grid { grid-template-columns: 1.4fr 1fr; gap: 3rem; }
+}

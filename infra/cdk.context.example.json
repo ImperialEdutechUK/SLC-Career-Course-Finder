@@ -1,0 +1,15 @@
+{
+  "slc": {
+    "account": "000000000000",
+    "region": "eu-west-2",
+    "domainName": "find.southlondoncollege.org",
+    "hostedZoneId": "Z0000000000000000000",
+    "stage": "production",
+    "alarmEmail": "engineering@southlondoncollege.org",
+    "lambdaAdapterLayerArn": "arn:aws:lambda:eu-west-2:753240598075:layer:LambdaAdapterLayerArm64:REPLACE_WITH_CURRENT_VERSION",
+    "allowedCourseUrlHosts": "southlondoncollege.org",
+    "slcCourseOrigin": "https://southlondoncollege.org",
+    "questionnaireVersion": "2026-09-08.1",
+    "reservedConcurrency": 50
+  }
+}

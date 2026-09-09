@@ -1,0 +1,45 @@
+{
+  "total": 395,
+  "unique_urls": 394,
+  "unique_titles": 388,
+  "awarding_body_labels": {
+    "QLS": 109,
+    "ATHE": 96,
+    "NCFE CACHE": 58,
+    "NCFE": 13,
+    "Qualifi": 55,
+    "Focus Awards": 51,
+    "NCC Education": 5,
+    "Pearson BTEC": 8
+  },
+  "level_labels": {
+    "Level 3": 153,
+    "null": 1,
+    "Level 4": 85,
+    "Level 5": 63,
+    "Level 7": 32,
+    "Level 2": 35,
+    "Level 6": 21,
+    "Level 1": 5
+  },
+  "primary_categories": {
+    "Business and Management": 98,
+    "Animal Care": 10,
+    "Beauty, Hair and Wellbeing": 3,
+    "Hospitality Management": 7,
+    "Employability Skills": 4,
+    "Marketing": 7,
+    "Accounting and Finance": 13,
+    "Science and Engineering": 24,
+    "Law": 8,
+    "Coaching and Mentoring": 5,
+    "Information Technology": 54,
+    "Health and Social Care": 65,
+    "Human Resources": 7,
+    "Teaching and Education": 44,
+    "Childcare": 23,
+    "Sports and Fitness": 23
+  },
+  "cross_listed_count": 115,
+  "all_have_url": true
+}

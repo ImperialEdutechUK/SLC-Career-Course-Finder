@@ -1,0 +1,15 @@
+# Only infra's own dependencies, not any directory that happens to be called
+# node_modules. The canary source has to live at canary/nodejs/node_modules/journey.js,
+# because that is the layout CloudWatch Synthetics requires, and it must be committed.
+/node_modules/
+cdk.out/
+
+# Context carries the AWS account id and the hostname. Never committed.
+cdk.context.json
+
+# Compiled output of bin/ and lib/. The canary is plain JavaScript source, not build
+# output, so it is kept.
+/bin/*.js
+/bin/*.d.ts
+/lib/*.js
+/lib/*.d.ts

@@ -1,0 +1,31 @@
+.wrap {
+  margin-top: 0.85rem;
+  padding: 1rem;
+  background: var(--surface-sunk);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--green-200);
+  display: grid;
+  gap: 0.35rem;
+}
+.label { font-weight: 600; font-size: 0.95rem; color: var(--ink-800); }
+.hint { margin: 0; font-size: 0.86rem; color: var(--ink-600); max-width: 34rem; }
+.input {
+  min-height: 48px;
+  padding: 0.65rem 0.8rem;
+  font: inherit;
+  font-size: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--ink-900);
+  width: 100%;
+  max-width: 26rem;
+}
+.input:focus-visible { outline: 3px solid var(--green-700); outline-offset: 1px; border-color: var(--green-700); }
+
+.amount { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.currency { font-size: 1.05rem; font-weight: 600; color: var(--ink-700); }
+.amountInput { max-width: 11rem; }
+.suffix { font-size: 0.88rem; color: var(--ink-500); }
+
+.error { margin: 0.15rem 0 0; font-size: 0.88rem; color: #7a1f1f; font-weight: 500; max-width: none; }

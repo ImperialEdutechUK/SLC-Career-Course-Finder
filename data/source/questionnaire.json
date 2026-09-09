@@ -1,0 +1,899 @@
+{
+  "schemaVersion": "1.0.0",
+  "questionnaireId": "slc_next_step_guide",
+  "contentVersion": "2026-09-08.1",
+  "locale": "en-GB",
+  "status": "proposed_content_requires_learner_testing_and_slc_review",
+  "positioning": "Guided exploration and provisional course shortlisting; not a validated aptitude, personality or admission assessment.",
+  "timingClaims": {
+    "publishBeforeUserTesting": false,
+    "careerMinutes": null,
+    "courseMinutes": null
+  },
+  "answerContract": {
+    "single_select": "One option ID, or null only when allowSkip is true.",
+    "multi_select": "An array of unique option IDs between minSelections and maxSelections; null only when allowSkip is true.",
+    "subject_select": "One category option ID, help_me_explore, or a resolved reviewed course/subject selection from search; unresolved search text is not a selected category.",
+    "exclusiveOptions": "An option with exclusive=true must be the only item selected. Unknown answers are valid answers, not missing values.",
+    "conditionalInputs": "Optional secondary fields have separate stable IDs. Hidden fields must be cleared or ignored. A blank optional field must not be inferred or made compulsory.",
+    "unknownRequirement": "Unanswered or unsure never satisfies an admission requirement."
+  },
+  "routes": {
+    "career": {
+      "id": "career",
+      "title": "Explore career ideas",
+      "description": "Not sure which direction to take? Explore a few options based on what interests you.",
+      "intro": "There are no right answers. Choose what sounds interesting, even if you have never done it before. You can change your answers at any time.",
+      "effortCopy": "Six questions, with one optional comparison if it would help narrow your ideas.",
+      "baseQuestionIds": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "optionalQuestionIds": [
+        "C7"
+      ],
+      "questionCount": {
+        "baseScreens": 6,
+        "maximumScreens": 7,
+        "maximumOptionalDetailFields": 0,
+        "countShownMustReflectActualBranch": true
+      },
+      "questions": [
+        {
+          "id": "C1",
+          "type": "single_select",
+          "title": "What would you like your next step to help you do?",
+          "required": true,
+          "allowSkip": false,
+          "minSelections": 1,
+          "maxSelections": 1,
+          "options": [
+            {
+              "id": "start_work",
+              "label": "Get started in work"
+            },
+            {
+              "id": "change_career",
+              "label": "Move into a different kind of work"
+            },
+            {
+              "id": "progress_work",
+              "label": "Progress in the work I already do"
+            },
+            {
+              "id": "return_work",
+              "label": "Return to work after a break"
+            },
+            {
+              "id": "explore_options",
+              "label": "Explore ideas before deciding"
+            },
+            {
+              "id": "personal_interest",
+              "label": "Learn for personal interest or enjoyment"
+            }
+          ],
+          "use": "Choose an appropriate next action and explanation. Do not infer ability or lower the starting level for returners. Personal interest does not require a career objective."
+        },
+        {
+          "id": "C2",
+          "type": "multi_select",
+          "title": "Which activities would you most like to try?",
+          "hint": "Choose up to two, or choose I'm not sure yet.",
+          "required": true,
+          "allowSkip": false,
+          "minSelections": 1,
+          "maxSelections": 2,
+          "options": [
+            {
+              "id": "support_people",
+              "label": "Helping someone feel supported"
+            },
+            {
+              "id": "help_learning",
+              "label": "Helping someone learn something new"
+            },
+            {
+              "id": "organise_tasks",
+              "label": "Organising tasks and keeping things on track"
+            },
+            {
+              "id": "solve_problems",
+              "label": "Finding patterns and solving problems"
+            },
+            {
+              "id": "make_improve",
+              "label": "Making something practical or improving how it works"
+            },
+            {
+              "id": "create_ideas",
+              "label": "Creating ideas, designs or stories"
+            },
+            {
+              "id": "explain_choices",
+              "label": "Explaining ideas and helping people make choices"
+            },
+            {
+              "id": "animals_nature",
+              "label": "Working with animals, nature or the environment"
+            },
+            {
+              "id": "unsure",
+              "label": "I'm not sure yet",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "use": "Indicate activity interests only. Do not treat interest as skill. The career universe must include areas outside the SLC catalogue."
+        },
+        {
+          "id": "C3",
+          "type": "multi_select",
+          "title": "What would matter most to you in your work?",
+          "titleWhen": [
+            {
+              "questionId": "C1",
+              "answerId": "personal_interest",
+              "title": "What would matter most to you in the activities you explore?"
+            }
+          ],
+          "hint": "Choose up to two, or choose I'm still working this out.",
+          "required": true,
+          "allowSkip": false,
+          "minSelections": 1,
+          "maxSelections": 2,
+          "options": [
+            {
+              "id": "help_others",
+              "label": "Making a difference to other people"
+            },
+            {
+              "id": "clear_routine",
+              "label": "A clear routine and expectations"
+            },
+            {
+              "id": "variety_challenge",
+              "label": "Variety and new challenges"
+            },
+            {
+              "id": "progression",
+              "label": "Opportunities to progress"
+            },
+            {
+              "id": "creativity",
+              "label": "Room to be creative"
+            },
+            {
+              "id": "fit_commitments",
+              "label": "Fitting around other commitments"
+            },
+            {
+              "id": "unsure",
+              "label": "I'm still working this out",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "use": "Personalise comparison prompts. Do not guarantee flexibility, progression or job conditions."
+        },
+        {
+          "id": "C4",
+          "type": "multi_select",
+          "title": "What would you like more of in a typical working day?",
+          "titleWhen": [
+            {
+              "questionId": "C1",
+              "answerId": "personal_interest",
+              "title": "What would you like more of in the activities you explore?"
+            }
+          ],
+          "hint": "Choose up to two. If you want a mix or are not sure, choose that answer on its own.",
+          "required": true,
+          "allowSkip": false,
+          "minSelections": 1,
+          "maxSelections": 2,
+          "options": [
+            {
+              "id": "talk_people",
+              "label": "Talking with people"
+            },
+            {
+              "id": "focus_tasks",
+              "label": "Time to focus on my own tasks"
+            },
+            {
+              "id": "hands_on",
+              "label": "Practical, hands-on activity"
+            },
+            {
+              "id": "information_digital",
+              "label": "Working with information or digital tools"
+            },
+            {
+              "id": "mixed_activities",
+              "label": "A mix of different activities",
+              "exclusive": true
+            },
+            {
+              "id": "unsure",
+              "label": "I'm not sure yet",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "use": "Refine activity context without assigning a personality or learning style. mixed_activities is a breadth preference, not an unknown response."
+        },
+        {
+          "id": "C5",
+          "type": "single_select",
+          "title": "How much experience do you have in the areas that interest you?",
+          "required": true,
+          "allowSkip": false,
+          "minSelections": 1,
+          "maxSelections": 1,
+          "options": [
+            {
+              "id": "starting_beginning",
+              "label": "I would be starting from the beginning"
+            },
+            {
+              "id": "informal_volunteering",
+              "label": "I have tried related things in everyday life or volunteering"
+            },
+            {
+              "id": "studied_related",
+              "label": "I have studied a related subject"
+            },
+            {
+              "id": "worked_related",
+              "label": "I have worked in a related area"
+            },
+            {
+              "id": "study_and_work",
+              "label": "I have both related study and work experience"
+            },
+            {
+              "id": "unsure_counts",
+              "label": "I'm not sure what counts",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "contextToStore": [
+            "subjectContextId",
+            "subjectContextIsSpecificAndUnambiguous"
+          ],
+          "use": "Choose provisional starting-step explanations only. Related study does not mean a completed qualification, and previous work does not mean current work. Do not infer RQF level or confirm admission."
+        },
+        {
+          "id": "C6",
+          "type": "single_select",
+          "title": "How would you like to start exploring this?",
+          "required": true,
+          "allowSkip": false,
+          "minSelections": 1,
+          "maxSelections": 1,
+          "options": [
+            {
+              "id": "try_activity",
+              "label": "Try a small activity before committing"
+            },
+            {
+              "id": "introductory_course",
+              "label": "Look for an introductory course"
+            },
+            {
+              "id": "compare_qualifications",
+              "label": "Compare qualifications for a career direction"
+            },
+            {
+              "id": "build_existing",
+              "label": "Build on skills or qualifications I already have"
+            },
+            {
+              "id": "talk_adviser",
+              "label": "Talk it through with someone"
+            },
+            {
+              "id": "unsure",
+              "label": "I'm not sure yet",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "use": "Choose the primary next action. Wanting a small first step must not remove longer career possibilities."
+        },
+        {
+          "id": "C7",
+          "type": "single_select",
+          "title": "Which of these would you be more interested in trying?",
+          "hint": "This optional comparison may help narrow your ideas. You can skip it.",
+          "required": false,
+          "allowSkip": true,
+          "minSelections": 0,
+          "maxSelections": 1,
+          "isOptionalBranch": true,
+          "showWhen": {
+            "all": [
+              "a_relevant_tie_between_candidate_families_exists",
+              "a_reviewed_scenario_pair_exists",
+              "answer_could_materially_change_shortlist"
+            ]
+          },
+          "reviewedContentRequired": {
+            "fields": [
+              "scenarioPairId",
+              "scenarioAId",
+              "scenarioALabel",
+              "scenarioBId",
+              "scenarioBLabel",
+              "reviewedBy",
+              "reviewedAt",
+              "version"
+            ],
+            "runtimeGenerativeQuestionAuthoringAllowed": false,
+            "scenarioLabelsMustBeConcreteAndEquallySpecific": true,
+            "unresolvedBindingsMustNotRender": true
+          },
+          "options": [
+            {
+              "id": "scenario_a",
+              "labelBinding": "reviewedScenarioPair.scenarioALabel"
+            },
+            {
+              "id": "scenario_b",
+              "labelBinding": "reviewedScenarioPair.scenarioBLabel"
+            },
+            {
+              "id": "both",
+              "label": "Both"
+            },
+            {
+              "id": "neither",
+              "label": "Neither"
+            },
+            {
+              "id": "unsure",
+              "label": "I'm not sure",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "use": "Clarify an otherwise unresolved comparison. Neither means broaden exploration. Skipped and unsure do not force a winner."
+        }
+      ]
+    },
+    "course": {
+      "id": "course",
+      "title": "Find a course",
+      "description": "Have a subject or goal in mind? Compare suitable starting points at South London College.",
+      "intro": "These questions help us build a shortlist. You will be able to check each course's entry requirements before deciding.",
+      "effortCopy": "Five short questions, with one optional requirement check if useful. You can also add optional qualification details or a budget amount.",
+      "baseQuestionIds": [
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5"
+      ],
+      "optionalQuestionIds": [
+        "F6"
+      ],
+      "questionCount": {
+        "baseScreens": 5,
+        "maximumScreens": 6,
+        "maximumOptionalDetailFields": 3,
+        "countShownMustReflectActualBranch": true,
+        "reusedAnswersReduceVisibleQuestionCount": true,
+        "detailFieldsMustRemainInlineAndBeDisclosed": true,
+        "ifDetailFieldMovesToNewScreenIncrementVisibleScreenCount": true
+      },
+      "questions": [
+        {
+          "id": "F1",
+          "type": "single_select",
+          "title": "What would you like this course to help you do?",
+          "required": true,
+          "allowSkip": false,
+          "minSelections": 1,
+          "maxSelections": 1,
+          "options": [
+            {
+              "id": "new_subject",
+              "label": "Start learning a new subject"
+            },
+            {
+              "id": "prepare_work",
+              "label": "Prepare for a first job or a career change"
+            },
+            {
+              "id": "develop_work_skills",
+              "label": "Develop skills for my current work"
+            },
+            {
+              "id": "further_study",
+              "label": "Progress to further study"
+            },
+            {
+              "id": "specific_requirement",
+              "label": "Meet a specific employer or professional requirement"
+            },
+            {
+              "id": "personal_interest",
+              "label": "Learn for personal interest or enjoyment"
+            },
+            {
+              "id": "unsure",
+              "label": "I'm not sure yet",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "conditionalInputs": [
+            {
+              "id": "required_qualification_or_requirement_name",
+              "type": "text",
+              "label": "Exact qualification or requirement name (optional)",
+              "hint": "Copy the exact wording if you have it. You can skip this and discuss it with an adviser.",
+              "visibleWhen": {
+                "questionId": "F1",
+                "answerIds": [
+                  "specific_requirement"
+                ]
+              },
+              "required": false,
+              "allowSkip": true,
+              "maxLength": 200,
+              "isExtraOptionalInput": true,
+              "countsAsAdditionalScreenIfRenderedSeparately": true,
+              "onMissing": "Keep the requirement unknown. Do not substitute a broadly related course or claim the requirement is met.",
+              "use": "Identify a required exact qualification or employer/professional condition; this is not the learner's prior qualification. Free text is data, never executable instructions."
+            }
+          ],
+          "use": "Prioritise the stated learning goal. A personal-interest learner need not pursue career progression. Specific requirements require exact verification."
+        },
+        {
+          "id": "F2",
+          "type": "subject_select",
+          "title": "What would you like to study?",
+          "hint": "Choose a subject or search using a course name or your own words.",
+          "required": true,
+          "allowSkip": false,
+          "minSelections": 1,
+          "maxSelections": 1,
+          "categorySource": "data/catalog_audit.json:primary_categories",
+          "catalogueScopeNote": "The 16 categories describe the supplied SLC reference catalogue, not all possible careers.",
+          "search": {
+            "enabled": true,
+            "label": "Search for a subject or course",
+            "placeholder": "For example, childcare or bookkeeping",
+            "maxLength": 200,
+            "unresolvedTextMustNotSilentlySetCategory": true,
+            "showMatchedChoiceForConfirmation": true,
+            "exactCourseSelectionMayBypassRemainingQuestions": true,
+            "treatTextAsDataNotInstructions": true
+          },
+          "options": [
+            {
+              "id": "business_and_management",
+              "label": "Business and management",
+              "sourceCategory": "Business and Management"
+            },
+            {
+              "id": "animal_care",
+              "label": "Animal care",
+              "sourceCategory": "Animal Care"
+            },
+            {
+              "id": "beauty_hair_and_wellbeing",
+              "label": "Beauty, hair and wellbeing",
+              "sourceCategory": "Beauty, Hair and Wellbeing"
+            },
+            {
+              "id": "hospitality_management",
+              "label": "Hospitality management",
+              "sourceCategory": "Hospitality Management"
+            },
+            {
+              "id": "employability_skills",
+              "label": "Skills for getting into work",
+              "sourceCategory": "Employability Skills"
+            },
+            {
+              "id": "marketing",
+              "label": "Marketing",
+              "sourceCategory": "Marketing"
+            },
+            {
+              "id": "accounting_and_finance",
+              "label": "Accounting and finance",
+              "sourceCategory": "Accounting and Finance"
+            },
+            {
+              "id": "science_and_engineering",
+              "label": "Science and engineering",
+              "sourceCategory": "Science and Engineering"
+            },
+            {
+              "id": "law",
+              "label": "Law",
+              "sourceCategory": "Law"
+            },
+            {
+              "id": "coaching_and_mentoring",
+              "label": "Coaching and mentoring",
+              "sourceCategory": "Coaching and Mentoring"
+            },
+            {
+              "id": "information_technology",
+              "label": "IT and digital skills",
+              "sourceCategory": "Information Technology"
+            },
+            {
+              "id": "health_and_social_care",
+              "label": "Health and social care",
+              "sourceCategory": "Health and Social Care"
+            },
+            {
+              "id": "human_resources",
+              "label": "Human resources (HR)",
+              "sourceCategory": "Human Resources"
+            },
+            {
+              "id": "teaching_and_education",
+              "label": "Teaching and education",
+              "sourceCategory": "Teaching and Education"
+            },
+            {
+              "id": "childcare",
+              "label": "Childcare",
+              "sourceCategory": "Childcare"
+            },
+            {
+              "id": "sports_and_fitness",
+              "label": "Sports and fitness",
+              "sourceCategory": "Sports and Fitness"
+            },
+            {
+              "id": "help_me_explore",
+              "label": "I'm not sure — help me explore",
+              "exclusive": true,
+              "isUnknown": true,
+              "action": "offer_career_route_without_discarding_existing_answers"
+            }
+          ],
+          "use": "Select an explicit subject context. A career result can suggest a changeable subject, but cannot silently force it. Preserve direct search for learners who know their course."
+        },
+        {
+          "id": "F3",
+          "type": "single_select",
+          "title": "What have you already done in this subject?",
+          "required": true,
+          "allowSkip": false,
+          "minSelections": 1,
+          "maxSelections": 1,
+          "options": [
+            {
+              "id": "new_to_subject",
+              "label": "I am new to it"
+            },
+            {
+              "id": "informal_practical",
+              "label": "I have some informal or practical experience"
+            },
+            {
+              "id": "completed_related",
+              "label": "I have completed a related course or qualification"
+            },
+            {
+              "id": "current_work",
+              "label": "I use these skills at work"
+            },
+            {
+              "id": "qualification_and_work",
+              "label": "I have both a related qualification and work experience"
+            },
+            {
+              "id": "unsure_counts",
+              "label": "I'm not sure what counts",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "conditionalInputs": [
+            {
+              "id": "previous_qualification_name",
+              "type": "text",
+              "label": "Qualification name, if you know it (optional)",
+              "hint": "You can skip this. We will explain any qualifications that a course requires.",
+              "visibleWhen": {
+                "questionId": "F3",
+                "answerIds": [
+                  "completed_related",
+                  "qualification_and_work"
+                ]
+              },
+              "required": false,
+              "allowSkip": true,
+              "maxLength": 200,
+              "isExtraOptionalInput": true,
+              "countsAsAdditionalScreenIfRenderedSeparately": true,
+              "onMissing": "Keep the previous qualification unspecified; do not assign its level, subject or equivalence.",
+              "use": "Record a learner-reported previous qualification for later checking. This is separate from an exact qualification the learner needs to obtain."
+            }
+          ],
+          "use": "Choose a provisional starting point. Unrelated qualifications or an unverified title cannot establish course eligibility."
+        },
+        {
+          "id": "F4",
+          "type": "single_select",
+          "title": "How much time could you usually set aside for study each week?",
+          "hint": "Optional. Choose an estimate or skip this question.",
+          "required": false,
+          "allowSkip": true,
+          "minSelections": 0,
+          "maxSelections": 1,
+          "options": [
+            {
+              "id": "under_2_hours",
+              "label": "Less than 2 hours"
+            },
+            {
+              "id": "2_to_4_hours",
+              "label": "2–4 hours"
+            },
+            {
+              "id": "5_to_8_hours",
+              "label": "5–8 hours"
+            },
+            {
+              "id": "9_or_more_hours",
+              "label": "9 hours or more"
+            },
+            {
+              "id": "varies_or_unsure",
+              "label": "It varies / I'm not sure",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "onSkip": "No study-time preference supplied.",
+          "use": "A soft planning signal until verified total qualification time, access periods, assessment deadlines and placement hours are available. Do not guarantee completion dates from guided learning hours."
+        },
+        {
+          "id": "F5",
+          "type": "single_select",
+          "title": "Would you like to set a maximum total course price?",
+          "hint": "Optional. If you choose to set a budget, you can add an amount below or skip it.",
+          "required": false,
+          "allowSkip": true,
+          "minSelections": 0,
+          "maxSelections": 1,
+          "options": [
+            {
+              "id": "show_all_prices",
+              "label": "Show me all prices"
+            },
+            {
+              "id": "enter_maximum",
+              "label": "Let me enter an amount (optional)"
+            },
+            {
+              "id": "payment_options_first",
+              "label": "I would like to understand payment options first"
+            }
+          ],
+          "conditionalInputs": [
+            {
+              "id": "maximum_total_price_gbp",
+              "type": "currency_amount",
+              "label": "Maximum total course price in pounds (optional)",
+              "hint": "We will compare the full listed course cost where it is available. Extra required costs will be shown separately. You can leave this blank.",
+              "visibleWhen": {
+                "questionId": "F5",
+                "answerIds": [
+                  "enter_maximum"
+                ]
+              },
+              "required": false,
+              "allowSkip": true,
+              "currency": "GBP",
+              "minimum": 0,
+              "maximumDecimalPlaces": 2,
+              "isExtraOptionalInput": true,
+              "countsAsAdditionalScreenIfRenderedSeparately": true,
+              "onMissing": "No maximum price was supplied. Do not apply a price cap or infer an amount.",
+              "use": "Compare with current verified total prices. Missing price is unknown, not affordable."
+            }
+          ],
+          "onSkip": "No price preference supplied.",
+          "use": "Respect an optional declared price cap. payment_options_first opens verified information; it does not imply finance eligibility or consent to marketing."
+        },
+        {
+          "id": "F6",
+          "type": "single_select",
+          "titleBinding": "reviewedRequirementRule.questionTitle",
+          "hint": "Optional. This check may help distinguish your course options. You can skip it and check the details with an adviser.",
+          "required": false,
+          "allowSkip": true,
+          "minSelections": 0,
+          "maxSelections": 1,
+          "isOptionalBranch": true,
+          "showWhen": {
+            "all": [
+              "a_reviewed_course_requirement_rule_applies",
+              "the_rule_changes_the_current_shortlist",
+              "no_F6_question_has_already_been_asked"
+            ]
+          },
+          "reviewedContentRequired": {
+            "fields": [
+              "requirementRuleId",
+              "courseIds",
+              "requirementKey",
+              "questionTitle",
+              "verifiedSourceUrl",
+              "reviewedBy",
+              "reviewedAt",
+              "version"
+            ],
+            "runtimeGenerativeQuestionAuthoringAllowed": false,
+            "maximumRequirementQueriesInThisQuiz": 1,
+            "maximumRequirementsPerQuery": 1,
+            "unresolvedBindingsMustNotRender": true,
+            "exampleQuestionTitle": "Would you be able to complete a required workplace placement?"
+          },
+          "options": [
+            {
+              "id": "yes",
+              "label": "Yes"
+            },
+            {
+              "id": "no",
+              "label": "No"
+            },
+            {
+              "id": "unsure",
+              "label": "I'm not sure",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "onSkip": "Requirement remains unknown.",
+          "use": "Apply only the selected reviewed requirement rule. A yes answer is learner-reported and does not complete admission checks. Further checks appear on course details or with an adviser, not as hidden additional quiz questions."
+        }
+      ]
+    }
+  },
+  "answerReuse": [
+    {
+      "id": "career_purpose_to_course_goal",
+      "sourceQuestionId": "C1",
+      "targetQuestionId": "F1",
+      "showReusedValueToLearner": true,
+      "editable": true,
+      "preserveSourceAnswerAndIntent": true,
+      "mapping": [
+        {
+          "sourceAnswerId": "start_work",
+          "targetAnswerId": "prepare_work",
+          "action": "reuse",
+          "reason": "Preparing for a first job is explicitly included in the course goal."
+        },
+        {
+          "sourceAnswerId": "change_career",
+          "targetAnswerId": "prepare_work",
+          "action": "reuse",
+          "reason": "Preparing for a career change is explicitly included in the course goal."
+        },
+        {
+          "sourceAnswerId": "progress_work",
+          "targetAnswerId": null,
+          "action": "ask",
+          "reason": "Career progression could require developing current skills, further study or a specific qualification; course purpose is not unambiguous."
+        },
+        {
+          "sourceAnswerId": "return_work",
+          "targetAnswerId": null,
+          "action": "ask",
+          "reason": "Returning to work does not specify what the learner wants this course to achieve."
+        },
+        {
+          "sourceAnswerId": "explore_options",
+          "targetAnswerId": null,
+          "action": "ask",
+          "reason": "Exploring career ideas does not establish a course goal or mean the learner is unsure about that goal."
+        },
+        {
+          "sourceAnswerId": "personal_interest",
+          "targetAnswerId": "personal_interest",
+          "action": "reuse",
+          "reason": "Both options express the same personal-interest goal."
+        }
+      ],
+      "onMissingOrUnmappedSource": "Ask F1; do not choose a default.",
+      "onSourceChanged": "Invalidate the reused F1 answer and reevaluate the explicit mapping."
+    },
+    {
+      "id": "career_experience_to_course_experience",
+      "sourceQuestionId": "C5",
+      "targetQuestionId": "F3",
+      "allConditionsRequired": [
+        "source.subjectContextId_is_present",
+        "source.subjectContextIsSpecificAndUnambiguous_is_true",
+        "source.subjectContextId_equals_current_confirmed_F2_subjectContextId",
+        "the_subject_has_not_changed_since_C5_was_answered"
+      ],
+      "showReusedValueToLearner": true,
+      "editable": true,
+      "mapping": [
+        {
+          "sourceAnswerId": "starting_beginning",
+          "targetAnswerId": "new_to_subject",
+          "action": "reuse",
+          "reason": "Equivalent beginning status when the exact subject context is unchanged."
+        },
+        {
+          "sourceAnswerId": "informal_volunteering",
+          "targetAnswerId": "informal_practical",
+          "action": "reuse",
+          "reason": "The reported informal/volunteering experience fits this option only in the unchanged subject."
+        },
+        {
+          "sourceAnswerId": "studied_related",
+          "targetAnswerId": null,
+          "action": "ask",
+          "reason": "Having studied does not establish that a related course or qualification was completed."
+        },
+        {
+          "sourceAnswerId": "worked_related",
+          "targetAnswerId": null,
+          "action": "ask",
+          "reason": "Previous related work does not establish current use of these skills at work."
+        },
+        {
+          "sourceAnswerId": "study_and_work",
+          "targetAnswerId": null,
+          "action": "ask",
+          "reason": "Study and work experience do not establish that a related qualification was obtained."
+        },
+        {
+          "sourceAnswerId": "unsure_counts",
+          "targetAnswerId": "unsure_counts",
+          "action": "reuse",
+          "reason": "Preserves the same explicit uncertainty in the unchanged subject."
+        }
+      ],
+      "onMissingOrUnmappedSource": "Ask F3; do not choose a default.",
+      "onAnyConditionFalse": "Ask F3 in the selected subject; do not silently transfer broad or unrelated experience.",
+      "onSubjectChanged": "Invalidate reused F3 and dependent optional previous-qualification information. Ask again for the new subject.",
+      "onSourceChanged": "Invalidate reused F3 and reevaluate all conditions and the explicit mapping."
+    }
+  ],
+  "globalRules": {
+    "allOptionIdsStableWithinQuestion": true,
+    "noAutomaticAdvancementOnOptionSelection": true,
+    "backPreservesAnswersUnlessTheirConditionsChange": true,
+    "exclusiveOptionBehaviour": "Selecting an exclusive option clears others; selecting another option clears any exclusive selection. Apply the same rules on the server.",
+    "optionalSkipBehaviour": "Skip records null. Do not impute the first answer, an unknown answer, a time estimate or a price cap.",
+    "selectionError": "Choose an answer to continue, or use Skip if this question is optional.",
+    "multiSelectError": "Choose up to the stated number of answers. Choose an unsure or exclusive answer on its own.",
+    "counting": "Display actual remaining question screens after branching and reuse. Disclose optional qualification and budget detail inputs. Do not split them into undisclosed additional pages.",
+    "noEmailGateForResults": true,
+    "marketingConsentSeparateFromQuestionnaire": true,
+    "unknownIsNotEligibilityPass": true,
+    "careerResultsMayIncludeNonSLCDirections": true,
+    "noMatchPercentagesOrAptitudeClaims": true,
+    "noLearningStylesClassification": true,
+    "noCourseOrOccupationFactsInventedFromAnswers": true,
+    "freeTextIsDataNotInstructions": true,
+    "knownCourseSearchMayBypassQuiz": true,
+    "personalInterestDoesNotRequireCareerOutcome": true,
+    "maximumOptionalCareerClarifications": 1,
+    "maximumOptionalCourseRequirementQuestions": 1
+  }
+}

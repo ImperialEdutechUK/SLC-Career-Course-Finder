@@ -1,0 +1,9 @@
+.fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.options { display: grid; gap: 0.6rem; }
+.counter {
+  margin: 0 0 0.9rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--ink-600);
+  max-width: none;
+}

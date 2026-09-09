@@ -1,0 +1,49 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.25rem, 0.9rem + 1.5vw, 2.25rem);
+  box-shadow: var(--shadow-card);
+}
+
+.heading {
+  font-size: clamp(1.4rem, 1.15rem + 1.3vw, 2.05rem);
+  margin-bottom: 0.5rem;
+}
+/* The heading receives focus programmatically so the new question is announced.
+   It is not reachable by Tab, so it must not paint a keyboard focus indicator. */
+.heading:focus, .heading:focus-visible { outline: none; }
+
+.hint {
+  color: var(--ink-600);
+  font-size: 0.98rem;
+  margin-bottom: 0;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 1.25rem 0 0;
+  padding: 0.75rem 0.9rem;
+  background: #fdeeee;
+  border: 1px solid #e6b4b4;
+  border-left: 4px solid #9c2323;
+  border-radius: var(--radius);
+  color: #7a1f1f;
+  font-size: 0.94rem;
+  font-weight: 500;
+  max-width: none;
+}
+
+.body { margin-top: 1.5rem; }
+
+.footer {
+  margin-top: 1.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
