@@ -110,20 +110,29 @@
      Each shadow is layered rather than single: a tight contact shadow where the
      card meets the page, then a wider ambient one. A single large blur is what
      makes a card look like it is floating in fog rather than resting on paper. */
+  /* A lit top edge on every raised surface: light falls from above, so the
+     upper 1px catches it. Below, three layers rather than one blur — a tight
+     contact shadow where the surface meets the page, a mid shadow that gives
+     it thickness, and a wide ambient one. A single large blur reads as fog. */
+  --edge-lit: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
   --depth-2:
-    0 1px 2px rgba(24, 39, 42, 0.04),
-    0 2px 6px -1px rgba(24, 39, 42, 0.06),
-    0 8px 20px -6px rgba(24, 39, 42, 0.06);
-  --depth-3:
+    var(--edge-lit),
     0 1px 2px rgba(24, 39, 42, 0.05),
     0 4px 10px -2px rgba(24, 39, 42, 0.07),
-    0 16px 32px -10px rgba(24, 39, 42, 0.10);
+    0 12px 24px -8px rgba(24, 39, 42, 0.09);
+  --depth-3:
+    var(--edge-lit),
+    0 1px 2px rgba(24, 39, 42, 0.06),
+    0 6px 14px -3px rgba(24, 39, 42, 0.09),
+    0 18px 34px -10px rgba(24, 39, 42, 0.12);
   --depth-lift:
-    0 2px 4px rgba(24, 39, 42, 0.06),
-    0 8px 18px -3px rgba(24, 39, 42, 0.09),
-    0 26px 48px -14px rgba(24, 39, 42, 0.14);
+    var(--edge-lit),
+    0 3px 6px rgba(24, 39, 42, 0.08),
+    0 14px 26px -4px rgba(24, 39, 42, 0.13),
+    0 34px 60px -16px rgba(24, 39, 42, 0.20);
   /* Pressed: the surface loses its gap with the page. */
-  --depth-press: 0 1px 2px rgba(24, 39, 42, 0.08);
+  --depth-press: inset 0 2px 6px rgba(24, 39, 42, 0.14);
 
   /* ---------------------------------------------------------------- motion */
   --dur-fast: 150ms;
@@ -347,13 +356,19 @@ ul, ol { margin: 0 0 1rem; padding-left: 1.2rem; }
 .btn--primary {
   background: var(--accent);
   color: #fff;
-  box-shadow: var(--depth-2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 2px 4px rgba(0, 70, 47, 0.18),
+    0 8px 18px -4px rgba(0, 70, 47, 0.26);
 }
 .btn--primary:hover {
   background: var(--accent-hover);
   color: #fff;
   transform: translateY(-2px);
-  box-shadow: var(--depth-lift);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 4px 8px rgba(0, 70, 47, 0.20),
+    0 16px 30px -6px rgba(0, 70, 47, 0.32);
 }
 .btn--primary:active {
   background: var(--accent-active);
@@ -408,7 +423,7 @@ ul, ol { margin: 0 0 1rem; padding-left: 1.2rem; }
   border: 1px solid var(--hairline);
   border-radius: var(--radius-card);
   padding: clamp(var(--s-4), 0.8rem + 1.2vw, var(--s-6));
-  box-shadow: var(--depth-2);
+  box-shadow: var(--depth-3);
 }
 
 .card--interactive {
@@ -419,14 +434,15 @@ ul, ol { margin: 0 0 1rem; padding-left: 1.2rem; }
 }
 .card--interactive:hover,
 .card--interactive:focus-within {
-  transform: translateY(-3px);
+  transform: translateY(-6px);
   box-shadow: var(--depth-lift);
-  border-color: var(--hairline-strong);
+  border-color: var(--accent);
 }
+.card--interactive:active { transform: translateY(0); box-shadow: var(--depth-press); }
 
 /* Flat surfaces. Information, not objects. */
 .card--flat { box-shadow: none; }
-.panel { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-card); padding: clamp(var(--s-4), 0.8rem + 1.2vw, var(--s-6)); box-shadow: var(--depth-2); }
+.panel { background: var(--surface); border: 1px solid var(--hairline); border-radius: var(--radius-card); padding: clamp(var(--s-4), 0.8rem + 1.2vw, var(--s-6)); box-shadow: var(--depth-3); }
 .panel--sunk { background: var(--bg-sunk); border-color: transparent; box-shadow: none; }
 
 /* ------------------------------------------------------------------- info

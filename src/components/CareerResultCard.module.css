@@ -6,6 +6,8 @@
   display: grid;
   gap: 1.15rem;
   box-shadow: var(--depth-3);
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
 }
 
 .head { display: grid; gap: var(--s-2); }
@@ -47,4 +49,16 @@
 
 @media (min-width: 44rem) {
   .blocks { grid-template-columns: 1fr 1fr; gap: 1.25rem 2rem; }
+}
+
+/* A result is an object worth picking up, so it lifts like the tiles do. */
+.card:hover,
+.card:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: var(--depth-lift);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover, .card:focus-within { transform: none; }
 }

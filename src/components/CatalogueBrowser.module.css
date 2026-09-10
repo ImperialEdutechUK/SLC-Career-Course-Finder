@@ -23,7 +23,7 @@
 .layout { display: grid; gap: 1.5rem; align-items: start; }
 
 .filters {
-  box-shadow: var(--depth-2);
+  box-shadow: var(--depth-3);
   display: none;
   background: var(--surface);
   border: 1px solid var(--hairline);
@@ -77,7 +77,7 @@
   background: var(--surface);
   border: 1px solid var(--hairline);
   border-radius: var(--radius-card);
-  box-shadow: var(--depth-2);
+  box-shadow: var(--depth-3);
   transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
               transform var(--dur) var(--ease);
 }
@@ -86,10 +86,11 @@
    clear of the others. */
 .card:hover,
 .card:focus-within {
-  border-color: var(--hairline-strong);
+  border-color: var(--accent);
   box-shadow: var(--depth-lift);
-  transform: translateY(-3px);
+  transform: translateY(-6px);
 }
+.card:active { transform: translateY(0); box-shadow: var(--depth-press); }
 
 .cardCategory {
   margin: 0;

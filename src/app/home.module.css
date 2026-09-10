@@ -24,11 +24,7 @@
   border: 1px solid var(--hairline);
   text-decoration: none;
   color: var(--ink);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 1px 2px rgba(24, 39, 42, 0.06),
-    0 6px 14px -3px rgba(24, 39, 42, 0.09),
-    0 18px 34px -10px rgba(24, 39, 42, 0.12);
+  box-shadow: var(--depth-3);
   transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
               border-color var(--dur) var(--ease);
 }
@@ -37,17 +33,13 @@
 .tile:focus-visible {
   transform: translateY(-6px);
   border-color: var(--accent);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 3px 6px rgba(24, 39, 42, 0.08),
-    0 14px 26px -4px rgba(24, 39, 42, 0.13),
-    0 34px 60px -16px rgba(24, 39, 42, 0.20);
+  box-shadow: var(--depth-lift);
 }
 
 /* Pressed: the tile goes back down to the page and the light stops catching. */
 .tile:active {
   transform: translateY(0);
-  box-shadow: inset 0 2px 6px rgba(24, 39, 42, 0.14);
+  box-shadow: var(--depth-press);
 }
 
 /* ------------------------------------------------------------- primary tile */
