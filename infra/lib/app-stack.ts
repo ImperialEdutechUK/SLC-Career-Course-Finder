@@ -161,6 +161,35 @@ export class SlcAppStack extends Stack {
       cookieBehavior: cloudfront.OriginRequestCookieBehavior.none()
     });
 
+    /* Next.js serves two different bodies at the same URL. A browser navigating
+       normally gets HTML; the same URL fetched during a client-side navigation
+       carries an RSC header and returns a React Server Components payload
+       instead. The application marks this with `Vary: RSC, Next-Router-...`,
+       but CloudFront does not vary its cache on arbitrary headers, so with the
+       managed CachingOptimized policy both variants share one cache key.
+
+       Whichever variant is requested first is then served to everyone: a
+       document request can receive raw RSC payload text, and a client
+       navigation can receive HTML it cannot parse. The fix is to put those
+       headers in the cache key so each variant is cached separately. */
+    const serverCachePolicy = new cloudfront.CachePolicy(this, 'ServerCache', {
+      comment: 'SLC server: RSC-aware cache key',
+      headerBehavior: cloudfront.CacheHeaderBehavior.allowList(
+        'RSC',
+        'Next-Router-State-Tree',
+        'Next-Router-Prefetch',
+        'Next-Router-Segment-Prefetch',
+        'Next-Url'
+      ),
+      queryStringBehavior: cloudfront.CacheQueryStringBehavior.all(),
+      cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+      enableAcceptEncodingGzip: true,
+      enableAcceptEncodingBrotli: true,
+      defaultTtl: Duration.minutes(5),
+      minTtl: Duration.seconds(0),
+      maxTtl: Duration.days(365)
+    });
+
     const s3Origin = origins.S3BucketOrigin.withOriginAccessControl(assetBucket);
     const serverOrigin = origins.FunctionUrlOrigin.withOriginAccessControl(serverUrl);
 
@@ -180,7 +209,7 @@ export class SlcAppStack extends Stack {
       origin: serverOrigin,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
-      cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+      cachePolicy: serverCachePolicy,
       originRequestPolicy: serverOriginRequestPolicy,
       responseHeadersPolicy: responseHeaders,
       compress: true
