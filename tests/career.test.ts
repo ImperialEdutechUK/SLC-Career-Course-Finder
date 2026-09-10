@@ -11,7 +11,8 @@ import { requireQuestion } from '@/lib/questionnaire';
  * Expected values below are calculated by hand from that definition.
  */
 
-const score = (C2: string[], C4: string[] = []) => scoreCareerDirections({ C2, C4 });
+const score = (C2: string[], C4: string[] = [], C3: string[] = []) =>
+  scoreCareerDirections({ C2, C3, C4 });
 const find = (result: ReturnType<typeof score>, id: string) =>
   result.ranked.find(item => item.familyId === id);
 
@@ -24,43 +25,85 @@ describe('activity to family matrix', () => {
     }
   });
 
-  it('only references configured C2 and C4 answer ids', () => {
+  it('only references configured C2, C3 and C4 answer ids', () => {
     const c2 = requireQuestion('career', 'C2').options.map(o => o.id);
+    const c3 = requireQuestion('career', 'C3').options.map(o => o.id);
     const c4 = requireQuestion('career', 'C4').options.map(o => o.id);
     for (const family of CAREER_FAMILY_MATRIX) {
-      for (const id of family.activityIds) expect(c2, family.id).toContain(id);
-      for (const id of family.compatibleDailyIds) expect(c4, family.id).toContain(id);
+      for (const id of Object.keys(family.activities)) expect(c2, family.id).toContain(id);
+      for (const id of Object.keys(family.values)) expect(c3, family.id).toContain(id);
+      for (const id of Object.keys(family.daily)) expect(c4, family.id).toContain(id);
     }
   });
 
-  it('never treats an unknown or breadth answer as an activity association', () => {
+  it('every weight is one of the three reviewed tiers', () => {
     for (const family of CAREER_FAMILY_MATRIX) {
-      expect(family.activityIds).not.toContain('unsure');
-      expect(family.compatibleDailyIds).not.toContain('unsure');
-      expect(family.compatibleDailyIds).not.toContain('mixed_activities');
+      for (const group of [family.activities, family.daily, family.values]) {
+        for (const [id, weight] of Object.entries(group)) {
+          expect([1, 0.6, 0.3], `${family.id}.${id}`).toContain(weight);
+        }
+      }
     }
   });
 
-  it('is not derived from the SLC catalogue: a covered direction and an uncovered one score identically', () => {
-    // creative_communication and digital_technology both score purely from answers.
-    const creative = score(['create_ideas']);
-    expect(find(creative, 'creative_communication')?.score).toBe(2);
+  it('never treats an unknown or breadth answer as an association', () => {
+    for (const family of CAREER_FAMILY_MATRIX) {
+      expect(Object.keys(family.activities)).not.toContain('unsure');
+      expect(Object.keys(family.values)).not.toContain('unsure');
+      expect(Object.keys(family.daily)).not.toContain('unsure');
+      expect(Object.keys(family.daily)).not.toContain('mixed_activities');
+    }
+  });
+
+  it('every family stays reachable: each has at least one central activity or two lesser ones', () => {
+    for (const family of CAREER_FAMILY_MATRIX) {
+      const weights = Object.values(family.activities);
+      expect(weights.length, family.id).toBeGreaterThan(0);
+      expect(Math.max(...weights), family.id).toBeGreaterThanOrEqual(0.6);
+    }
+  });
+
+  it('is not derived from the SLC catalogue: the score comes only from answers', () => {
+    // creative_communication is thinly covered by the catalogue and still scores
+    // the full two points, because nothing here reads the course data.
+    expect(find(score(['create_ideas']), 'creative_communication')?.score).toBe(2);
   });
 });
 
 describe('normalised scoring', () => {
-  it('a single matching activity scores 2', () => {
+  it('a single activity central to a family scores the full two points', () => {
     expect(find(score(['support_people']), 'care_support')?.activity).toBe(2);
   });
 
   it('a second selection does not double a question contribution', () => {
-    const one = score(['support_people']);
+    // education_development weights help_learning 1.0 and support_people 0.6.
+    // One selection: 2 x 0.6 / 1. Two: 2 x 1.6 / 2. The divisor is what stops a
+    // second answer inflating the question rather than sharpening it.
+    expect(find(score(['support_people']), 'education_development')?.activity).toBeCloseTo(1.2);
     const two = score(['support_people', 'help_learning']);
-    expect(find(one, 'education_development')?.activity).toBe(2);
-    // help_learning and support_people both associate with education_development.
-    expect(find(two, 'education_development')?.activity).toBe(2);
-    // care_support only matches one of the two, so it is halved.
-    expect(find(two, 'care_support')?.activity).toBe(1);
+    expect(find(two, 'education_development')?.activity).toBeCloseTo(1.6);
+    // care_support weights support_people 1.0 and help_learning only 0.3, so the
+    // second answer pulls its average down rather than adding to it.
+    expect(find(two, 'care_support')?.activity).toBeCloseTo(1.3);
+  });
+
+  it('grades an association rather than treating every match as equal', () => {
+    // The same answer must not put three families on an identical score, which is
+    // what the 0/1 matrix did and why ordering fell to alphabetical tie-break.
+    const result = score(['support_people']);
+    const scores = ['care_support', 'education_development', 'active_personal_services']
+      .map(id => find(result, id)!.activity);
+    expect(new Set(scores).size).toBeGreaterThan(1);
+    expect(scores[0]).toBeGreaterThan(scores[1]);
+  });
+
+  it('reads C3 as a third dimension, so answering it can change the order', () => {
+    const helping = score(['support_people'], ['talk_people'], ['help_others']);
+    const routine = score(['support_people'], ['talk_people'], ['clear_routine']);
+    expect(find(helping, 'care_support')!.values).toBeGreaterThan(0);
+    expect(find(routine, 'care_support')!.values).toBe(0);
+    expect(find(helping, 'care_support')!.score)
+      .toBeGreaterThan(find(routine, 'care_support')!.score);
   });
 
   it('adds the daily contribution with weight one', () => {
@@ -101,32 +144,44 @@ describe('normalised scoring', () => {
   });
 
   it('never ranks a family whose activity contribution is zero', () => {
-    const result = score(['animals_nature']);
-    expect(result.ranked.map(item => item.familyId)).toEqual(['animals_environment']);
+    const result = score(['animals_nature'], ['talk_people'], ['help_others']);
+    // Every ranked direction earned an activity score. Nothing is carried in on
+    // the daily or values dimensions alone, however well they match.
+    expect(result.ranked.length).toBeGreaterThan(0);
+    for (const item of result.ranked) expect(item.activity, item.familyId).toBeGreaterThan(0);
+    // care_support has no weight for animals_nature, so it is absent even though
+    // this learner's day and values match it perfectly.
+    expect(result.ranked.map(item => item.familyId)).not.toContain('care_support');
   });
 });
 
 describe('ties', () => {
-  it('keeps tied positive directions visible', () => {
+  it('keeps genuinely tied directions visible rather than picking one', () => {
     const result = score(['solve_problems']);
-    // finance_analysis, digital_technology and practical_technical all associate with it.
-    expect(result.tiedFamilyIds.sort()).toEqual(['digital_technology', 'finance_analysis', 'practical_technical']);
-    expect(result.ranked).toHaveLength(3);
-    expect(new Set(result.ranked.map(item => item.score))).toEqual(new Set([2]));
+    // Both weight solve_problems as central, so they really do tie. practical
+    // technical weights it 0.6 and is ranked below rather than tied with them.
+    expect(result.tiedFamilyIds.sort()).toEqual(['digital_technology', 'finance_analysis']);
+    expect(result.ranked.filter(i => i.score === result.topScore)).toHaveLength(2);
+    expect(result.ranked.map(i => i.familyId)).toContain('practical_technical');
   });
 
   it('orders ties by a stable identifier, without claiming the first is more suitable', () => {
     const first = score(['solve_problems']).ranked.map(item => item.familyId);
     const second = score(['solve_problems']).ranked.map(item => item.familyId);
     expect(first).toEqual(second);
-    expect(first).toEqual([...first].sort());
+    // Within the tied group the order is alphabetical, so nothing about the
+    // position of one over another is a judgement.
+    const tied = score(['solve_problems']).tiedFamilyIds;
+    expect(tied).toEqual([...tied].sort());
   });
 
   it('a C7 answer may only reorder families that are already tied', () => {
     const result = score(['solve_problems']);
-    const pair = { scenarioAFamilyId: 'practical_technical', scenarioBFamilyId: 'digital_technology' };
+    // Both scenarios must name families that are actually tied; practical
+    // technical is now ranked below the tie and so cannot be promoted by C7.
+    const pair = { scenarioAFamilyId: 'digital_technology', scenarioBFamilyId: 'finance_analysis' };
     const chosen = applyC7(result.ranked, result.tiedFamilyIds, pair, 'scenario_a');
-    expect(chosen.ranked[0].familyId).toBe('practical_technical');
+    expect(chosen.ranked[0].familyId).toBe('digital_technology');
     expect(chosen.ranked.map(i => i.familyId).sort()).toEqual(result.ranked.map(i => i.familyId).sort());
   });
 

@@ -1,3 +1,5 @@
+import { CAREER_MAP_VERSION } from '@/lib/career/matrix';
+
 /** Server configuration. Only intentionally public values reach the browser. */
 
 function flag(name: string, fallback: boolean): boolean {
@@ -32,7 +34,8 @@ export const config = {
   /** Server-owned goal allowlist. Empty: goal-only ranking is disabled. */
   approvedSpecificGoalIds: [] as string[],
 
-  careerMapVersion: 'career-map-0.1.0-provisional',
+  // Tracks the matrix rather than restating it, so the two cannot drift.
+  careerMapVersion: CAREER_MAP_VERSION,
   rulesVersion: 'entry-rules-0.1.0-none-published'
 } as const;
 

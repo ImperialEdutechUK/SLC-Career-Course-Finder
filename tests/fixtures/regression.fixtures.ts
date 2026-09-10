@@ -116,11 +116,11 @@ const RELEASE_DEFAULTS = {
 
 export const FIXTURES: Fixture[] = [
   // ---------------------------------------------------------------- career route
-  career('C-001', 'beginner', 'A beginner who wants to support people and talk with them',
+  career('C-001', 'beginner', 'Supporting people, valuing helping others and talking with them puts care first',
     {}, {
       state: 'career_directions',
-      familyIds: ['active_personal_services', 'care_support', 'education_development'],
-      tiedFamilyIds: ['active_personal_services', 'care_support', 'education_development'],
+      familyIds: ['care_support', 'education_development', 'active_personal_services'],
+      tiedFamilyIds: ['care_support'],
       explanationContains: ['helping someone feel supported', 'talking with people'],
       coverage: { care_support: 'reviewed_links_available' }
     }),
@@ -128,15 +128,15 @@ export const FIXTURES: Fixture[] = [
   career('C-002', 'beginner', 'Two activities that both point at education raise it above the rest',
     { C2: ['support_people', 'help_learning'] }, {
       state: 'career_directions',
-      familyIds: ['education_development', 'active_personal_services', 'care_support'],
+      familyIds: ['education_development', 'care_support', 'active_personal_services'],
       tiedFamilyIds: ['education_development']
     }),
 
-  career('C-003', 'tied_directions', 'Problem solving alone leaves three directions genuinely tied',
+  career('C-003', 'tied_directions', 'Problem solving with focused work separates analysis from the rest',
     { C2: ['solve_problems'], C4: ['focus_tasks'] }, {
       state: 'career_directions',
-      familyIds: ['digital_technology', 'finance_analysis', 'practical_technical'],
-      tiedFamilyIds: ['digital_technology', 'finance_analysis', 'practical_technical']
+      familyIds: ['finance_analysis', 'digital_technology', 'practical_technical'],
+      tiedFamilyIds: ['finance_analysis']
     }),
 
   career('C-004', 'tied_directions', 'A daily preference breaks a tie without inventing a bonus',
@@ -156,8 +156,8 @@ export const FIXTURES: Fixture[] = [
   career('C-007', 'unknown_answers', 'A mix answer changes wording only, never the ranking',
     { C2: ['support_people'], C4: ['mixed_activities'] }, {
       state: 'career_directions',
-      familyIds: ['active_personal_services', 'care_support', 'education_development'],
-      tiedFamilyIds: ['active_personal_services', 'care_support', 'education_development'],
+      familyIds: ['care_support', 'education_development', 'active_personal_services'],
+      tiedFamilyIds: ['care_support'],
       explanationContains: ['a mix of different activities']
     }),
 
@@ -170,94 +170,96 @@ export const FIXTURES: Fixture[] = [
   career('C-009', 'returner', 'A returner is not pushed down to a beginner step',
     { C1: 'return_work', C5: 'worked_related', C6: 'build_existing' }, {
       state: 'career_directions',
-      familyIds: ['active_personal_services', 'care_support', 'education_development'],
-      tiedFamilyIds: ['active_personal_services', 'care_support', 'education_development'],
+      familyIds: ['care_support', 'education_development', 'active_personal_services'],
+      tiedFamilyIds: ['care_support'],
       explanationContains: ['helping someone feel supported']
     }),
 
   career('C-010', 'unsupported_career', 'Creative work is ranked even though it is thinly covered by the catalogue',
     { C2: ['create_ideas'], C4: ['information_digital'] }, {
       state: 'career_directions',
-      familyIds: ['creative_communication'],
-      excludedFamilyIds: ['care_support', 'digital_technology']
+      familyIds: ['creative_communication', 'digital_technology'],
+      // care_support holds no weight for create_ideas, so it stays out. Digital
+      // technology now does, at the lowest tier, so it is ranked rather than excluded.
+      excludedFamilyIds: ['care_support']
     }),
 
   career('C-011', 'unsupported_career', 'Animals and nature maps to a single direction',
     { C2: ['animals_nature'], C4: ['hands_on'] }, {
-      state: 'career_directions', familyIds: ['animals_environment']
+      state: 'career_directions', familyIds: ['animals_environment', 'practical_technical']
     }),
 
   career('C-012', 'beginner', 'Personal interest does not require a career outcome',
     { C1: 'personal_interest', C2: ['create_ideas'], C6: 'try_activity' }, {
-      state: 'career_directions', familyIds: ['creative_communication']
+      state: 'career_directions', familyIds: ['creative_communication', 'digital_technology']
     }),
 
   career('C-013', 'experienced', 'Study and work experience does not become a qualification claim',
     { C5: 'study_and_work', C6: 'compare_qualifications' }, {
       state: 'career_directions',
-      familyIds: ['active_personal_services', 'care_support', 'education_development'],
-      tiedFamilyIds: ['active_personal_services', 'care_support', 'education_development']
+      familyIds: ['care_support', 'education_development', 'active_personal_services'],
+      tiedFamilyIds: ['care_support']
     }),
 
   career('C-014', 'beginner', 'Explaining choices points at communication and services',
     { C2: ['explain_choices'], C4: ['talk_people'] }, {
       state: 'career_directions',
-      familyIds: ['creative_communication', 'people_commercial_services']
+      familyIds: ['people_commercial_services', 'education_development', 'creative_communication']
     }),
 
   career('C-015', 'beginner', 'Making and improving points at practical and digital work',
     { C2: ['make_improve'], C4: ['hands_on'] }, {
       state: 'career_directions',
-      familyIds: ['active_personal_services', 'practical_technical', 'digital_technology'],
-      tiedFamilyIds: ['active_personal_services', 'practical_technical']
+      familyIds: ['practical_technical', 'active_personal_services', 'animals_environment'],
+      tiedFamilyIds: ['practical_technical']
     }),
 
   career('C-016', 'unknown_answers', 'An unsure daily answer leaves the activity ranking untouched',
     { C2: ['organise_tasks'], C4: ['unsure'] }, {
       state: 'career_directions',
       familyIds: ['business_operations', 'finance_analysis', 'people_commercial_services'],
-      tiedFamilyIds: ['business_operations', 'finance_analysis', 'people_commercial_services']
+      tiedFamilyIds: ['business_operations']
     }),
 
   career('C-017', 'advanced_learner', 'Wanting to compare qualifications changes the next step only',
     { C6: 'compare_qualifications' }, {
       state: 'career_directions',
-      familyIds: ['active_personal_services', 'care_support', 'education_development'],
-      tiedFamilyIds: ['active_personal_services', 'care_support', 'education_development']
+      familyIds: ['care_support', 'education_development', 'active_personal_services'],
+      tiedFamilyIds: ['care_support']
     }),
 
   career('C-018', 'beginner', 'Talking it through is offered as the next step',
     { C6: 'talk_adviser' }, {
       state: 'career_directions',
-      familyIds: ['active_personal_services', 'care_support', 'education_development'],
-      tiedFamilyIds: ['active_personal_services', 'care_support', 'education_development']
+      familyIds: ['care_support', 'education_development', 'active_personal_services'],
+      tiedFamilyIds: ['care_support']
     }),
 
   career('C-019', 'unknown_answers', 'An unsure next step still returns directions',
     { C6: 'unsure' }, {
       state: 'career_directions',
-      familyIds: ['active_personal_services', 'care_support', 'education_development'],
-      tiedFamilyIds: ['active_personal_services', 'care_support', 'education_development']
+      familyIds: ['care_support', 'education_development', 'active_personal_services'],
+      tiedFamilyIds: ['care_support']
     }),
 
   career('C-020', 'unknown_answers', 'Unsure priorities fall back to the default thing to investigate',
     { C3: ['unsure'] }, {
       state: 'career_directions',
-      familyIds: ['active_personal_services', 'care_support', 'education_development'],
-      tiedFamilyIds: ['active_personal_services', 'care_support', 'education_development']
+      familyIds: ['care_support', 'education_development', 'active_personal_services'],
+      tiedFamilyIds: ['care_support']
     }),
 
   career('C-021', 'career_changer', 'Two unrelated activities keep both directions visible',
     { C2: ['animals_nature', 'organise_tasks'], C4: ['focus_tasks'] }, {
       state: 'career_directions',
-      familyIds: ['animals_environment', 'business_operations', 'finance_analysis'],
-      tiedFamilyIds: ['animals_environment', 'business_operations', 'finance_analysis']
+      familyIds: ['business_operations', 'finance_analysis', 'animals_environment'],
+      tiedFamilyIds: ['business_operations']
     }),
 
   career('C-022', 'beginner', 'Digital work appears from problem solving plus digital tools',
     { C2: ['solve_problems'], C4: ['information_digital'] }, {
       state: 'career_directions',
-      familyIds: ['digital_technology', 'finance_analysis', 'practical_technical'],
+      familyIds: ['digital_technology', 'finance_analysis', 'business_operations'],
       tiedFamilyIds: ['digital_technology', 'finance_analysis']
     }),
 

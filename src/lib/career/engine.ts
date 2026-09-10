@@ -1,86 +1,109 @@
 import { CAREER_FAMILY_MATRIX, type CareerFamilyMapping } from './matrix';
 
 /**
- * Career direction scoring, implementing developer_handoff.md section 5 exactly:
+ * Career direction scoring.
  *
- *   activity(f) = 0 when A is empty, otherwise 2 x SUM association(f,a) / |A|
- *   daily(f)    = 0 when D is empty, otherwise 1 x SUM compatibility(f,d) / |D|
- *   score(f)    = activity(f) + daily(f)
+ *   activity(f) = 2 x SUM weight(f, a) / |A|     A = explicit C2 activities
+ *   daily(f)    = 1 x SUM weight(f, d) / |D|     D = explicit C4 choices
+ *   values(f)   = 1 x SUM weight(f, v) / |V|     V = explicit C3 choices
+ *   score(f)    = activity(f) + daily(f) + values(f)
  *
- *   A = explicit selected C2 activities
- *   D = explicit selected C4 choices, excluding mixed_activities and unsure
+ * Three things this keeps from version 0.1, because they are what stop the
+ * scoring from overclaiming:
  *
- * `activity(f) > 0` is required before a direction may be ranked: C4 alone can never
- * create one. Ties stay visible. Nothing here reads the course catalogue, and nothing
+ * - `activity(f) > 0` is still required before a direction may be ranked. What
+ *   someone wants to do decides which directions are eligible; how they want to
+ *   spend a day and what they value only order them. Neither can conjure a
+ *   direction on its own.
+ * - Every dimension is divided by how many answers the learner gave, so picking
+ *   a second option never doubles a question's influence.
+ * - "I'm not sure" and "a mix of activities" are stripped before scoring. They
+ *   contribute nothing rather than counting as a vote for nothing.
+ *
+ * What changed in 0.2: weights are graded rather than 0/1, and C3 now counts.
+ * Ties still stay visible. Nothing here reads the course catalogue, and nothing
  * here measures ability, personality or aptitude.
  */
 
 export const C4_NON_ACTIVITY_IDS = Object.freeze(['mixed_activities', 'unsure']);
+export const C3_NON_VALUE_IDS = Object.freeze(['unsure']);
 export const C2_UNKNOWN_ID = 'unsure';
 
 export interface FamilyScore {
   familyId: string;
   activity: number;
   daily: number;
+  values: number;
   score: number;
   matchedActivityIds: string[];
   matchedDailyIds: string[];
+  matchedValueIds: string[];
 }
 
 export interface CareerScoringResult {
-  /** Positively evidenced directions, highest score first, ties preserved in order. */
   ranked: FamilyScore[];
-  /** True when the learner gave no explicit activity signal at all. */
   broadExploration: boolean;
-  /** Score of the top group, used to identify a material tie. */
   topScore: number;
-  /** Family ids sharing the top score. */
   tiedFamilyIds: string[];
 }
 
-function explicitActivities(c2: unknown): string[] {
-  if (!Array.isArray(c2)) return [];
-  return c2.filter(id => typeof id === 'string' && id !== C2_UNKNOWN_ID) as string[];
+function explicit(value: unknown, excluded: readonly string[]): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter(id => typeof id === 'string' && !excluded.includes(id)) as string[];
 }
 
-function explicitDaily(c4: unknown): string[] {
-  if (!Array.isArray(c4)) return [];
-  return c4.filter(
-    id => typeof id === 'string' && !C4_NON_ACTIVITY_IDS.includes(id)
-  ) as string[];
+/** Sum of the family's weights for the ids the learner actually chose. */
+function weighted(chosen: string[], weights: Record<string, number>): { total: number; matched: string[] } {
+  const matched = chosen.filter(id => (weights[id] ?? 0) > 0);
+  const total = matched.reduce((sum, id) => sum + weights[id], 0);
+  return { total, matched };
 }
 
-function scoreFamily(family: CareerFamilyMapping, activities: string[], daily: string[]): FamilyScore {
-  const matchedActivityIds = activities.filter(id => family.activityIds.includes(id));
-  const matchedDailyIds = daily.filter(id => family.compatibleDailyIds.includes(id));
+function scoreFamily(
+  family: CareerFamilyMapping,
+  activities: string[],
+  daily: string[],
+  values: string[]
+): FamilyScore {
+  const a = weighted(activities, family.activities);
+  const d = weighted(daily, family.daily);
+  const v = weighted(values, family.values);
 
-  // Normalisation stops a second selection doubling a question's contribution.
-  const activity = activities.length === 0 ? 0 : (2 * matchedActivityIds.length) / activities.length;
-  const dailyScore = daily.length === 0 ? 0 : (1 * matchedDailyIds.length) / daily.length;
+  const activity = activities.length === 0 ? 0 : (2 * a.total) / activities.length;
+  const dailyScore = daily.length === 0 ? 0 : d.total / daily.length;
+  const valueScore = values.length === 0 ? 0 : v.total / values.length;
 
   return {
     familyId: family.id,
     activity,
     daily: dailyScore,
-    score: activity + dailyScore,
-    matchedActivityIds,
-    matchedDailyIds
+    values: valueScore,
+    score: activity + dailyScore + valueScore,
+    matchedActivityIds: a.matched,
+    matchedDailyIds: d.matched,
+    matchedValueIds: v.matched
   };
 }
 
 export function scoreCareerDirections(answers: Record<string, unknown>): CareerScoringResult {
-  const activities = explicitActivities(answers.C2);
-  const daily = explicitDaily(answers.C4);
+  const activities = explicit(answers.C2, [C2_UNKNOWN_ID]);
+  const daily = explicit(answers.C4, C4_NON_ACTIVITY_IDS);
+  const values = explicit(answers.C3, C3_NON_VALUE_IDS);
 
-  const scored = CAREER_FAMILY_MATRIX.map(family => scoreFamily(family, activities, daily));
+  const scored = CAREER_FAMILY_MATRIX.map(family => scoreFamily(family, activities, daily, values));
 
-  // An explicit activity signal is required before a direction is ranked.
   const ranked = scored
     .filter(item => item.activity > 0)
-    .sort((a, b) => b.score - a.score || a.familyId.localeCompare(b.familyId, 'en-GB'));
+    // Rounded before comparison so two scores that differ only by floating-point
+    // noise are treated as the tie they actually are.
+    .sort((a, b) =>
+      Math.round(b.score * 1e6) - Math.round(a.score * 1e6)
+      || a.familyId.localeCompare(b.familyId, 'en-GB'));
 
   const topScore = ranked.length ? ranked[0].score : 0;
-  const tiedFamilyIds = ranked.filter(item => item.score === topScore).map(item => item.familyId);
+  const tiedFamilyIds = ranked
+    .filter(item => Math.round(item.score * 1e6) === Math.round(topScore * 1e6))
+    .map(item => item.familyId);
 
   return {
     ranked,
