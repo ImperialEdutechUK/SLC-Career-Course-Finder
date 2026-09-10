@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { CatalogueBrowser } from '@/components/CatalogueBrowser';
 import { browseRecords, getRelease } from '@/lib/catalogue/release';
 import { awardingBodies, levelCounts } from '@/lib/catalogue/search';
@@ -12,13 +13,15 @@ export default function CoursesPage() {
   const release = getRelease();
   const records = browseRecords();
   return (
-    <CatalogueBrowser
-      courses={records}
-      taxonomy={release.taxonomy}
-      bodies={awardingBodies(records)}
-      levels={levelCounts(records)}
-      quarantinedCount={release.quarantined.length}
-      snapshotPeriod={release.snapshotPeriod}
-    />
+    <Suspense fallback={null}>
+      <CatalogueBrowser
+        courses={records}
+        taxonomy={release.taxonomy}
+        bodies={awardingBodies(records)}
+        levels={levelCounts(records)}
+        quarantinedCount={release.quarantined.length}
+        snapshotPeriod={release.snapshotPeriod}
+      />
+    </Suspense>
   );
 }

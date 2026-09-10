@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import styles from './CatalogueBrowser.module.css';
 import { searchCatalogue } from '@/lib/catalogue/search';
@@ -24,8 +25,14 @@ export function CatalogueBrowser({
   quarantinedCount: number;
   snapshotPeriod: string;
 }) {
+  // A subject tile on the homepage links straight into a filtered catalogue, so the
+  // browse view opens on that subject rather than on all 393 courses.
+  const params = useSearchParams();
+  const initialSubject = params.get('subject');
   const [text, setText] = useState('');
-  const [categoryIds, setCategoryIds] = useState<string[]>([]);
+  const [categoryIds, setCategoryIds] = useState<string[]>(
+    initialSubject && taxonomy.some(c => c.id === initialSubject) ? [initialSubject] : []
+  );
   const [levelFilter, setLevelFilter] = useState<number[]>([]);
   const [bodyFilter, setBodyFilter] = useState<string[]>([]);
   const [shown, setShown] = useState(PAGE_SIZE);
