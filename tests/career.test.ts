@@ -97,17 +97,55 @@ describe('normalised scoring', () => {
     expect(scores[0]).toBeGreaterThan(scores[1]);
   });
 
-  it('reads C8 as a fourth dimension, at half weight so it orders rather than decides', () => {
+  it('reads C8 as a fourth dimension, at the smallest share so it orders rather than decides', () => {
     const steady = score(['solve_problems'], ['hands_on'], [], 'prefer_steady');
     const keen = score(['solve_problems'], ['hands_on'], [], 'keen_change');
-    // practical_technical is weighted prefer_steady 1.0 and keen_change 0.3.
-    expect(find(steady, 'practical_technical')!.pace).toBeCloseTo(0.5);
-    expect(find(keen, 'practical_technical')!.pace).toBeCloseTo(0.15);
+    // practical_technical is weighted prefer_steady 1.0 and keen_change 0.3, and
+    // 1.0 is the best it can do, so steady is a perfect fit and keen is 0.3 of one.
+    expect(find(steady, 'practical_technical')!.pace).toBeCloseTo(0.15);
+    expect(find(keen, 'practical_technical')!.pace).toBeCloseTo(0.045);
     // Appetite must never outweigh what the learner wants to do. Digital weights
     // solve_problems as central; no C8 answer can pull practical above it on
     // activity alone.
     expect(find(keen, 'digital_technology')!.activity)
       .toBeGreaterThan(find(keen, 'practical_technical')!.activity);
+  });
+
+  it('scales the other dimensions by how strongly the activity was wanted', () => {
+    // animals_nature is central to animals_environment and an edge link for
+    // practical_technical. The day, values and pace answers all suit practical.
+    const r = scoreCareerDirections({
+      C2: ['animals_nature'], C4: ['focus_tasks'], C3: ['variety_challenge'], C8: 'prefer_steady'
+    });
+    const animals = find(r, 'animals_environment')!;
+    const practical = find(r, 'practical_technical')!;
+    // Practical earns more from preferences than animals does, and must still
+    // rank below it, because preferences may sharpen a wanted direction but
+    // never manufacture one the learner barely chose.
+    expect(practical.daily + practical.values + practical.pace)
+      .toBeGreaterThan(animals.daily + animals.values + animals.pace);
+    expect(practical.score).toBeLessThan(animals.score);
+    expect(r.ranked[0].familyId).toBe('animals_environment');
+  });
+
+  it('a family with the maximum activity keeps its preferences at full value', () => {
+    const r = scoreCareerDirections({ C2: ['support_people'], C4: ['talk_people'], C3: ['help_others'] });
+    const care = find(r, 'care_support')!;
+    expect(care.activity).toBe(2);
+    expect(care.score).toBeCloseTo(care.activity + care.daily + care.values + care.pace);
+  });
+
+  it('breaks a tie on breadth of evidence before falling back to the alphabet', () => {
+    const r = scoreCareerDirections({ C2: ['solve_problems'] });
+    const ids = r.tiedFamilyIds;
+    if (ids.length > 1) {
+      const scores = ids.map(id => find(r, id)!);
+      const breadth = (f: typeof scores[0]) =>
+        [f.activity, f.daily, f.values, f.pace].filter(v => v > 0).length;
+      for (let i = 1; i < scores.length; i++) {
+        expect(breadth(scores[i - 1])).toBeGreaterThanOrEqual(breadth(scores[i]));
+      }
+    }
   });
 
   it('never lets appetite for change create a direction on its own', () => {
@@ -131,17 +169,59 @@ describe('normalised scoring', () => {
       .toBeGreaterThan(find(routine, 'care_support')!.score);
   });
 
-  it('adds the daily contribution with weight one', () => {
+  it('gives the day half of the preference point when it fits perfectly', () => {
     const result = score(['support_people'], ['talk_people']);
     const care = find(result, 'care_support')!;
     expect(care.activity).toBe(2);
-    expect(care.daily).toBe(1);
-    expect(care.score).toBe(3);
+    // talk_people is 1.0 and is the best care_support can score on the day, so
+    // this is a perfect daily fit and earns the whole 0.5 share.
+    expect(care.daily).toBe(0.5);
+    expect(care.score).toBe(2.5);
   });
 
-  it('halves the daily contribution when two daily answers are given and one matches', () => {
+  it('halves the daily fit when two daily answers are given and one matches', () => {
     const result = score(['support_people'], ['talk_people', 'information_digital']);
-    expect(find(result, 'care_support')!.daily).toBe(0.5);
+    expect(find(result, 'care_support')!.daily).toBe(0.25);
+  });
+
+  it('measures each preference against what that direction could ever score', () => {
+    // animals_environment tops out at 0.3 on values; creative_communication at
+    // 1.0. Each learner has stated the strongest values fit their direction
+    // allows, so both must earn the same, or the ranking is reading how densely
+    // the matrix row was written rather than what the learner said.
+    const animals = score(['animals_nature'], [], ['variety_challenge']);
+    const creative = score(['create_ideas'], [], ['creativity']);
+    expect(find(animals, 'animals_environment')!.values)
+      .toBeCloseTo(find(creative, 'creative_communication')!.values);
+  });
+
+  it('handicaps no direction for the shape of its row in the matrix', () => {
+    // For every direction, an answer that suits it as well as any answer could
+    // must earn the same preference score. Otherwise a direction whose row an
+    // editor wrote thinly is penalised for every learner, whatever they said,
+    // and the ranking is partly reading the matrix instead of the person.
+    const best = (weights: Record<string, number>) =>
+      Object.entries(weights).sort((a, b) => b[1] - a[1])[0][0];
+    const seen = new Set<number>();
+    for (const family of CAREER_FAMILY_MATRIX) {
+      const result = scoreCareerDirections({
+        C2: [best(family.activities)],
+        C4: [best(family.daily)],
+        C3: [best(family.values)],
+        C8: best(family.pace)
+      });
+      const self = find(result, family.id)!;
+      seen.add(Number((self.daily + self.values + self.pace).toFixed(6)));
+    }
+    expect([...seen]).toEqual([1]);
+  });
+
+  it('keeps the score between zero and three', () => {
+    const best = score(['support_people'], ['talk_people'], ['help_others'], 'prefer_steady');
+    for (const family of best.ranked) {
+      expect(family.score).toBeGreaterThan(0);
+      expect(family.score).toBeLessThanOrEqual(3);
+    }
   });
 
   it('excludes "a mix" and "not sure" from the daily set', () => {

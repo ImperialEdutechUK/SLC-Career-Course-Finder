@@ -20,13 +20,27 @@
  *
  * Version 0.3 adds a fourth dimension for C8, appetite for change.
  *
+ * Versions 0.4 and 0.5 change how the engine reads these rows, not the rows
+ * themselves. From 0.5 the engine divides each of the three preference
+ * dimensions by the best that row could score, so a thinly written row no longer
+ * handicaps a direction for every learner. That removes the pressure to pad rows
+ * with links an educator does not believe in. Write only what is true of the
+ * work; a row with two honest entries is now read as fairly as one with four.
+ *
+ * One thing measurement did find, and it needs an editorial answer rather than a
+ * code one: no C2 activity is central to `active_personal_services`, because
+ * none of the eight on offer describes sport, fitness, hair and beauty or
+ * travel. It therefore wins first place for 2.9% of possible answer sets against
+ * 7% to 14% for every other direction. See Change 4 in
+ * docs/QUESTIONNAIRE-CHANGE-PROPOSAL.md.
+ *
  * `prefer_steady` means the work changes at a slower pace. It does NOT mean the
  * work is safe from automation, and nothing in the interface may present it that
  * way. The published evidence describes broad occupation groups; these ten
  * families are editorial hypotheses, and no one has validated a correspondence
  * between the two. See docs/QUESTIONNAIRE-CHANGE-PROPOSAL.md.
  */
-export const CAREER_MAP_VERSION = 'career-map-0.3.0-provisional';
+export const CAREER_MAP_VERSION = 'career-map-0.5.0-provisional';
 export const CAREER_MAP_REVIEW_STATUS = 'provisional_awaiting_slc_editorial_approval';
 
 /** Association strength: 1.0 central to the work, 0.6 a real part of it, 0.3 at the edges. */

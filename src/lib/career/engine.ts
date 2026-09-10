@@ -3,11 +3,13 @@ import { CAREER_FAMILY_MATRIX, type CareerFamilyMapping } from './matrix';
 /**
  * Career direction scoring.
  *
- *   activity(f) = 2 x SUM weight(f, a) / |A|     A = explicit C2 activities
- *   daily(f)    = 1 x SUM weight(f, d) / |D|     D = explicit C4 choices
- *   values(f)   = 1 x SUM weight(f, v) / |V|     V = explicit C3 choices
- *   pace(f)     = 0.5 x SUM weight(f, p) / |P|   P = explicit C8 choice
- *   score(f)    = activity(f) + daily(f) + values(f) + pace(f)
+ *   activity(f)   = 2 x SUM weight(f, a) / |A|          A = explicit C2 activities
+ *   interest(f)   = activity(f) / 2                      0 to 1, how strongly wanted
+ *
+ *   fit(f, q)     = (SUM weight(f, q) / |Q|) / best(f, q)  0 to 1, in each of C4, C3, C8
+ *   preference(f) = 0.50 fit(f, C4) + 0.35 fit(f, C3) + 0.15 fit(f, C8)
+ *
+ *   score(f)      = activity(f) + interest(f) x preference(f)      0 to 3
  *
  * Three things this keeps from version 0.1, because they are what stop the
  * scoring from overclaiming:
@@ -24,6 +26,39 @@ import { CAREER_FAMILY_MATRIX, type CareerFamilyMapping } from './matrix';
  * What changed in 0.2: weights are graded rather than 0/1, and C3 now counts.
  * What changed in 0.3: C8, appetite for change, becomes a fourth dimension.
  *
+ * What changed in 0.4: the other three dimensions are scaled by how strongly the
+ * learner actually wants the activity, instead of being added at full value to
+ * any family that scraped past the eligibility gate.
+ *
+ * The gate was binary, so a 0.3 edge association made a family eligible exactly
+ * as much as a 1.0 central one, and preferences could then carry it to the top.
+ * Someone choosing "working with animals" could be shown practical and technical
+ * work above it, on the strength of day, values and pace answers, against an
+ * activity score of 0.6 out of 2. Preferences should sharpen a direction the
+ * learner wants, never manufacture one they barely chose.
+ *
+ * What changed in 0.5, and it is the more important fix of the two:
+ *
+ * 1. Each preference dimension is divided by the best that direction could
+ *    possibly score in it, so all three read 0 to 1 and mean the same thing for
+ *    every direction: how well this suits you, out of how well it ever could.
+ *
+ *    Before this, the raw sums were compared directly, and the ceilings were not
+ *    equal. A learner who wants to work with animals and values variety could
+ *    earn at most 0.30 on values, while the identical strength of fit earned
+ *    0.80 for creative work. The gap was not about the learner. It was how many
+ *    links an editor happened to write into that row of the matrix, and it was
+ *    quietly deciding rankings. The ceilings are derived from the matrix here,
+ *    not hand-written, so they cannot drift away from it.
+ *
+ * 2. The three dimensions are given fixed shares of one point: the day 0.50,
+ *    values 0.35, appetite for change 0.15. Half weight was not enough to hold
+ *    C8 to the supporting role the comment below claims for it. Being a single
+ *    select, it was never divided by a second answer, and it decided which
+ *    direction ranked first in 24.1% of all possible answer sets. At 0.15 of the
+ *    preference term, which is itself scaled by interest, it orders directions
+ *    that are otherwise close and stops there.
+ *
  * C8 orders directions by how fast the work changes. It is not a statement about
  * job security, and `prefer_steady` must never be presented as safe from
  * automation. Ties still stay visible. Nothing here reads the course catalogue,
@@ -34,6 +69,22 @@ export const C4_NON_ACTIVITY_IDS = Object.freeze(['mixed_activities', 'unsure'])
 export const C3_NON_VALUE_IDS = Object.freeze(['unsure']);
 export const C8_NON_PACE_IDS = Object.freeze(['unsure']);
 export const C2_UNKNOWN_ID = 'unsure';
+
+/** The most activity(f) can reach: every chosen activity central to the family. */
+const MAX_ACTIVITY = 2;
+
+/**
+ * Shares of the one preference point. The day someone wants is firmer evidence
+ * than what they say matters to them, which is firmer than how they feel about
+ * change. They sum to 1, so score(f) never exceeds 3.
+ */
+export const PREFERENCE_WEIGHTS = Object.freeze({ daily: 0.5, values: 0.35, pace: 0.15 });
+
+/** The best a family could score in one dimension, read off the matrix row. */
+function ceiling(weights: Record<string, number>): number {
+  const all = Object.values(weights);
+  return all.length ? Math.max(...all) : 0;
+}
 
 export interface FamilyScore {
   familyId: string;
@@ -67,6 +118,23 @@ function weighted(chosen: string[], weights: Record<string, number>): { total: n
   return { total, matched };
 }
 
+/**
+ * How well this family suits the answers, from 0 to 1, where 1 means no answer
+ * of this shape could have suited it better. Dividing by the family's own
+ * ceiling is what makes the number comparable between families.
+ */
+function fit(chosen: string[], weights: Record<string, number>): { value: number; matched: string[] } {
+  const { total, matched } = weighted(chosen, weights);
+  const best = ceiling(weights);
+  if (chosen.length === 0 || best === 0) return { value: 0, matched };
+  return { value: total / chosen.length / best, matched };
+}
+
+/** How many of the four dimensions contributed anything at all. */
+function breadth(f: FamilyScore): number {
+  return [f.activity, f.daily, f.values, f.pace].filter(v => v > 0).length;
+}
+
 function scoreFamily(
   family: CareerFamilyMapping,
   activities: string[],
@@ -75,19 +143,23 @@ function scoreFamily(
   pace: string[]
 ): FamilyScore {
   const a = weighted(activities, family.activities);
-  const d = weighted(daily, family.daily);
-  const v = weighted(values, family.values);
-  const p = weighted(pace, family.pace);
-
+  // Activity stays an absolute quantity. It is the eligibility gate and the size
+  // of the result, so what it has to say is "you picked something central to
+  // this direction", which a per-family ceiling would erase.
   const activity = activities.length === 0 ? 0 : (2 * a.total) / activities.length;
-  const dailyScore = daily.length === 0 ? 0 : d.total / daily.length;
-  const valueScore = values.length === 0 ? 0 : v.total / values.length;
-  // Half weight, and deliberately. C8 is a single select, so unlike the
-  // multi-select dimensions it never gets divided by a second answer and would
-  // otherwise dominate. It is also the least concrete thing asked: what someone
-  // wants to do and how they want to spend a day are firmer evidence than how
-  // they feel about change. Appetite orders the list; it does not decide it.
-  const paceScore = pace.length === 0 ? 0 : (0.5 * p.total) / pace.length;
+  // 0 to 1: the share of the maximum possible activity score this family earned.
+  const interest = activity / MAX_ACTIVITY;
+
+  const d = fit(daily, family.daily);
+  const v = fit(values, family.values);
+  // The least concrete thing asked, and the only single select, so it carries
+  // the smallest share. Appetite orders directions that are close; it does not
+  // decide which direction the learner is shown first.
+  const p = fit(pace, family.pace);
+
+  const dailyScore = PREFERENCE_WEIGHTS.daily * d.value;
+  const valueScore = PREFERENCE_WEIGHTS.values * v.value;
+  const paceScore = PREFERENCE_WEIGHTS.pace * p.value;
 
   return {
     familyId: family.id,
@@ -95,7 +167,7 @@ function scoreFamily(
     daily: dailyScore,
     values: valueScore,
     pace: paceScore,
-    score: activity + dailyScore + valueScore + paceScore,
+    score: activity + interest * (dailyScore + valueScore + paceScore),
     matchedActivityIds: a.matched,
     matchedDailyIds: d.matched,
     matchedValueIds: v.matched,
@@ -123,6 +195,11 @@ export function scoreCareerDirections(answers: Record<string, unknown>): CareerS
     // noise are treated as the tie they actually are.
     .sort((a, b) =>
       Math.round(b.score * 1e6) - Math.round(a.score * 1e6)
+      // A genuine tie is broken by how many of the four dimensions actually
+      // matched. Two directions on the same score are not equally evidenced if
+      // one was corroborated by three answers and the other by one. Alphabetical
+      // order remains the final fallback so the result stays deterministic.
+      || breadth(b) - breadth(a)
       || a.familyId.localeCompare(b.familyId, 'en-GB'));
 
   const topScore = ranked.length ? ranked[0].score : 0;

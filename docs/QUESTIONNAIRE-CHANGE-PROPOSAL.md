@@ -166,6 +166,40 @@ exploring this?"), which affects wording only.
 
 ---
 
+## Change 4 — C2 has no option for active or personal service work
+
+This one was found by measurement rather than by reading, and it is a content
+gap rather than a scoring bug.
+
+Scoring every valid combination of answers, 34,848 of them, shows how often each
+of the ten directions can come first. Nine of them win between 7% and 14% of the
+time. `active_personal_services` wins 2.9%.
+
+The cause is visible in the matrix. Every other direction has at least one C2
+activity marked central to it. This one does not. Its strongest links are
+`support_people` and `make_improve`, both at 0.6, because none of the eight
+activities on offer describes sport, fitness, hair and beauty, or travel and
+tourism. The best a learner can say is that they want to support people or make
+things better, and neither is what this work is.
+
+The consequence: a learner who wants exactly this work cannot say so, and the
+direction sits below others on every answer set where they compete.
+
+Two ways to close it, and the college should choose:
+
+- **Add a ninth C2 option.** Something in the shape of "helping people look
+  after their health, appearance or wellbeing". This is the honest fix, and it
+  costs a question that is already at eight options.
+- **Raise a weight.** Mark `support_people` central to `active_personal_services`
+  rather than a real part of it. Cheaper, and it is an editorial claim about what
+  this work is, which is exactly the kind of claim that needs a career adviser.
+
+Doing neither is also a decision, and a defensible one if the college judges
+that these courses are better reached by browsing than by the guide. It should
+be a decision rather than an accident.
+
+---
+
 ## Technical consequences if approved
 
 1. `data/source/questionnaire.json` is edited and `contentVersion` becomes
@@ -194,6 +228,7 @@ them. It needs the same sign-off as the career map itself.
 | Change 1, C3 `lasting_demand` | | | accept / reject / amend |
 | Change 2, C1 `field_changing` | | | accept / reject / amend |
 | Change 3, new C8 and its weights | | | accept / reject / amend |
+| Change 4, C2 gains an active or personal service option | | | add option / raise weight / neither |
 | C8 replaces C6, or is added | | | replace / add |
 
 Owner: course development, with a career adviser.

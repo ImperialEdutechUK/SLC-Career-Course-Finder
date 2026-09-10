@@ -136,15 +136,15 @@ export const FIXTURES: Fixture[] = [
   career('C-003', 'tied_directions', 'Problem solving with focused work separates analysis from the rest',
     { C2: ['solve_problems'], C4: ['focus_tasks'] }, {
       state: 'career_directions',
-      familyIds: ['finance_analysis', 'digital_technology', 'business_operations'],
+      familyIds: ['finance_analysis', 'digital_technology', 'practical_technical'],
       tiedFamilyIds: ['finance_analysis']
     }),
 
   career('C-004', 'tied_directions', 'Activity and daily pull different ways and both directions stay visible',
     { C2: ['solve_problems'], C4: ['hands_on'] }, {
       state: 'career_directions',
-      familyIds: ['finance_analysis', 'practical_technical', 'digital_technology'],
-      tiedFamilyIds: ['finance_analysis', 'practical_technical']
+      familyIds: ['finance_analysis', 'digital_technology', 'practical_technical'],
+      tiedFamilyIds: ['finance_analysis']
     }),
 
   career('C-005', 'unknown_answers', 'An unsure activity answer never produces a direction',
@@ -157,7 +157,7 @@ export const FIXTURES: Fixture[] = [
   career('C-007', 'unknown_answers', 'A mix answer changes wording only, never the ranking',
     { C2: ['support_people'], C4: ['mixed_activities'] }, {
       state: 'career_directions',
-      familyIds: ['care_support', 'education_development', 'active_personal_services'],
+      familyIds: ['care_support', 'active_personal_services', 'education_development'],
       tiedFamilyIds: ['care_support'],
       explanationContains: ['a mix of different activities']
     }),
@@ -205,13 +205,13 @@ export const FIXTURES: Fixture[] = [
   career('C-014', 'beginner', 'Explaining choices points at communication and services',
     { C2: ['explain_choices'], C4: ['talk_people'] }, {
       state: 'career_directions',
-      familyIds: ['people_commercial_services', 'education_development', 'creative_communication']
+      familyIds: ['people_commercial_services', 'creative_communication', 'education_development']
     }),
 
   career('C-015', 'beginner', 'Making and improving points at practical and digital work',
     { C2: ['make_improve'], C4: ['hands_on'] }, {
       state: 'career_directions',
-      familyIds: ['practical_technical', 'active_personal_services', 'animals_environment'],
+      familyIds: ['practical_technical', 'active_personal_services', 'digital_technology'],
       tiedFamilyIds: ['practical_technical']
     }),
 
@@ -253,14 +253,14 @@ export const FIXTURES: Fixture[] = [
   career('C-021', 'career_changer', 'Two unrelated activities keep both directions visible',
     { C2: ['animals_nature', 'organise_tasks'], C4: ['focus_tasks'] }, {
       state: 'career_directions',
-      familyIds: ['business_operations', 'finance_analysis', 'animals_environment'],
+      familyIds: ['business_operations', 'animals_environment', 'finance_analysis'],
       tiedFamilyIds: ['business_operations']
     }),
 
   career('C-022', 'beginner', 'Digital work appears from problem solving plus digital tools',
     { C2: ['solve_problems'], C4: ['information_digital'] }, {
       state: 'career_directions',
-      familyIds: ['finance_analysis', 'digital_technology', 'business_operations'],
+      familyIds: ['finance_analysis', 'digital_technology', 'practical_technical'],
       tiedFamilyIds: ['finance_analysis']
     }),
 
