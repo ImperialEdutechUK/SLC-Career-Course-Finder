@@ -128,6 +128,35 @@ export function ResultsView({
                 />
               ))}
             </div>
+
+            {/* The most common question a learner brings to this page, answered by
+                saying what this guide does not know and naming who does. No
+                AI-resilience ranking is invented here: the catalogue and the career
+                map hold no evidence of that kind. */}
+            <aside className={styles.automation} aria-labelledby="automation-heading">
+              <h3 id="automation-heading" className={styles.automationHeading}>
+                Worried about AI and automation?
+              </h3>
+              <p className={styles.automationCopy}>
+                This guide does not rank careers by how exposed they are to automation,
+                because it holds no evidence of that kind. The government publishes its own
+                analysis of which UK occupations are most affected, and each direction above
+                suggests what to ask an employer.
+              </p>
+              <a
+                className={styles.automationLink}
+                href="https://www.gov.uk/government/publications/the-impact-of-ai-on-uk-jobs-and-training"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                The impact of AI on UK jobs and training
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                  <path d="M14 5h5v5" /><path d="M19 5l-8 8" />
+                  <path d="M18 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4" />
+                </svg>
+                <span className="visually-hidden"> (opens in a new tab, GOV.UK)</span>
+              </a>
+            </aside>
           </section>
         )
       ) : null}
