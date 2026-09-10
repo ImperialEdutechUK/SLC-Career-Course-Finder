@@ -1,8 +1,8 @@
 .state {
   background: var(--surface);
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--hairline);
   border-left: 4px solid var(--amber-300);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   padding: clamp(1.25rem, 0.9rem + 1.4vw, 2rem);
 }
 
@@ -19,7 +19,7 @@
   padding: 2.5rem 1.25rem;
   text-align: center;
   background: var(--surface-sunk);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
 }
 .emptyHeading { font-size: 1.15rem; margin-bottom: 0.5rem; }
 .empty .detail { margin-inline: auto; }
@@ -31,7 +31,7 @@
   padding: clamp(1.15rem, 0.9rem + 1vw, 1.6rem);
   background: var(--green-50);
   border: 1px solid var(--green-200);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
 }
 .adviserHeading { font-size: 1.1rem; margin-bottom: 0.3rem; }
 .adviserCopy { margin: 0; font-size: 0.94rem; color: var(--ink-600); }

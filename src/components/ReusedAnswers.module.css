@@ -1,7 +1,7 @@
 .panel {
   padding: 1rem 1.1rem;
   background: var(--surface-sunk);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   border-left: 3px solid var(--green-600);
 }
 .heading {
@@ -23,7 +23,7 @@
   min-height: 44px;
   padding: 0.4rem 0.8rem;
   background: var(--surface);
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--hairline);
   border-radius: var(--radius);
   font: inherit;
   font-size: 0.9rem;

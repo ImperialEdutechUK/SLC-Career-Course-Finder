@@ -1,11 +1,11 @@
 .card {
-  background: var(--surface-lit);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
   padding: clamp(1.15rem, 0.85rem + 1.2vw, 1.75rem);
   display: grid;
   gap: 1.15rem;
-  box-shadow: var(--edge-top), var(--lift-raised);
+  box-shadow: none;
 }
 
 .head { display: grid; grid-template-columns: auto 1fr; gap: 0.9rem; align-items: start; }

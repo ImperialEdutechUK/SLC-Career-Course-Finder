@@ -1,56 +1,17 @@
-.wrap { padding-block: clamp(1.25rem, 0.9rem + 1.6vw, 2.5rem) 2rem; }
-.inner { display: grid; gap: 1.5rem; }
+.wrap { padding-block: var(--s-5) var(--s-7); }
+.inner { display: grid; gap: var(--s-4); }
 
-.top { display: grid; gap: 1rem; }
+.top { display: grid; gap: var(--s-3); }
 
-/* Back sits above the question so it is reachable without scrolling past the options. */
-.topNav {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0 1.25rem;
-}
 
-.back {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  min-height: 44px;
-  padding: 0 0.5rem 0 0;
-  background: none;
-  border: 0;
-  font: inherit;
-  font-size: 0.95rem;
+.exit {
+  color: var(--accent-text);
   font-weight: 600;
-  color: var(--blue-800);
-  cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.back:hover { color: var(--blue-900); }
+.exit:hover { color: var(--accent-hover); }
 
-.exit {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding-right: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--ink-600);
-  text-decoration: none;
-}
-.exit:hover { color: var(--blue-800); text-decoration: underline; }
-
-.intro {
-  margin: 0;
-  padding: 0.9rem 1.05rem;
-  background: var(--green-50);
-  border: 1px solid var(--green-200);
-  border-radius: var(--radius);
-  color: var(--green-900);
-  font-size: 0.95rem;
-  max-width: none;
-}
 
 .loading { padding-block: 3rem; color: var(--ink-500); }
 
@@ -75,4 +36,4 @@
   cursor: pointer;
 }
 
-.reassure { margin: 0; font-size: 0.85rem; color: var(--ink-500); max-width: none; }
+.reassure { margin: 0; font-size: var(--text-sm); color: var(--ink-muted); max-width: none; line-height: 1.6; }

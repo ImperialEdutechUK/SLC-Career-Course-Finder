@@ -16,19 +16,12 @@ export default function HomePage() {
         <div className="shell">
           <div className={styles.heroInner}>
             <div>
-              <p className="eyebrow">South London College · Career and course guide</p>
-              <h1 className={styles.title}>What would you like help with?</h1>
+              <h1 className={`display ${styles.title}`}>What would you like help with?</h1>
               <p className={`lede ${styles.lede}`}>
                 There are no right answers. Choose what interests you, even if you have never tried it.
                 You can change your answers at any time, and you do not need an account.
               </p>
             </div>
-            <ul className={styles.assurances}>
-              <li>No account, email address or telephone number</li>
-              <li>Up to three explained options, never a long list</li>
-              <li>Change any answer and the results update</li>
-              <li>{courseCount} courses across {categoryCount} subject areas</li>
-            </ul>
           </div>
         </div>
       </section>
@@ -36,14 +29,25 @@ export default function HomePage() {
       <section className={`shell ${styles.choices}`} aria-labelledby="choose-heading">
         <h2 id="choose-heading" className="visually-hidden">Choose how to start</h2>
         <div className={styles.journeys}>
-          <JourneyCard index="01" href="/guide/career" title={career.title} copy={career.description} effort={career.effortCopy} />
-          <JourneyCard index="02" href="/guide/course" title={course.title} copy={course.description} effort={course.effortCopy} />
+          <JourneyCard href="/guide/career" title={career.title} copy={career.description} effort={career.effortCopy} />
+          <JourneyCard href="/guide/course" title={course.title} copy={course.description} effort={course.effortCopy} />
         </div>
 
         <p className={styles.secondary}>
           Already know what you are looking for?{' '}
           <Link href="/courses">Browse all {courseCount} courses</Link> across {categoryCount} subject areas.
         </p>
+      </section>
+
+      {/* The reassurance sits after the choice it is meant to reassure, so it
+          supports the decision rather than competing with it for first look. */}
+      <section className={`shell ${styles.assuranceStrip}`} aria-label="What to expect">
+        <ul className={styles.assurances}>
+          <li>No account, email address or telephone number</li>
+          <li>Up to three explained options, never a long list</li>
+          <li>Change any answer and the results update</li>
+          <li>{courseCount} courses across {categoryCount} subject areas</li>
+        </ul>
       </section>
 
       <section className={`shell ${styles.explain}`} aria-labelledby="explain-heading">
@@ -76,18 +80,25 @@ export default function HomePage() {
   );
 }
 
+/**
+ * The primary choice on the whole service. The card is the target, and it carries
+ * a visible action row so the affordance to proceed is never in doubt.
+ *
+ * The numerals that used to sit here are gone: these two are alternatives, not a
+ * sequence, and numbering them implied an order that does not exist.
+ */
 function JourneyCard({
-  index, href, title, copy, effort
-}: { index: string; href: string; title: string; copy: string; effort: string }) {
+  href, title, copy, effort
+}: { href: string; title: string; copy: string; effort: string }) {
   return (
     <Link href={href} className={styles.journey}>
-      <span className={styles.journeyTop}>
-        <span className={styles.journeyIndex} aria-hidden="true">{index}</span>
-        <span className={styles.journeyTitle}>{title}</span>
-        <span className={styles.journeyGo} aria-hidden="true"><Arrow /></span>
-      </span>
+      <span className={styles.journeyTitle}>{title}</span>
       <span className={styles.journeyCopy}>{copy}</span>
       <span className={styles.journeyEffort}>{effort}</span>
+      <span className={styles.journeyAction} aria-hidden="true">
+        <span>Start</span>
+        <span className={styles.journeyGo}><Arrow /></span>
+      </span>
     </Link>
   );
 }

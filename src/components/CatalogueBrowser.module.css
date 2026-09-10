@@ -14,7 +14,7 @@
   font: inherit;
   font-size: 1rem;
   background: var(--surface);
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--hairline);
   border-radius: var(--radius);
   color: var(--ink-900);
 }
@@ -25,8 +25,8 @@
 .filters {
   display: none;
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
   padding: 1.15rem;
 }
 .filtersOpen { display: block; }
@@ -74,10 +74,10 @@
   height: 100%;
   padding: 1.1rem;
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  transition: border-color var(--step) ease, box-shadow var(--step) ease,
-              transform var(--step) ease;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
+              transform var(--dur) var(--ease);
 }
 
 /* Flat at rest on purpose. With 393 tiles on one page, depth on every one of them
@@ -85,8 +85,8 @@
 .card:hover,
 .card:focus-within {
   border-color: var(--green-600);
-  background: var(--surface-lit);
-  box-shadow: var(--edge-top), var(--lift-card);
+  background: var(--surface);
+  box-shadow: none;
   transform: translateY(-2px);
 }
 
@@ -111,7 +111,7 @@
   padding: 2.5rem 1.25rem;
   text-align: center;
   background: var(--surface-sunk);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   display: grid;
   gap: 0.6rem;
   justify-items: center;

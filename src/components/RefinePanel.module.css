@@ -1,7 +1,7 @@
 .panel {
   background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
   overflow: hidden;
 }
 
@@ -29,10 +29,10 @@
   color: var(--green-800);
   background: var(--green-100);
   padding: 0.2rem 0.5rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
 }
 
-.chevron, .chevronOpen { color: var(--ink-500); transition: transform var(--step) ease; flex: none; }
+.chevron, .chevronOpen { color: var(--ink-500); transition: transform var(--dur) var(--ease); flex: none; }
 .chevronOpen { transform: rotate(180deg); }
 
 .body {
@@ -55,8 +55,8 @@
   min-height: 44px;
   padding: 0.4rem 0.75rem;
   background: var(--surface);
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
   font-size: 0.9rem;
   cursor: pointer;
 }

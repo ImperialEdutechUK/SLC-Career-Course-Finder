@@ -1,22 +1,26 @@
 .card {
-  background: var(--surface-lit);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: clamp(1.25rem, 0.9rem + 1.5vw, 2.25rem);
-  box-shadow: var(--edge-top), var(--lift-card);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: clamp(var(--s-4), 0.85rem + 1.1vw, var(--s-6));
 }
 
 .heading {
-  font-size: clamp(1.4rem, 1.15rem + 1.3vw, 2.05rem);
-  margin-bottom: 0.5rem;
+  /* Deliberately below the display scale. The question is the most important
+     text on the screen, but making it hero-sized pushed the answers out of
+     sight, which is the opposite of helpful. */
+  font-size: clamp(1.375rem, 1.1rem + 0.9vw, 1.75rem);
+  letter-spacing: var(--track-tight);
+  line-height: 1.2;
+  margin-bottom: var(--s-2);
 }
 /* The heading receives focus programmatically so the new question is announced.
    It is not reachable by Tab, so it must not paint a keyboard focus indicator. */
-.heading:focus, .heading:focus-visible { outline: none; }
+.heading:focus, .heading:focus-visible { outline: none; box-shadow: none; }
 
 .hint {
-  color: var(--ink-600);
-  font-size: 0.98rem;
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
   margin-bottom: 0;
 }
 
@@ -28,23 +32,25 @@
   padding: 0.75rem 0.9rem;
   background: #fdeeee;
   border: 1px solid #e6b4b4;
-  border-left: 4px solid #9c2323;
+  border-left: 3px solid #9c2323;
   border-radius: var(--radius);
-  box-shadow: var(--press);
   color: #7a1f1f;
   font-size: 0.94rem;
   font-weight: 500;
   max-width: none;
 }
 
-.body { margin-top: 1.5rem; }
+.body { margin-top: var(--s-4); }
 
 .footer {
-  margin-top: 1.75rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--line);
+  margin-top: var(--s-5);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--hairline);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--s-3);
 }
+/* Skip is pushed away from the two navigation buttons so it reads as a third,
+   different kind of action rather than a peer of Back and Continue. */
+.footer > :last-child:nth-child(3) { margin-left: auto; }

@@ -1,15 +1,15 @@
 .footer {
   margin-top: 4rem;
-  background: var(--blue-900);
+  background: var(--ink);
   color: #cfe0e9;
   padding-block: 0 1.75rem;
 }
 
-/* The college closes its pages with the same blue-to-lime rule it opens them with. */
+/* The same single rule that opens the page closes it. */
 .rule {
-  height: 4px;
-  background: var(--brand-rule);
-  margin-bottom: 2.25rem;
+  height: 3px;
+  background: var(--accent-fill);
+  margin-bottom: var(--s-6);
 }
 
 .grid {

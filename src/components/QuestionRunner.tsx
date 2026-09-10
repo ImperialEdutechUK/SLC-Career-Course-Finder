@@ -109,6 +109,9 @@ export function QuestionRunner({ journey }: { journey: JourneyId }) {
 
 
   function onBack() {
+    // On the first question there is no earlier question, and the thing the learner
+    // came from is the choice of journey. Back therefore always leads somewhere.
+    if (isFirst) { router.push('/'); return; }
     // Popping keeps the browser's own history in step with the question on screen. When
     // there is nothing to pop, such as arriving here from the results page, move directly.
     if (pushed.current > 0) { window.history.back(); return; }
@@ -158,21 +161,10 @@ export function QuestionRunner({ journey }: { journey: JourneyId }) {
     <div className={styles.wrap}>
       <div className={`shell shell--narrow ${styles.inner}`}>
         <div className={styles.top}>
-          <div className={styles.topNav}>
-            {!isFirst ? (
-              <button type="button" className={styles.back} onClick={onBack}>
-                <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 5 7 10l5 5" />
-                </svg>
-                Back
-              </button>
-            ) : null}
-            <Link href="/" className={styles.exit}>Start again</Link>
-          </div>
           <ProgressIndicator index={index} total={total} label={route.title} />
         </div>
 
-        {index === 0 ? <p className={styles.intro}>{route.intro}</p> : null}
+        {index === 0 ? <p className="info">{route.intro}</p> : null}
 
         {index === 0 ? (
           <ReusedAnswers
@@ -190,6 +182,9 @@ export function QuestionRunner({ journey }: { journey: JourneyId }) {
           announce={announce}
           footer={
             <>
+              <button type="button" className="btn btn--secondary" onClick={onBack}>
+                {isFirst ? 'Back to start' : 'Back'}
+              </button>
               <button
                 type="button"
                 className="btn btn--primary"
@@ -198,11 +193,6 @@ export function QuestionRunner({ journey }: { journey: JourneyId }) {
               >
                 {evaluating ? 'Working it out…' : isLast ? 'See results' : 'Continue'}
               </button>
-              {!isFirst ? (
-                <button type="button" className="btn btn--secondary" onClick={onBack}>
-                  Back
-                </button>
-              ) : null}
               {question.allowSkip ? (
                 <button type="button" className="btn btn--quiet" onClick={onSkip}>
                   Skip this question
@@ -255,7 +245,7 @@ export function QuestionRunner({ journey }: { journey: JourneyId }) {
 
         <p className={styles.reassure}>
           Your answers stay on this page. We do not put them in the address bar, and you do not
-          need an account to see results.
+          need an account to see results. <Link href="/" className={styles.exit}>Start again</Link>
         </p>
       </div>
     </div>

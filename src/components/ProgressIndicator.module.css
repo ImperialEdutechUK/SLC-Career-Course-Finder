@@ -1,25 +1,49 @@
-.wrap { display: grid; gap: 0.5rem; }
+/* Progress as a row of segments rather than a single sliding bar. The number of
+   questions is legible at a glance, which is worth a lot to someone deciding
+   whether they have time to finish. Segments are square: a 4px bar cannot carry
+   the system's 6px radius without looking like a lozenge. */
+
+.wrap { display: grid; gap: var(--s-2); }
+
 .label {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 0.5rem 1rem;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-4);
   margin: 0;
   max-width: none;
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
 }
-.step { font-weight: 600; color: var(--ink-800); }
-.route { color: var(--ink-500); }
+
+.step {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-md);
+  letter-spacing: var(--track-tight);
+  color: var(--ink);
+}
+.route { color: var(--ink-muted); }
+
 .track {
-  height: 6px;
-  border-radius: 999px;
-  background: var(--surface-sunk);
-  overflow: hidden;
-  border: 1px solid var(--line);
+  display: flex;
+  gap: 3px;
+  height: 4px;
 }
-.fill {
-  height: 100%;
-  background: var(--green-700);
-  border-radius: 999px;
-  transition: width var(--step) ease;
+
+.segment {
+  flex: 1;
+  background: var(--hairline);
+  transition: background-color var(--dur) var(--ease);
+}
+
+/* Answered. */
+.segmentDone { background: var(--accent); }
+
+/* Where you are now: the same accent, doubled in height so position is carried
+   by more than colour. */
+.segmentCurrent {
+  background: var(--accent);
+  height: 8px;
+  margin-block: -2px;
 }
