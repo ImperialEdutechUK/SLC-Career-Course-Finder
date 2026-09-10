@@ -1,4 +1,4 @@
-# Proposed questionnaire change: 2026-09-08.1 → 2026-09-08.2
+# Proposed questionnaire change: 2026-09-08.1 → 2026-09-08.3
 
 **Status: Change 3 is implemented at the client's instruction. Changes 1 and 2 are
 still drafts.** The service now serves `2026-09-08.2` with C8 added as a seventh
@@ -185,18 +185,44 @@ things better, and neither is what this work is.
 The consequence: a learner who wants exactly this work cannot say so, and the
 direction sits below others on every answer set where they compete.
 
-Two ways to close it, and the college should choose:
+It also turned out to be one half of a larger problem. With eight activities,
+each linked to two to four directions, the guide could produce only 47 distinct
+sets of three, and for 21 of the 36 possible activity answers the three shown
+never changed however the learner answered everything else.
 
-- **Add a ninth C2 option.** Something in the shape of "helping people look
-  after their health, appearance or wellbeing". This is the honest fix, and it
-  costs a question that is already at eight options.
-- **Raise a weight.** Mark `support_people` central to `active_personal_services`
-  rather than a real part of it. Cheaper, and it is an editorial claim about what
-  this work is, which is exactly the kind of claim that needs a career adviser.
+Raising weights was simulated and rejected. Adding ten edge links at 0.3 moved
+the 21 to 18 and left the 47 untouched, because a 0.3 link scores at most 0.9
+against 2.0 for a central one and can never reach the top three. Making those
+links strong enough to matter means claiming an activity is more central to a
+direction than it is, which is not a trade this guide should make.
 
-Doing neither is also a decision, and a defensible one if the college judges
-that these courses are better reached by browsing than by the guide. It should
-be a decision rather than an accident.
+**Implemented in content version 2026-09-08.3.** C2 gains three activities, each
+one central to a direction that needed it:
+
+| Option | Label | Central to |
+| --- | --- | --- |
+| `health_fitness` | Helping people with their health, fitness or appearance | Active and personal services |
+| `work_with_numbers` | Working with numbers, money or data | Finance and analysis |
+| `work_outdoors` | Working outdoors rather than at a desk | Animals and the environment |
+
+Two existing weights were corrected alongside them, both stretches that existed
+only because nothing better was on offer. `make_improve` drops from 0.6 to 0.3
+for active and personal services, and `work_with_numbers` sits at 0.3 rather
+than 0.6 for digital and technology, because at 0.6 it re-cut the digital and
+finance pairing the new activity existed to separate.
+
+Measured across all possible answer sets:
+
+| | Before | After |
+| --- | --- | --- |
+| Distinct sets of three | 47 | 58 |
+| Answers where the three never change | 21 of 36 | 36 of 66 |
+| Least to most shown direction | 22.2% to 36.9% | 24.8% to 37.9% |
+| Animals and the environment | 22.2% | 31.5% |
+| Digital and finance shown together | 21.6% | 19.2% |
+
+The three labels and the five weights are editorial claims about what this work
+is. They still need a career adviser to confirm or amend them.
 
 ---
 
@@ -228,7 +254,7 @@ them. It needs the same sign-off as the career map itself.
 | Change 1, C3 `lasting_demand` | | | accept / reject / amend |
 | Change 2, C1 `field_changing` | | | accept / reject / amend |
 | Change 3, new C8 and its weights | | | accept / reject / amend |
-| Change 4, C2 gains an active or personal service option | | | add option / raise weight / neither |
+| Change 4, the three new C2 activities and their weights | | | confirm / amend |
 | C8 replaces C6, or is added | | | replace / add |
 
 Owner: course development, with a career adviser.

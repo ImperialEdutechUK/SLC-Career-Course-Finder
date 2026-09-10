@@ -3,12 +3,12 @@
   "activeReleaseId": "july2026-2026-09-08-38544f900c04",
   "activeReleaseFile": "july2026-2026-09-08-38544f900c04.json",
   "checksum": "38544f900c040dd7561f7df4e3b0739f66c6e85a6428d8f6f58d2c612accfa0b",
-  "publishedAt": "2026-09-10T16:32:51.251Z",
+  "publishedAt": "2026-09-10T16:54:40.838Z",
   "previousReleaseId": null,
   "availableReleases": [
     "july2026-2026-09-08-38544f900c04.json"
   ],
-  "questionnaireVersion": "2026-09-08.2",
+  "questionnaireVersion": "2026-09-08.3",
   "editorialRulesVersion": "editorial-rules-0.1.0-provisional",
   "reviewStatus": "provisional_awaiting_slc_approval",
   "emergencySuppressionList": []

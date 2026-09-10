@@ -211,7 +211,7 @@ export const FIXTURES: Fixture[] = [
   career('C-015', 'beginner', 'Making and improving points at practical and digital work',
     { C2: ['make_improve'], C4: ['hands_on'] }, {
       state: 'career_directions',
-      familyIds: ['practical_technical', 'active_personal_services', 'digital_technology'],
+      familyIds: ['practical_technical', 'digital_technology', 'active_personal_services'],
       tiedFamilyIds: ['practical_technical']
     }),
 

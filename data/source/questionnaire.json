@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "questionnaireId": "slc_next_step_guide",
-  "contentVersion": "2026-09-08.2",
+  "contentVersion": "2026-09-08.3",
   "locale": "en-GB",
   "status": "proposed_content_requires_learner_testing_and_slc_review",
   "positioning": "Guided exploration and provisional course shortlisting; not a validated aptitude, personality or admission assessment.",
@@ -121,6 +121,18 @@
             {
               "id": "animals_nature",
               "label": "Working with animals, nature or the environment"
+            },
+            {
+              "id": "health_fitness",
+              "label": "Helping people with their health, fitness or appearance"
+            },
+            {
+              "id": "work_with_numbers",
+              "label": "Working with numbers, money or data"
+            },
+            {
+              "id": "work_outdoors",
+              "label": "Working outdoors rather than at a desk"
             },
             {
               "id": "unsure",
@@ -592,7 +604,7 @@
             },
             {
               "id": "help_me_explore",
-              "label": "I'm not sure \u2014 help me explore",
+              "label": "I'm not sure — help me explore",
               "exclusive": true,
               "isUnknown": true,
               "action": "offer_career_route_without_discarding_existing_answers"
@@ -676,11 +688,11 @@
             },
             {
               "id": "2_to_4_hours",
-              "label": "2\u20134 hours"
+              "label": "2–4 hours"
             },
             {
               "id": "5_to_8_hours",
-              "label": "5\u20138 hours"
+              "label": "5–8 hours"
             },
             {
               "id": "9_or_more_hours",

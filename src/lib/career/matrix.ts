@@ -27,12 +27,35 @@
  * with links an educator does not believe in. Write only what is true of the
  * work; a row with two honest entries is now read as fairly as one with four.
  *
- * One thing measurement did find, and it needs an editorial answer rather than a
- * code one: no C2 activity is central to `active_personal_services`, because
- * none of the eight on offer describes sport, fitness, hair and beauty or
- * travel. It therefore wins first place for 2.9% of possible answer sets against
- * 7% to 14% for every other direction. See Change 4 in
- * docs/QUESTIONNAIRE-CHANGE-PROPOSAL.md.
+ * Version 0.6 answers what measurement found. Two problems, one cause.
+ *
+ * No C2 activity was central to `active_personal_services`, because none of the
+ * eight on offer described sport, fitness, hair and beauty or travel. And with
+ * only eight activities, each linked to two to four directions, the guide could
+ * produce just 47 distinct sets of three, and for 21 of the 36 possible activity
+ * answers the three shown never changed however the learner answered everything
+ * else.
+ *
+ * Padding these rows with weak links does not fix that. It was simulated first:
+ * adding ten edge links at 0.3 moved the 21 to 18 and left the 47 untouched,
+ * because a 0.3 link scores at most 0.9 against 2.0 for a central one and can
+ * never reach the top three. Buying variety with weight means claiming an
+ * activity is more central to a direction than it is, and this guide should not
+ * pay in that currency.
+ *
+ * So C2 gained three activities instead, each one a thing a learner would
+ * recognise and each with a direction it is genuinely central to:
+ *
+ *   health_fitness     health, fitness or appearance  -> active_personal_services
+ *   work_with_numbers  numbers, money or data         -> finance_analysis
+ *   work_outdoors      outdoors rather than at a desk -> animals_environment
+ *
+ * Two existing weights were corrected in the same pass, both stretches that
+ * existed only because nothing better was on offer. `make_improve` drops from
+ * 0.6 to 0.3 for `active_personal_services`, since making and improving things
+ * is not really a part of that work. `work_with_numbers` is 0.3 rather than 0.6
+ * for `digital_technology`, because at 0.6 it re-cut the digital and finance
+ * pairing the new activity existed to separate.
  *
  * `prefer_steady` means the work changes at a slower pace. It does NOT mean the
  * work is safe from automation, and nothing in the interface may present it that
@@ -40,7 +63,7 @@
  * families are editorial hypotheses, and no one has validated a correspondence
  * between the two. See docs/QUESTIONNAIRE-CHANGE-PROPOSAL.md.
  */
-export const CAREER_MAP_VERSION = 'career-map-0.5.0-provisional';
+export const CAREER_MAP_VERSION = 'career-map-0.6.0-provisional';
 export const CAREER_MAP_REVIEW_STATUS = 'provisional_awaiting_slc_editorial_approval';
 
 /** Association strength: 1.0 central to the work, 0.6 a real part of it, 0.3 at the edges. */
@@ -61,42 +84,42 @@ export interface CareerFamilyMapping {
 const MATRIX: CareerFamilyMapping[] = [
   {
     id: 'care_support',
-    activities: { support_people: 1, help_learning: 0.3 },
+    activities: { support_people: 1, help_learning: 0.3, health_fitness: 0.6 },
     daily: { talk_people: 1, hands_on: 0.6 },
     values: { help_others: 1, fit_commitments: 0.3 },
     pace: { change_with_training: 0.6, prefer_steady: 1 }
   },
   {
     id: 'education_development',
-    activities: { help_learning: 1, support_people: 0.6, explain_choices: 0.3 },
+    activities: { help_learning: 1, support_people: 0.6, explain_choices: 0.3, health_fitness: 0.3 },
     daily: { talk_people: 1, information_digital: 0.3 },
     values: { help_others: 1, progression: 0.3 },
     pace: { change_with_training: 1, prefer_steady: 0.6, keen_change: 0.3 }
   },
   {
     id: 'business_operations',
-    activities: { organise_tasks: 1, solve_problems: 0.3 },
+    activities: { organise_tasks: 1, solve_problems: 0.3, work_with_numbers: 0.6 },
     daily: { focus_tasks: 1, information_digital: 0.6 },
     values: { clear_routine: 0.6, progression: 0.6 },
     pace: { change_with_training: 1, keen_change: 0.6 }
   },
   {
     id: 'finance_analysis',
-    activities: { solve_problems: 1, organise_tasks: 0.6 },
+    activities: { solve_problems: 1, organise_tasks: 0.6, work_with_numbers: 1 },
     daily: { information_digital: 1, focus_tasks: 1 },
     values: { progression: 1, clear_routine: 0.6 },
     pace: { change_with_training: 1, keen_change: 0.6, prefer_steady: 0.3 }
   },
   {
     id: 'digital_technology',
-    activities: { solve_problems: 1, make_improve: 0.6, create_ideas: 0.3 },
+    activities: { solve_problems: 1, make_improve: 0.6, create_ideas: 0.3, work_with_numbers: 0.3 },
     daily: { information_digital: 1, focus_tasks: 0.6 },
     values: { variety_challenge: 1, progression: 0.6, creativity: 0.3 },
     pace: { keen_change: 1, change_with_training: 0.6 }
   },
   {
     id: 'practical_technical',
-    activities: { make_improve: 1, solve_problems: 0.6, animals_nature: 0.3 },
+    activities: { make_improve: 1, solve_problems: 0.6, animals_nature: 0.3, work_outdoors: 0.6 },
     daily: { hands_on: 1, focus_tasks: 0.6 },
     values: { variety_challenge: 0.6, clear_routine: 0.3 },
     pace: { prefer_steady: 1, change_with_training: 0.6, keen_change: 0.3 }
@@ -117,14 +140,14 @@ const MATRIX: CareerFamilyMapping[] = [
   },
   {
     id: 'animals_environment',
-    activities: { animals_nature: 1, make_improve: 0.3 },
+    activities: { animals_nature: 1, make_improve: 0.3, work_outdoors: 1 },
     daily: { hands_on: 1, focus_tasks: 0.3 },
     values: { variety_challenge: 0.3, fit_commitments: 0.3 },
     pace: { prefer_steady: 1, change_with_training: 0.6 }
   },
   {
     id: 'active_personal_services',
-    activities: { support_people: 0.6, make_improve: 0.6, help_learning: 0.3 },
+    activities: { support_people: 0.6, make_improve: 0.3, help_learning: 0.3, health_fitness: 1, work_outdoors: 0.3 },
     daily: { hands_on: 1, talk_people: 0.6 },
     values: { help_others: 0.6, fit_commitments: 0.6, variety_challenge: 0.3 },
     pace: { change_with_training: 0.6, prefer_steady: 0.6, keen_change: 0.3 }

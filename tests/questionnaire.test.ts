@@ -15,7 +15,7 @@ const ROUTES = ['career', 'course'] as const;
 
 describe('questionnaire configuration', () => {
   it('is the supplied content version', () => {
-    expect(questionnaire.contentVersion).toBe('2026-09-08.2');
+    expect(questionnaire.contentVersion).toBe('2026-09-08.3');
     expect(questionnaire.questionnaireId).toBe('slc_next_step_guide');
   });
 
