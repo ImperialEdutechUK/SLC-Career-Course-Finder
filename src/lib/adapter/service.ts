@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 // The reference engine is used unmodified. It is the only ranking authority.
 import { recommend } from '@/lib/engine/engine.mjs';
 import { config } from '@/lib/config';
-import { approvedCourses, displayById, getManifest, getRelease } from '@/lib/catalogue/release';
+import { approvedCourses, displayById, displayRecords, getManifest, getRelease } from '@/lib/catalogue/release';
 import { requireQuestion, subjectOptions } from '@/lib/questionnaire';
 import type { ValidatedSubmission } from '@/lib/questionnaire/validation';
 import { buildEngineRequest } from './preferences';
@@ -220,6 +220,14 @@ export function recommendCareerDirections(submission: ValidatedSubmission): Reco
         const option = subjectOptions().find(item_ => item_.id === id);
         return option?.label ?? id;
       }),
+      // How many published courses actually sit in each suggested subject, counted
+      // from the release rather than estimated. Matched on category id, not label:
+      // the questionnaire and the catalogue capitalise subject names differently, so
+      // a label comparison silently returned zero for every subject. Ids also pick up
+      // cross-listed courses, which a primary-category match would miss.
+      suggestedSubjectCounts: available.map(id =>
+        displayRecords().filter(record => record.categoryIds.includes(id)).length
+      ),
       independentGuidance: content.independentGuidance,
       tiedWith: scoring.tiedFamilyIds.filter(id => id !== item.familyId && scoring.tiedFamilyIds.includes(item.familyId))
     };

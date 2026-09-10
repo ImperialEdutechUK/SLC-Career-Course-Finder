@@ -46,6 +46,8 @@ export interface CareerDirection {
   slcCoverage: 'reviewed_links_available' | 'outside_reviewed_coverage' | 'partial_reviewed_coverage';
   suggestedSubjectIds: string[];
   suggestedSubjectLabels: string[];
+  /** Published course count per suggested subject, in the same order. Real data. */
+  suggestedSubjectCounts: number[];
   independentGuidance: { label: string; url: string };
   tiedWith: string[];
 }

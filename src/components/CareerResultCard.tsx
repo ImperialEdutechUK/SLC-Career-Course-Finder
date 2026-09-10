@@ -21,6 +21,10 @@ export function CareerResultCard({
         ? 'South London College covers part of this direction. Use the independent guidance for the rest.'
         : 'South London College does not currently list courses for this direction. It is still worth exploring.';
 
+  // The widest bar is the subject with the most published courses, so the chart is
+  // scaled to real data rather than to a fixed maximum.
+  const max = Math.max(1, ...direction.suggestedSubjectCounts);
+
   return (
     <article className={styles.card}>
       <div className={styles.head}>
@@ -53,6 +57,9 @@ export function CareerResultCard({
         {direction.suggestedSubjectIds.length ? (
           <button type="button" className="btn btn--primary" onClick={() => onFindCourses(direction)}>
             Find courses for this direction
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+              <path d="M5 12h13" /><path d="m12 6 6 6-6 6" />
+            </svg>
           </button>
         ) : null}
         <a
@@ -67,10 +74,28 @@ export function CareerResultCard({
       </div>
 
       {direction.suggestedSubjectLabels.length ? (
-        <p className={styles.subjects}>
-          Related subjects at the college: {direction.suggestedSubjectLabels.join(', ')}. You can
-          change the subject before we compare courses.
-        </p>
+        <div className={styles.chart}>
+          <h4 className={styles.chartHeading}>Courses at the college in these subjects</h4>
+          <ul className={styles.bars}>
+            {direction.suggestedSubjectLabels.map((label, i) => {
+              const count = direction.suggestedSubjectCounts[i] ?? 0;
+              // Zero must render as an empty track. A minimum bar width made 0 look like a value.
+              const width = count > 0 ? Math.max(6, Math.round((count / max) * 100)) : 0;
+              return (
+                <li key={label} className={styles.bar}>
+                  <span className={styles.barLabel}>{label}</span>
+                  <span className={styles.barTrack}>
+                    <span className={styles.barFill} style={{ width: `${width}%` }} />
+                  </span>
+                  <span className={styles.barValue}>{count}</span>
+                </li>
+              );
+            })}
+          </ul>
+          <p className={styles.chartNote}>
+            You can change the subject before we compare courses.
+          </p>
+        </div>
       ) : null}
     </article>
   );

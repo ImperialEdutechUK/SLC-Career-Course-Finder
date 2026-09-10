@@ -102,16 +102,7 @@
 }
 
 /* ------------------------------------------------------- supporting tiles */
-.browse { justify-items: start; }
 
-.bigNumber {
-  font-family: var(--font-display);
-  font-size: clamp(2.5rem, 1.6rem + 3vw, 3.5rem);
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: var(--track-display);
-  color: var(--accent-text);
-}
 
 .tileEyebrow {
   font-size: var(--text-xs);
@@ -138,68 +129,75 @@
   color: var(--accent-text);
 }
 
-.career { align-content: start; }
 
 /* ------------------------------------------------------------ subject run */
-.subjectsLabel {
-  margin: var(--s-4) 0 0;
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  max-width: none;
-}
 
-.subject {
-  gap: var(--s-1);
-  padding: var(--s-4);
-  min-height: 6.5rem;
-  align-content: space-between;
-}
 
-.subjectCount {
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--accent-text);
-  transition: color var(--dur) var(--ease);
-}
-.subject:hover .subjectCount { color: var(--accent-active); }
 
-.subjectName { font-size: var(--text-sm); font-weight: 600; line-height: 1.25; }
 
-.allTile {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--s-2) var(--s-4);
-  min-height: 6.5rem;
-  padding: var(--s-4) var(--s-5);
-  background: var(--accent-tint);
-  border-color: var(--accent-tint-line);
-}
-.allTile .tileGo { margin-top: 0; }
 
 /* ------------------------------------------------------------- responsive */
 @media (min-width: 40rem) {
   .bento { grid-template-columns: repeat(2, 1fr); }
   .primary { grid-column: span 2; }
-  .subjectsLabel { grid-column: 1 / -1; }
-  /* Completes the row rather than stranding a single tile on its own. */
-  .allTile { grid-column: 1 / -1; }
 }
 
 @media (min-width: 64rem) {
   .bento { grid-template-columns: repeat(4, 1fr); }
   .primary { grid-column: span 2; grid-row: span 2; }
-  .browse { grid-column: span 2; }
-  .career { grid-column: span 2; }
-  .allTile { grid-column: span 3; }
+  .steps { grid-column: span 2; }
+  .course { grid-column: span 2; }
+  .external { grid-column: 1 / -1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tile:hover, .tile:focus-visible, .tile:active { transform: none; }
 }
+
+/* ------------------------------------------------------------------ steps
+   Three lines, no prose. The journey stated rather than described. */
+.steps { align-content: start; }
+
+.stepList {
+  list-style: none;
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-3);
+}
+.stepList li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--s-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+.stepNo {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent-tint);
+  border: 1px solid var(--accent-tint-line);
+  color: var(--accent-active);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.course { align-content: start; }
+
+.external {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-5);
+  background: var(--accent-tint);
+  border-color: var(--accent-tint-line);
+}
+.external .tileGo { margin-top: 0; }
+.external .tileEyebrow { order: -1; width: 100%; }
