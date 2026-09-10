@@ -13,8 +13,16 @@ export interface SlcConfig {
   account: string;
   /** Where the application runs. The brief specifies London. */
   region: string;
-  /** Public hostname the college has approved, e.g. `find.southlondoncollege.org`. */
-  domainName: string;
+  /**
+   * Public hostname the college has approved, e.g. `find.southlondoncollege.org`.
+   *
+   * Omit it to serve on CloudFront's own `*.cloudfront.net` address. Nothing else
+   * changes: no certificate is requested, no alias record is written, and the hostname
+   * can be attached later by setting this and redeploying. That is the right first move
+   * when the DNS for the real name is not yet under your control, because an ACM
+   * certificate blocks the deployment until its validation record appears.
+   */
+  domainName?: string;
   /**
    * Route 53 public hosted zone id for `domainName`. Omit when the college's DNS is
    * elsewhere: the certificate then needs its validation records adding by hand, and the
@@ -46,13 +54,18 @@ export interface SlcConfig {
   slcCourseOrigin: string;
   /** The only questionnaire content version the API accepts. */
   questionnaireVersion: string;
-  /** Reserved concurrency for the server function. Set from expected peak. */
+  /**
+   * Reserved concurrency for the server function, from expected peak.
+   *
+   * Set it to 0 to reserve nothing. A new AWS account has a total limit of 10 concurrent
+   * executions and AWS insists at least 10 stay unreserved, so on such an account any
+   * reservation at all is rejected. Raise the "Concurrent executions" quota in Service
+   * Quotas first, then set a real number here.
+   */
   reservedConcurrency: number;
 }
 
-const REQUIRED: (keyof SlcConfig)[] = [
-  'account', 'domainName', 'alarmEmail', 'lambdaAdapterLayerArn'
-];
+const REQUIRED: (keyof SlcConfig)[] = ['account', 'alarmEmail', 'lambdaAdapterLayerArn'];
 
 export function readConfig(scope: Construct): SlcConfig {
   // A context file gives an object; `-c slc='{...}'` on the command line gives the
@@ -72,7 +85,7 @@ export function readConfig(scope: Construct): SlcConfig {
   const config: SlcConfig = {
     account: raw.account ?? '',
     region: raw.region ?? 'eu-west-2',
-    domainName: raw.domainName ?? '',
+    domainName: raw.domainName,
     hostedZoneId: raw.hostedZoneId,
     stage: raw.stage ?? 'staging',
     alarmEmail: raw.alarmEmail ?? '',

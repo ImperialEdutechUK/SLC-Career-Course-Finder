@@ -13,6 +13,8 @@ import type { SlcConfig } from './config';
 export interface AlarmProps {
   config: SlcConfig;
   server: lambda.Function;
+  /** Where the canary should walk. CloudFront's own domain when there is no hostname. */
+  siteUrl: string;
 }
 
 /** A topic plus the action every alarm in this file uses. */
@@ -62,7 +64,7 @@ function alarmFactory(stack: Stack, notify: actions.SnsAction) {
  * sits in SlcEdgeMonitoringStack instead.
  */
 export function addApplicationAlarms(stack: Stack, props: AlarmProps): void {
-  const { config, server } = props;
+  const { config, server, siteUrl } = props;
   const notify = notifier(stack, config);
   const alarm = alarmFactory(stack, notify);
 
@@ -135,7 +137,7 @@ export function addApplicationAlarms(stack: Stack, props: AlarmProps): void {
     schedule: synthetics.Schedule.rate(Duration.minutes(15)),
     artifactsBucketLocation: { bucket: artifacts },
     role: canaryRole,
-    environmentVariables: { SITE_URL: `https://${config.domainName}` },
+    environmentVariables: { SITE_URL: siteUrl },
     startAfterCreation: true
   });
 

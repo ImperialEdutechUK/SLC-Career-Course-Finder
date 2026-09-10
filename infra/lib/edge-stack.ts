@@ -11,14 +11,17 @@ import type { SlcConfig } from './config';
  * will only accept from that region, which is why they are not in the application stack.
  */
 export class SlcEdgeStack extends Stack {
-  readonly certificate: acm.ICertificate;
+  /** Undefined when serving on CloudFront's own domain, which needs no certificate. */
+  readonly certificate?: acm.ICertificate;
   readonly webAclArn: string;
 
   constructor(scope: Construct, id: string, props: StackProps & { config: SlcConfig }) {
     super(scope, id, props);
     const { config } = props;
 
-    this.certificate = config.hostedZoneId
+    this.certificate = !config.domainName
+      ? undefined
+      : config.hostedZoneId
       ? new acm.Certificate(this, 'Certificate', {
           domainName: config.domainName,
           // DNS validation renews without anyone touching it. Email validation does not.

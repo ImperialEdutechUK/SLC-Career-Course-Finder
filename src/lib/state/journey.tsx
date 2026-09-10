@@ -278,6 +278,35 @@ interface GuideContextValue extends GuideState {
 
 const GuideContext = createContext<GuideContextValue | null>(null);
 
+/**
+ * The SHA-256 of a request body, as CloudFront requires for a POST.
+ *
+ * When the service runs behind CloudFront with Origin Access Control in front of a Lambda
+ * function URL, CloudFront signs each origin request and Lambda refuses a POST whose
+ * payload hash is missing: "Lambda doesn't support unsigned payloads". A browser does not
+ * send that header on its own, so the client computes it here.
+ *
+ * It carries no secret and proves nothing about the sender. It only lets the origin
+ * confirm the body it received is the body that was signed. Anywhere that does not need
+ * it, including local development and any non-AWS host, ignores an unrecognised header,
+ * and crypto.subtle is unavailable outside a secure context, in which case the header is
+ * simply omitted.
+ */
+async function payloadHashHeader(body: string): Promise<Record<string, string>> {
+  try {
+    if (!globalThis.crypto?.subtle) return {};
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(body));
+    const hex = Array.from(new Uint8Array(digest))
+      .map(byte => byte.toString(16).padStart(2, '0'))
+      .join('');
+    return { 'x-amz-content-sha256': hex };
+  } catch {
+    // Never block a submission over a hashing failure. Without the header the origin
+    // decides, and off AWS it is not wanted anyway.
+    return {};
+  }
+}
+
 export function GuideProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   // A superseded response must never overwrite newer answers.
@@ -347,17 +376,19 @@ export function GuideProvider({ children }: { children: ReactNode }) {
       Object.entries(current.details).filter(([, value]) => value !== null && value !== '')
     );
 
+    const payload = JSON.stringify({
+      journey,
+      questionnaireVersion: current.questionnaireVersion,
+      answers,
+      details,
+      filters: stateRef.current.filters
+    });
+
     try {
       const response = await fetch('/api/v1/recommendations', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          journey,
-          questionnaireVersion: current.questionnaireVersion,
-          answers,
-          details,
-          filters: stateRef.current.filters
-        })
+        headers: { 'Content-Type': 'application/json', ...(await payloadHashHeader(payload)) },
+        body: payload
       });
       // A late response for a superseded request is discarded.
       if (ticket !== sequence.current) return null;

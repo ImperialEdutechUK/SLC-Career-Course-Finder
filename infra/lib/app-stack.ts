@@ -8,6 +8,7 @@ import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as targets from 'aws-cdk-lib/aws-route53-targets';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import * as path from 'path';
 import type { SlcConfig } from './config';
@@ -15,7 +16,7 @@ import { addApplicationAlarms } from './observability';
 
 export interface SlcAppStackProps extends StackProps {
   config: SlcConfig;
-  certificate: acm.ICertificate;
+  certificate?: acm.ICertificate;
   webAclArn: string;
 }
 
@@ -67,7 +68,11 @@ export class SlcAppStack extends Stack {
       ],
       memorySize: 1024,
       timeout: Duration.seconds(30),
-      reservedConcurrentExecutions: config.reservedConcurrency,
+      // Omitted entirely when 0: reserving nothing is not the same as reserving zero,
+      // which would stop the function being invoked at all.
+      ...(config.reservedConcurrency > 0
+        ? { reservedConcurrentExecutions: config.reservedConcurrency }
+        : {}),
       logGroup: serverLogs,
       environment: {
         // --- Lambda Web Adapter ---
@@ -84,7 +89,9 @@ export class SlcAppStack extends Stack {
         // --- application ---
         NODE_ENV: 'production',
         HOSTNAME: '0.0.0.0',
-        PUBLIC_BASE_URL: `https://${config.domainName}`,
+        // PUBLIC_BASE_URL is deliberately absent. The application never reads it, and on
+        // CloudFront's own domain the value is not known until after the distribution
+        // exists, which the server function cannot depend on without a cycle.
         SLC_COURSE_ORIGIN: config.slcCourseOrigin,
         QUESTIONNAIRE_VERSION: config.questionnaireVersion,
         // The engine treats an absent allowlist as reference evaluation only, so this is
@@ -141,6 +148,19 @@ export class SlcAppStack extends Stack {
       removeHeaders: ['server', 'x-powered-by']
     });
 
+    // Origin Access Control signs each request to the function URL with SigV4, and that
+    // signature travels in the Authorization header. The managed AllViewerExceptHostHeader
+    // policy forwards the viewer's own Authorization header, which displaces the
+    // signature and makes the function URL answer 403 to everything. This forwards
+    // everything except Host and Authorization instead. Cookies are excluded because the
+    // service sets none and reads none.
+    const serverOriginRequestPolicy = new cloudfront.OriginRequestPolicy(this, 'ServerOriginRequest', {
+      comment: 'SLC server origin: all viewer headers except Host and Authorization',
+      headerBehavior: cloudfront.OriginRequestHeaderBehavior.denyList('host', 'authorization'),
+      queryStringBehavior: cloudfront.OriginRequestQueryStringBehavior.all(),
+      cookieBehavior: cloudfront.OriginRequestCookieBehavior.none()
+    });
+
     const s3Origin = origins.S3BucketOrigin.withOriginAccessControl(assetBucket);
     const serverOrigin = origins.FunctionUrlOrigin.withOriginAccessControl(serverUrl);
 
@@ -161,8 +181,7 @@ export class SlcAppStack extends Stack {
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
       cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
-      // No cookies are forwarded: the service sets none and reads none.
-      originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER_EXCEPT_HOST_HEADER,
+      originRequestPolicy: serverOriginRequestPolicy,
       responseHeadersPolicy: responseHeaders,
       compress: true
     };
@@ -185,17 +204,36 @@ export class SlcAppStack extends Stack {
           cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED
         }
       },
-      domainNames: [config.domainName],
-      certificate,
+      // No alias and no certificate when serving on CloudFront's own domain.
+      ...(config.domainName && certificate
+        ? { domainNames: [config.domainName], certificate }
+        : {}),
       webAclId: webAclArn,
       httpVersion: cloudfront.HttpVersion.HTTP2_AND_3,
-      minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
+      // A TLS policy can only be chosen alongside a custom certificate. On CloudFront's
+      // own domain the policy is fixed at TLSv1 and setting this would be ignored, so it
+      // is applied only when there is a certificate to apply it to. Attaching the real
+      // hostname is therefore also a TLS improvement, not just a cosmetic one.
+      ...(config.domainName && certificate
+        ? { minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021 }
+        : {}),
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
       enableLogging: false
       // No custom error responses. Missing pages already reach Lambda and render the
       // application's own not-found page with a 404. The only thing that produces a bare
       // 403 here is a missing object in S3 or a failure to sign an origin request, and
       // rewriting those to 404 would hide a broken deployment behind a tidy page.
+    });
+
+    // CDK's withOriginAccessControl grants only lambda:InvokeFunctionUrl. AWS also
+    // requires lambda:InvokeFunction for a function URL behind Origin Access Control,
+    // and without it every request through CloudFront answers 403 AccessDeniedException
+    // while the function itself works perfectly when invoked directly. This is the
+    // second statement in AWS's own documented pair.
+    server.addPermission('CloudFrontInvokeFunction', {
+      principal: new iam.ServicePrincipal('cloudfront.amazonaws.com'),
+      action: 'lambda:InvokeFunction',
+      sourceArn: `arn:aws:cloudfront::${this.account}:distribution/${distribution.distributionId}`
     });
 
     // ------------------------------------------------------------------- asset sync
@@ -220,7 +258,7 @@ export class SlcAppStack extends Stack {
 
     // ------------------------------------------------------------------------- DNS
 
-    if (config.hostedZoneId) {
+    if (config.domainName && config.hostedZoneId) {
       const zone = route53.HostedZone.fromHostedZoneAttributes(this, 'Zone', {
         hostedZoneId: config.hostedZoneId,
         zoneName: config.domainName.split('.').slice(-2).join('.')
@@ -234,7 +272,11 @@ export class SlcAppStack extends Stack {
 
     // --------------------------------------------------------------- observability
 
-    addApplicationAlarms(this, { config, server });
+    const siteUrl = config.domainName
+      ? `https://${config.domainName}`
+      : `https://${distribution.distributionDomainName}`;
+
+    addApplicationAlarms(this, { config, server, siteUrl });
 
     // ----------------------------------------------------------------------- output
 
@@ -242,11 +284,11 @@ export class SlcAppStack extends Stack {
 
     new CfnOutput(this, 'DistributionDomainName', { value: distribution.distributionDomainName });
     new CfnOutput(this, 'DistributionId', { value: distribution.distributionId });
-    new CfnOutput(this, 'SiteUrl', { value: `https://${config.domainName}` });
-    new CfnOutput(this, 'ReadinessUrl', { value: `https://${config.domainName}/api/v1/health/ready` });
+    new CfnOutput(this, 'SiteUrl', { value: siteUrl });
+    new CfnOutput(this, 'ReadinessUrl', { value: `${siteUrl}/api/v1/health/ready` });
     new CfnOutput(this, 'AssetBucketName', { value: assetBucket.bucketName });
     new CfnOutput(this, 'ServerFunctionName', { value: server.functionName });
-    if (!config.hostedZoneId) {
+    if (config.domainName && !config.hostedZoneId) {
       new CfnOutput(this, 'DnsAction', {
         value: `Point ${config.domainName} at ${distribution.distributionDomainName} (CNAME) in the college's DNS.`
       });
