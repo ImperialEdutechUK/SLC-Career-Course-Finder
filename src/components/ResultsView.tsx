@@ -124,11 +124,10 @@ export function ResultsView({
           <section aria-labelledby="directions-heading" className={styles.section}>
             <h2 id="directions-heading" className="visually-hidden">Career directions</h2>
             <div className={styles.cards}>
-              {careerDirections.map((direction, index) => (
+              {careerDirections.map(direction => (
                 <CareerResultCard
                   key={direction.careerFamilyId}
                   direction={direction}
-                  position={index + 1}
                   onFindCourses={findCoursesFor}
                 />
               ))}
@@ -163,12 +162,11 @@ export function ResultsView({
                   : 'Options to consider'}
               </h2>
               <div className={styles.cards}>
-                {courseOptions.map((option, index) => (
+                {courseOptions.map(option => (
                   <CourseResultCard
                     key={option.courseId}
                     option={option}
                     subjectLabel={subjectLabel}
-                    position={index + 1}
                   />
                 ))}
               </div>
@@ -186,12 +184,11 @@ export function ResultsView({
                 them. An adviser can tell you what would be needed.
               </p>
               <div className={styles.cards}>
-                {futureOptions.map((option, index) => (
+                {futureOptions.map(option => (
                   <CourseResultCard
                     key={option.courseId}
                     option={option}
                     subjectLabel={subjectLabel}
-                    position={index + 1}
                   />
                 ))}
               </div>

@@ -13,20 +13,17 @@ import type { CourseOption } from '@/types/results';
  * page. No score, percentage or suitability probability is shown anywhere.
  */
 export function CourseResultCard({
-  option, subjectLabel, position
-}: { option: CourseOption; subjectLabel: string | null; position: number }) {
+  option, subjectLabel
+}: { option: CourseOption; subjectLabel: string | null }) {
   const { course } = option;
 
   return (
     <article className={styles.card}>
       <div className={styles.head}>
-        <p className={styles.index} aria-hidden="true">{String(position).padStart(2, '0')}</p>
-        <div className={styles.headText}>
-          <h3 className={styles.title}>
-            <Link href={`/courses/${course.canonicalId}`}>{course.title}</Link>
-          </h3>
-          <p className={styles.reason}>{relevanceReason(option, subjectLabel)}</p>
-        </div>
+        <h3 className={styles.title}>
+          <Link href={`/courses/${course.canonicalId}`}>{course.title}</Link>
+        </h3>
+        <p className={styles.reason}>{relevanceReason(option, subjectLabel)}</p>
       </div>
 
       <dl className={styles.facts}>

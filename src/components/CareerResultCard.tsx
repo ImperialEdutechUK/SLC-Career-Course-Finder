@@ -9,10 +9,9 @@ import type { CareerDirection } from '@/types/results';
  * or would be employed in, any occupation.
  */
 export function CareerResultCard({
-  direction, position, onFindCourses
+  direction, onFindCourses
 }: {
   direction: CareerDirection;
-  position: number;
   onFindCourses: (direction: CareerDirection) => void;
 }) {
   const coverage =
@@ -25,11 +24,8 @@ export function CareerResultCard({
   return (
     <article className={styles.card}>
       <div className={styles.head}>
-        <p className={styles.index} aria-hidden="true">{String(position).padStart(2, '0')}</p>
-        <div>
-          <h3 className={styles.title}>{direction.label}</h3>
-          <p className={styles.summary}>{direction.summary}</p>
-        </div>
+        <h3 className={styles.title}>{direction.label}</h3>
+        <p className={styles.summary}>{direction.summary}</p>
       </div>
 
       <div className={styles.blocks}>
