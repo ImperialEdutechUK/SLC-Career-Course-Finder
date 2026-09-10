@@ -8,6 +8,11 @@
  *   - no salary, vacancy, employment-rate or job-security claim
  *   - no statement that a learner is suited to, or qualified for, any occupation
  *   - "everyday activity" says what someone in the area *may* do
+ *   - "roles" are job titles people hold in the area, and nothing more. They are
+ *     not a shortlist the learner qualifies for, not a claim that these jobs are
+ *     available, and not ordered by pay or demand. They exist because "digital
+ *     and technology" tells a school leaver very little and "software developer"
+ *     tells them a great deal.
  *   - "investigate" is always something for the learner to check for themselves
  *
  * Occupation facts belong to the National Careers Service and the relevant
@@ -27,6 +32,12 @@ export interface CareerFamilyContent {
   label: string;
   summary: string;
   everydayActivity: string;
+  /**
+   * Job titles people hold in this area. Ordinary titles a learner would
+   * recognise and could search for, not the full range, and no claim that the
+   * learner is suited to or would be employed in any of them.
+   */
+  roles: string[];
   /** Default thing to investigate, used when C3 gives no more specific prompt. */
   investigate: string;
   /** Things to investigate prompted by a C3 priority. */
@@ -50,6 +61,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
     label: 'Care and support',
     summary: 'Roles that help people manage everyday life, health or wellbeing.',
     everydayActivity: 'A care worker may help someone with everyday routines, meals and appointments.',
+    roles: ['Care worker', 'Support worker', 'Healthcare assistant', 'Community care assistant'],
     investigate: 'Check what personal-care tasks a real role involves, what the shift pattern is, and which parts of the job employers expect to stay hands-on.',
     investigateByPriority: {
       fit_commitments: 'Check the shift pattern before you commit, because care rotas often include evenings and weekends.',
@@ -68,6 +80,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
     label: 'Education and learner support',
     summary: 'Roles that help children, young people or adults learn.',
     everydayActivity: 'A teaching assistant may prepare materials and support a small group during a lesson.',
+    roles: ['Teaching assistant', 'Learning support assistant', 'Nursery practitioner', 'Learning mentor'],
     investigate: 'Check which roles need a specific qualification or a background check, and ask how teaching teams are using new tools day to day.',
     investigateByPriority: {
       fit_commitments: 'Check the working pattern, because term-time and part-time arrangements vary a lot between settings.',
@@ -86,6 +99,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
     label: 'Business and operations',
     summary: 'Roles that keep an organisation organised, coordinated and running.',
     everydayActivity: 'An administrator may coordinate schedules, records and requests across a team.',
+    roles: ['Administrator', 'Operations assistant', 'HR assistant', 'Office manager'],
     investigate: 'Check which systems an employer expects you to be confident with, and which routine tasks they are already automating.',
     investigateByPriority: {
       fit_commitments: 'Check whether the employer offers hybrid or flexible arrangements, as this varies by organisation.',
@@ -104,6 +118,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
     label: 'Finance and analysis',
     summary: 'Roles that work with numbers, records and financial decisions.',
     everydayActivity: 'A bookkeeper may record transactions and prepare figures for a monthly report.',
+    roles: ['Bookkeeper', 'Accounts assistant', 'Payroll administrator', 'Finance assistant'],
     investigate: 'Check which professional body or qualification an employer asks for, and which parts of the work have moved from manual to automated.',
     investigateByPriority: {
       fit_commitments: 'Check the deadline cycle, because month-end and year-end periods are usually fixed.',
@@ -122,6 +137,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
     label: 'Digital and technology',
     summary: 'Roles that build, support or protect digital systems.',
     everydayActivity: 'A support technician may investigate a fault, test a fix and record what changed.',
+    roles: ['IT support technician', 'Software developer', 'Data analyst', 'Cyber security analyst'],
     investigate: 'Check which tools and certifications employers list in current adverts, and ask how those lists have changed in the past year.',
     investigateByPriority: {
       fit_commitments: 'Check whether the role includes on-call or out-of-hours cover.',
@@ -140,6 +156,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
     label: 'Practical and technical work',
     summary: 'Roles that make, maintain or improve physical things and systems.',
     everydayActivity: 'A technician may set up equipment, run checks and record the results.',
+    roles: ['Engineering technician', 'Maintenance technician', 'Laboratory technician', 'Electrician'],
     investigate: 'Check what site, safety or equipment requirements apply, and which tasks employers say still need someone physically there.',
     investigateByPriority: {
       fit_commitments: 'Check start times and travel, because site-based work often has fixed hours.',
@@ -158,6 +175,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
     label: 'Creative and communication work',
     summary: 'Roles that develop ideas, content and messages for an audience.',
     everydayActivity: 'A marketing assistant may draft content, gather feedback and prepare it for publication.',
+    roles: ['Marketing assistant', 'Content creator', 'Social media coordinator', 'Graphic designer'],
     investigate: 'Check what portfolio or experience employers ask to see, and how they expect people to work alongside generative tools.',
     investigateByPriority: {
       fit_commitments: 'Check how much of the work is deadline-driven and whether hours are predictable.',
@@ -176,6 +194,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
     label: 'Customer and commercial services',
     summary: 'Roles that guide people through choices and deliver a service well.',
     everydayActivity: 'A service coordinator may explain options to a customer and arrange what happens next.',
+    roles: ['Customer service adviser', 'Sales adviser', 'Events coordinator', 'Hospitality supervisor'],
     investigate: 'Check what targets or service standards the role is measured against, and which enquiries are still handled by a person.',
     investigateByPriority: {
       fit_commitments: 'Check the shift pattern, because customer-facing services often cover evenings and weekends.',
@@ -194,6 +213,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
     label: 'Animals and the environment',
     summary: 'Roles that work with animals, land or the natural environment.',
     everydayActivity: 'An animal care assistant may feed, clean, monitor and record the condition of animals.',
+    roles: ['Animal care assistant', 'Veterinary care assistant', 'Dog groomer', 'Conservation assistant'],
     investigate: 'Check the physical demands and handling experience an employer expects, and how much of the work is done on site.',
     investigateByPriority: {
       fit_commitments: 'Check the hours, because animal care often includes early starts, weekends and holidays.',
@@ -212,6 +232,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
     label: 'Active and personal services',
     summary: 'Roles that support people through physical activity, wellbeing or personal care services.',
     everydayActivity: 'A fitness instructor may plan a session, lead it and adapt it for individual clients.',
+    roles: ['Fitness instructor', 'Personal trainer', 'Hairdresser', 'Beauty therapist'],
     investigate: 'Check which registrations, insurance or qualifications a client or employer requires, and how much of the work is delivered face to face.',
     investigateByPriority: {
       fit_commitments: 'Check when clients actually want sessions, as early mornings and evenings are common.',

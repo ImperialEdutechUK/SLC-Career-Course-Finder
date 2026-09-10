@@ -41,6 +41,8 @@ export interface CareerDirection {
   summary: string;
   whyThisAppeared: string;
   everydayActivity: string;
+  /** Job titles people hold in this area. Examples, not a shortlist the learner qualifies for. */
+  roles: string[];
   thingToInvestigate: string;
   /** How work in this direction is changing, as a question to ask an employer. */
   howWorkIsChanging: string;

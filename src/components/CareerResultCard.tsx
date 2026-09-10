@@ -4,9 +4,14 @@ import styles from './CareerResultCard.module.css';
 import type { CareerDirection } from '@/types/results';
 
 /**
- * A career direction. Each card carries why it appeared, one everyday activity, one
- * thing to investigate and a next step. Nothing here claims the learner is suited to,
- * or would be employed in, any occupation.
+ * A career direction. The card names jobs people do in the area, says why the
+ * direction appeared, gives one thing to investigate and one honest note on how
+ * the work is changing.
+ *
+ * The job titles are the first thing shown because "digital and technology" tells
+ * a school leaver very little and "software developer" tells them a great deal.
+ * They are examples, and the wording says so. Nothing here claims the learner is
+ * suited to, or would be employed in, any occupation.
  */
 export function CareerResultCard({
   direction, onFindCourses
@@ -32,22 +37,23 @@ export function CareerResultCard({
         <p className={styles.summary}>{direction.summary}</p>
       </div>
 
+      {direction.roles.length ? (
+        <div className={styles.roles}>
+          <h4 className={styles.rolesHeading}>Jobs people do here</h4>
+          <ul className={styles.roleList}>
+            {direction.roles.map(role => <li key={role} className={styles.role}>{role}</li>)}
+          </ul>
+        </div>
+      ) : null}
+
       <div className={styles.blocks}>
         <div className={styles.block}>
           <h4>Why this appeared</h4>
           <p>{direction.whyThisAppeared}</p>
         </div>
         <div className={styles.block}>
-          <h4>An everyday activity</h4>
-          <p>{direction.everydayActivity}</p>
-        </div>
-        <div className={styles.block}>
-          <h4>One thing to investigate</h4>
+          <h4>Worth checking</h4>
           <p>{direction.thingToInvestigate}</p>
-        </div>
-        <div className={styles.block}>
-          <h4>A useful next step</h4>
-          <p>{direction.nextStep}</p>
         </div>
         <div className={styles.block}>
           <h4>How this work is changing</h4>

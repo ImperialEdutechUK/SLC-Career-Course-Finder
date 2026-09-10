@@ -14,6 +14,43 @@
 .title { font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem); margin-bottom: 0.2rem; }
 .summary { margin: 0; color: var(--ink-600); font-size: 0.97rem; }
 
+/* Job titles come before the prose, because a title is the fastest way to know
+   whether a direction is worth reading about at all. */
+.roles {
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+
+.rolesHeading {
+  font-family: var(--font-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  margin: 0 0 0.55rem;
+}
+
+.roleList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.role {
+  padding: 0.34rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  background: var(--surface);
+  box-shadow: var(--depth-2);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink-800);
+}
+
 .blocks {
   display: grid;
   gap: 1rem;

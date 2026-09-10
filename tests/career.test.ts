@@ -323,13 +323,44 @@ describe('editorial content makes no occupational claims', () => {
 
   it.each(Object.values(CAREER_FAMILY_CONTENT))('$id avoids employment and pay claims', content => {
     const text = [content.summary, content.everydayActivity, content.investigate,
-      ...Object.values(content.investigateByPriority)].join(' ');
+      ...content.roles, ...Object.values(content.investigateByPriority)].join(' ');
     expect(text).not.toMatch(forbidden);
   });
 
   it('describes the everyday activity as something a person may do', () => {
     for (const content of Object.values(CAREER_FAMILY_CONTENT)) {
       expect(content.everydayActivity, content.id).toMatch(/\bmay\b/);
+    }
+  });
+
+  it('names jobs people hold in every direction', () => {
+    for (const content of Object.values(CAREER_FAMILY_CONTENT)) {
+      expect(content.roles.length, content.id).toBeGreaterThanOrEqual(3);
+      expect(new Set(content.roles).size, content.id).toBe(content.roles.length);
+    }
+  });
+
+  it('keeps a role a job title rather than a sentence about the learner', () => {
+    // A title can be searched for and checked against a real vacancy. A sentence
+    // starts making claims about the person reading it, which this guide cannot
+    // support and which the National Careers Service is there to answer.
+    for (const content of Object.values(CAREER_FAMILY_CONTENT)) {
+      for (const role of content.roles) {
+        expect(role, content.id).toMatch(/^[A-Z][A-Za-z ]{2,34}$/);
+        expect(role, content.id).not.toMatch(/\byou\b|\byour\b|\./i);
+      }
+    }
+  });
+
+  it('does not repeat a job title across two directions', () => {
+    // Two directions offering the same title would tell the learner the guide
+    // cannot actually tell them apart.
+    const seen = new Map<string, string>();
+    for (const content of Object.values(CAREER_FAMILY_CONTENT)) {
+      for (const role of content.roles) {
+        expect(seen.get(role), `${role} in ${content.id}`).toBeUndefined();
+        seen.set(role, content.id);
+      }
     }
   });
 

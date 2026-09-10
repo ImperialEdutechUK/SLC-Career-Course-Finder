@@ -159,7 +159,7 @@ export const FIXTURES: Fixture[] = [
       state: 'career_directions',
       familyIds: ['care_support', 'active_personal_services', 'education_development'],
       tiedFamilyIds: ['care_support'],
-      explanationContains: ['a mix of different activities']
+      explanationContains: ['a mix of activities']
     }),
 
   career('C-008', 'career_changer', 'A career changer wanting to organise work',

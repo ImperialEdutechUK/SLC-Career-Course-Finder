@@ -187,12 +187,15 @@ export function recommendCareerDirections(submission: ValidatedSubmission): Reco
     const activityLabels = item.matchedActivityIds.map(id => lowerFirst(labelFor('C2', id)));
     const dailyLabels = item.matchedDailyIds.map(id => lowerFirst(labelFor('C4', id)));
 
-    // "Why this appeared" quotes only what the learner actually selected.
-    const parts = [`you chose ${activityLabels.join(' and ')}`];
-    if (dailyLabels.length) parts.push(`and said you would like more ${dailyLabels.join(' and ')}`);
-    let why = `${content.label} appeared because ${parts.join(' ')}.`;
+    // "Why this appeared" quotes only what the learner actually selected. It does
+    // not open by naming the direction, because the heading two lines above
+    // already does, and the same clause repeated on all three cards buried the
+    // part that differs between them.
+    const parts = [`You chose ${activityLabels.join(' and ')}`];
+    if (dailyLabels.length) parts.push(`and want more ${dailyLabels.join(' and ')}`);
+    let why = `${parts.join(' ')}.`;
     if (c4.includes('mixed_activities')) {
-      why += ' You also said you would like a mix of different activities, so keep other directions open too.';
+      why += ' You also wanted a mix of activities, so keep other directions open.';
     }
 
     const investigate =
@@ -212,6 +215,7 @@ export function recommendCareerDirections(submission: ValidatedSubmission): Reco
       summary: content.summary,
       whyThisAppeared: why,
       everydayActivity: content.everydayActivity,
+      roles: content.roles,
       thingToInvestigate: investigate,
       howWorkIsChanging: content.changing,
       nextStep: nextStepWording(c6, c1, c5),
