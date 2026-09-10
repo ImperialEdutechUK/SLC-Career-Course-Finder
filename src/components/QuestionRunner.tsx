@@ -165,14 +165,6 @@ export function QuestionRunner({ journey }: { journey: JourneyId }) {
         </div>
 
         {index === 0 ? (
-          <p className="info">
-            {journey === 'course'
-              ? 'Answer a few questions to see suitable courses.'
-              : 'Answer a few questions to see career directions worth exploring.'}
-          </p>
-        ) : null}
-
-        {index === 0 ? (
           <ReusedAnswers
             journey={journey}
             state={state}

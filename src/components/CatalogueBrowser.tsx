@@ -64,9 +64,6 @@ export function CatalogueBrowser({
       <header className={styles.header}>
         <p className="eyebrow">South London College</p>
         <h1>Browse all courses</h1>
-        <p className={styles.lede}>
-          Explore all courses at South London College.
-        </p>
       </header>
 
       <div className={styles.searchBar}>

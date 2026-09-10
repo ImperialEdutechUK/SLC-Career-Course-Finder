@@ -92,11 +92,11 @@ export function ResultsView({
               ? 'Courses that may suit you'
               : 'What we found'}
         </h1>
-        <p className={`lede ${styles.lede}`}>
-          {journey === 'career'
-            ? 'Ideas to look into, not a verdict on what you would be good at.'
-            : 'Based on your answers, here are some courses to explore.'}
-        </p>
+        {journey === 'career' ? (
+          <p className={`lede ${styles.lede}`}>
+            Ideas to look into, not a verdict on what you would be good at.
+          </p>
+        ) : null}
         {/* The count of everything that matched, without a sentence explaining why a
             shortlist is a shortlist. The number is useful; the explanation was not. */}
         {results.totals && results.totals.directMatches > courseOptions.length ? (

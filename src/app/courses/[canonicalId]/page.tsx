@@ -75,10 +75,6 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
         <div className={styles.main}>
           <section className={styles.section} aria-labelledby="qualification-heading">
             <h2 id="qualification-heading">Qualification</h2>
-            <p className={styles.sectionNote}>
-              The award itself: who issues it and how demanding it is. One course can lead to more
-              than one award, and a similar title is not the same qualification.
-            </p>
             <dl className={styles.facts}>
               <Fact label="Awarding organisation" value={course.awardingBodyLabel} />
               <Fact label="Level" value={course.levelLabel} unknownNote="The source listing left this blank." />
@@ -102,10 +98,6 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
 
           <section className={styles.section} aria-labelledby="offer-heading">
             <h2 id="offer-heading">Delivery offer</h2>
-            <p className={styles.sectionNote}>
-              What the college currently sells: the price, the study expectation and the access
-              period. These change more often than the qualification does.
-            </p>
             <div className={styles.priceBlock}>
               <PriceDisplay priceGbp={course.priceGbp} />
             </div>
@@ -127,8 +119,7 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
           <section className={styles.section} aria-labelledby="requirements-heading">
             <h2 id="requirements-heading">Requirements</h2>
             <p className={styles.sectionNote}>
-              What you would need before starting. Nothing here has been checked against your
-              answers, and an unknown requirement never counts as met.
+              An unknown requirement never counts as met.
             </p>
             <dl className={styles.facts}>
               <Fact
