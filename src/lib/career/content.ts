@@ -59,7 +59,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
       variety_challenge: 'Check how varied the caseload is, because some services are far more repetitive than others.',
       creativity: 'Check whether the service offers activity, wellbeing or engagement work as well as personal care.'
     },
-    changing: 'Ask employers which parts of the role digital records and remote monitoring now cover, and which remain hands-on.',
+    changing: 'Ask which parts of the role digital records and remote monitoring now cover, and which parts the employer expects to stay face to face.',
     suggestedSubjectIds: ['health_and_social_care'],
     independentGuidance: NATIONAL_CAREERS
   },
@@ -77,7 +77,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
       variety_challenge: 'Check how much the age group and subject range changes across a week.',
       creativity: 'Check how much freedom you would have to plan activities rather than deliver a set scheme.'
     },
-    changing: 'Ask how the setting uses digital tools for planning, marking and assessment, and what that changes about the job.',
+    changing: 'Ask how the setting uses digital tools for planning, marking and assessment, and which parts of teaching it expects to stay in the room.',
     suggestedSubjectIds: ['teaching_and_education', 'childcare', 'coaching_and_mentoring'],
     independentGuidance: NATIONAL_CAREERS
   },
@@ -95,7 +95,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
       variety_challenge: 'Check how much of the week is recurring process work.',
       creativity: 'Check whether the role includes improving how things are done, not only running them.'
     },
-    changing: 'Ask which processes the employer has automated recently, and which parts of the role that changed rather than removed.',
+    changing: 'Ask which administrative tasks this employer has already automated, what is next on their list, and what the people who did that work moved on to.',
     suggestedSubjectIds: ['business_and_management', 'human_resources', 'employability_skills'],
     independentGuidance: NATIONAL_CAREERS
   },
@@ -113,7 +113,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
       variety_challenge: 'Check whether the role covers one ledger or a wider range of finance work.',
       creativity: 'Check whether the role includes analysis and improvement rather than record keeping alone.'
     },
-    changing: 'Ask how much of the reconciliation and reporting is automated, and where the employer still needs judgement applied.',
+    changing: 'Ask which reporting and reconciliation is already automated here, and which decisions the employer still wants a person to make.',
     suggestedSubjectIds: ['accounting_and_finance'],
     independentGuidance: NATIONAL_CAREERS
   },
@@ -131,7 +131,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
       variety_challenge: 'Check how often the technology and the type of problem change.',
       creativity: 'Check whether the role includes designing solutions or mainly maintaining existing ones.'
     },
-    changing: 'Ask how teams here use AI-assisted tooling day to day, and which skills they screen for now that they did not two years ago.',
+    changing: 'Ask how teams here use AI-assisted tooling day to day, and which skills they now screen for that they did not two years ago.',
     suggestedSubjectIds: ['information_technology'],
     independentGuidance: NATIONAL_CAREERS
   },
@@ -149,7 +149,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
       variety_challenge: 'Check how much the work changes between jobs or sites.',
       creativity: 'Check whether the role includes designing or improving, not only assembling and maintaining.'
     },
-    changing: 'Ask what has been mechanised on site recently, and which tasks the employer says still need a person there.',
+    changing: 'Ask what has been mechanised on site recently, what has not, and which tasks the employer says still need someone physically there.',
     suggestedSubjectIds: ['science_and_engineering'],
     independentGuidance: NATIONAL_CAREERS
   },
@@ -167,7 +167,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
       variety_challenge: 'Check how often the type of project and audience changes.',
       creativity: 'Check how much creative freedom the role actually has, as some content work is closely specified.'
     },
-    changing: 'Ask how the team uses generative tools in its workflow, and what they expect a person to bring on top of them.',
+    changing: 'Ask how the team uses generative tools in its workflow, what it will not use them for, and what it still expects a person to bring.',
     suggestedSubjectIds: ['marketing'],
     independentGuidance: NATIONAL_CAREERS
   },
@@ -185,7 +185,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
       variety_challenge: 'Check how varied the customer requests are day to day.',
       creativity: 'Check whether the role includes improving the service rather than only delivering it.'
     },
-    changing: 'Ask which enquiries are answered automatically and which reach a person, and where this role sits in that.',
+    changing: 'Ask which customer enquiries are answered automatically here, which reach a person, and what the employer wants those people to be better at.',
     suggestedSubjectIds: ['business_and_management', 'marketing', 'hospitality_management', 'employability_skills'],
     independentGuidance: NATIONAL_CAREERS
   },
@@ -203,7 +203,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
       variety_challenge: 'Check how much the species and tasks vary in that setting.',
       creativity: 'Check whether the role includes education, engagement or enrichment work.'
     },
-    changing: 'Ask what monitoring or recording technology the employer uses, and how much of the work is still done on site.',
+    changing: 'Ask what monitoring or recording technology the employer uses, and how much of the work is still hands-on and outdoors.',
     suggestedSubjectIds: ['animal_care'],
     independentGuidance: NATIONAL_CAREERS
   },
@@ -221,7 +221,7 @@ export const CAREER_FAMILY_CONTENT: Record<string, CareerFamilyContent> = {
       variety_challenge: 'Check how much the client group and setting varies.',
       creativity: 'Check how much freedom you would have to design sessions and programmes.'
     },
-    changing: 'Ask how much of the service is delivered face to face, and what the employer uses apps or online sessions for.',
+    changing: 'Ask how much of the service is delivered in person, what the employer uses apps or online sessions for, and which clients want which.',
     suggestedSubjectIds: ['sports_and_fitness', 'beauty_hair_and_wellbeing'],
     independentGuidance: NATIONAL_CAREERS
   }

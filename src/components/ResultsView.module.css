@@ -43,39 +43,3 @@
   max-width: none;
 }
 
-/* --------------------------------------------------------------- automation
-   Sits after the directions, not before them: it answers a worry rather than
-   framing the results. */
-.automation {
-  margin-top: var(--s-4);
-  padding: var(--s-5);
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-card);
-  box-shadow: var(--depth-2);
-}
-
-.automationHeading {
-  font-size: var(--text-lg);
-  letter-spacing: var(--track-tight);
-  margin-bottom: var(--s-2);
-}
-
-.automationCopy {
-  margin: 0 0 var(--s-3);
-  color: var(--ink-muted);
-  font-size: var(--text-sm);
-  line-height: 1.6;
-  max-width: 62ch;
-}
-
-.automationLink {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  font-weight: 600;
-  font-size: var(--text-sm);
-  color: var(--accent-text);
-  text-decoration: none;
-}
-.automationLink:hover { text-decoration: underline; text-underline-offset: 3px; }
