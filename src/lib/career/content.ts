@@ -247,3 +247,8 @@ export function activityPhrase(label: string): string {
 }
 
 export const CAREER_JOURNEY: JourneyId = 'career';
+
+/** The career directions this guide can suggest, for display on the homepage. */
+export function careerFamilyLabels(): string[] {
+  return Object.values(CAREER_FAMILY_CONTENT).map(family => family.label);
+}

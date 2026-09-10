@@ -217,12 +217,6 @@ export function ResultsView({
       </div>
 
       <AdviserCTA />
-
-      <p className={styles.provenance}>
-        Based on catalogue release {results.versions.catalogue}, questionnaire{' '}
-        {results.versions.questionnaire}, career map {results.versions.careerMap}. Explanations are
-        written from approved facts using fixed templates.
-      </p>
     </div>
   );
 }

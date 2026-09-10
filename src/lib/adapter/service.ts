@@ -233,12 +233,8 @@ export function recommendCareerDirections(submission: ValidatedSubmission): Reco
     };
   });
 
-  if (scoring.tiedFamilyIds.length > 1) {
-    notices.push({
-      code: 'TIED_DIRECTIONS',
-      message: 'Several directions matched your answers equally. They are all worth exploring.'
-    });
-  }
+  // No tied-directions notice. The cards carry no numbering and no ordering
+  // language, so nothing on the page implies a ranking that needs disclaiming.
   if (directions.some(direction => direction.slcCoverage !== 'reviewed_links_available')) {
     notices.push({
       code: 'OUTSIDE_COVERAGE',

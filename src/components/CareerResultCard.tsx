@@ -92,9 +92,6 @@ export function CareerResultCard({
               );
             })}
           </ul>
-          <p className={styles.chartNote}>
-            You can change the subject before we compare courses.
-          </p>
         </div>
       ) : null}
     </article>

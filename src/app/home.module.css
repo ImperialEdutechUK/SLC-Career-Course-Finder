@@ -146,6 +146,7 @@
   .bento { grid-template-columns: repeat(4, 1fr); }
   .primary { grid-column: span 2; grid-row: span 2; }
   .steps { grid-column: span 2; }
+  .directions { grid-column: span 2; grid-row: span 2; }
   .course { grid-column: span 2; }
   .external { grid-column: 1 / -1; }
 }
@@ -201,3 +202,28 @@
 }
 .external .tileGo { margin-top: 0; }
 .external .tileEyebrow { order: -1; width: 100%; }
+
+/* ------------------------------------------------------ career directions
+   The actual directions this guide can suggest, listed from the career map.
+   Naming them is what makes the page read as career guidance rather than as a
+   generic search box. */
+.directions { align-content: start; }
+
+.directionList {
+  list-style: none;
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.directionList li {
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--radius-chip);
+  background: var(--accent-tint);
+  border: 1px solid var(--accent-tint-line);
+  color: var(--accent-active);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.2;
+}
