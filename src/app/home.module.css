@@ -146,8 +146,9 @@
   .bento { grid-template-columns: repeat(4, 1fr); }
   .primary { grid-column: span 2; grid-row: span 2; }
   .steps { grid-column: span 2; }
-  .directions { grid-column: span 2; grid-row: span 2; }
-  .course { grid-column: span 2; }
+  /* Career fills the left, the two supporting tiles stack on the right, and the
+     link out runs full width beneath. No empty cell. */
+  .directions { grid-column: span 2; }
   .external { grid-column: 1 / -1; }
 }
 
@@ -189,7 +190,6 @@
   font-weight: 700;
 }
 
-.course { align-content: start; }
 
 .external {
   display: flex;

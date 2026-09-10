@@ -13,7 +13,6 @@ import { config } from '@/lib/config';
  */
 export default function HomePage() {
   const career = questionnaire.routes.career;
-  const course = questionnaire.routes.course;
   const directions = careerFamilyLabels();
   const familyCount = getRelease().taxonomy.length;
 
@@ -48,15 +47,6 @@ export default function HomePage() {
             {directions.map(label => <li key={label}>{label}</li>)}
           </ul>
         </div>
-
-        <Link href="/guide/course" className={`${styles.tile} ${styles.course}`}>
-          <span className={styles.tileEyebrow}>Already know your subject?</span>
-          <span className={styles.tileHeading}>Find a course</span>
-          <span className={styles.tileCopy}>
-            {course.baseQuestionIds.length} short questions to reach a shortlist.
-          </span>
-          <span className={styles.tileGo}>Find a course <Arrow /></span>
-        </Link>
 
         <a
           className={`${styles.tile} ${styles.external}`}
