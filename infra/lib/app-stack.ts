@@ -12,12 +12,10 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import * as path from 'path';
 import type { SlcConfig } from './config';
-import { addApplicationAlarms } from './observability';
 
 export interface SlcAppStackProps extends StackProps {
   config: SlcConfig;
   certificate?: acm.ICertificate;
-  webAclArn: string;
 }
 
 /** Where `npm run build` leaves the standalone server, relative to this file. */
@@ -32,7 +30,7 @@ export class SlcAppStack extends Stack {
 
   constructor(scope: Construct, id: string, props: SlcAppStackProps) {
     super(scope, id, props);
-    const { config, certificate, webAclArn } = props;
+    const { config, certificate } = props;
 
     // ---------------------------------------------------------------- static assets
 
@@ -237,7 +235,6 @@ export class SlcAppStack extends Stack {
       ...(config.domainName && certificate
         ? { domainNames: [config.domainName], certificate }
         : {}),
-      webAclId: webAclArn,
       httpVersion: cloudfront.HttpVersion.HTTP2_AND_3,
       // A TLS policy can only be chosen alongside a custom certificate. On CloudFront's
       // own domain the policy is fixed at TLSv1 and setting this would be ignored, so it
@@ -299,13 +296,15 @@ export class SlcAppStack extends Stack {
       });
     }
 
-    // --------------------------------------------------------------- observability
-
     const siteUrl = config.domainName
       ? `https://${config.domainName}`
       : `https://${distribution.distributionDomainName}`;
 
-    addApplicationAlarms(this, { config, server, siteUrl });
+    // No web ACL, no alarms and no canary. They cost about $19.50 a month between
+    // them on a service whose own compute and storage cost pennies, which is not a
+    // sensible trade for a pilot. The application still caps request bodies at 64 KB
+    // and rejects unknown properties, and readiness still fails closed on a bad
+    // catalogue. Reinstate them from git history before a public launch.
 
     // ----------------------------------------------------------------------- output
 
