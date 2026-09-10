@@ -118,9 +118,6 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ c
 
           <section className={styles.section} aria-labelledby="requirements-heading">
             <h2 id="requirements-heading">Requirements</h2>
-            <p className={styles.sectionNote}>
-              An unknown requirement never counts as met.
-            </p>
             <dl className={styles.facts}>
               <Fact
                 label="Entry requirements"

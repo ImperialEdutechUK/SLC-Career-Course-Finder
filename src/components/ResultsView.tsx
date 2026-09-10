@@ -92,11 +92,6 @@ export function ResultsView({
               ? 'Courses that may suit you'
               : 'What we found'}
         </h1>
-        {journey === 'career' ? (
-          <p className={`lede ${styles.lede}`}>
-            Ideas to look into, not a verdict on what you would be good at.
-          </p>
-        ) : null}
         {/* The count of everything that matched, without a sentence explaining why a
             shortlist is a shortlist. The number is useful; the explanation was not. */}
         {results.totals && results.totals.directMatches > courseOptions.length ? (
@@ -179,11 +174,6 @@ export function ResultsView({
           {futureOptions.length ? (
             <section aria-labelledby="future-heading" className={styles.section}>
               <h2 id="future-heading" className={styles.sectionHeading}>Another step is needed first</h2>
-              <p className={styles.sectionNote}>
-                These courses are relevant, but at least one stated entry requirement is not met
-                yet. They are not ready to start, and we have not verified a preparation route to
-                them. An adviser can tell you what would be needed.
-              </p>
               <div className={styles.cards}>
                 {futureOptions.map(option => (
                   <CourseResultCard
