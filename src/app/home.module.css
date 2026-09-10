@@ -1,157 +1,73 @@
-.page { padding-bottom: 1rem; }
+.page { padding-bottom: var(--s-8); }
 
-/* Flat block of colour, one hairline, no wash. The hero is short on purpose:
-   its whole job is to ask the question and hand over to the two choices. */
+/* The page background is level 1 and stays flat. Nothing here casts a shadow
+   except the one card that can be acted on. */
 .hero {
-  background: var(--surface);
-  border-bottom: 1px solid var(--hairline);
-  padding-block: clamp(var(--s-6), 1.5rem + 3vw, var(--s-8)) clamp(var(--s-5), 1.2rem + 2vw, var(--s-7));
+  padding-block: clamp(var(--s-7), 2rem + 5vw, 6rem) clamp(var(--s-6), 1.6rem + 3vw, var(--s-8));
 }
 
-.heroInner { display: grid; gap: var(--s-5); align-items: start; }
-.heroInner > div { max-width: 44rem; }
+.title {
+  max-width: 16ch;
+  margin-bottom: var(--s-4);
+}
 
-.assurances {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--s-2) var(--s-5);
-  font-size: var(--text-sm);
+.lede {
+  max-width: 44ch;
+  margin: 0 0 var(--s-6);
+  font-size: var(--text-md);
+  line-height: 1.55;
   color: var(--ink-muted);
 }
-.assurances li {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.6rem;
-  align-items: start;
-}
-.assurances li::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  margin-top: 0.6rem;
-  background: var(--accent);
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-bottom: var(--s-5);
 }
 
-.assuranceStrip {
-  padding-block: var(--s-5);
-  border-top: 1px solid var(--hairline);
-}
-
-.title { margin-bottom: var(--s-4); }
-
-.lede { max-width: 40rem; font-size: var(--text-md); color: var(--ink-muted); }
-
-.choices { padding-block: clamp(var(--s-5), 1.2rem + 2vw, var(--s-7)) var(--s-5); }
-
-.journeys {
-  display: grid;
-  gap: var(--s-4);
-}
-
-.journey {
-  display: grid;
-  align-content: start;
-  gap: var(--s-2);
-  padding: var(--s-5);
-  background: var(--surface);
-  border: 1px solid var(--hairline-strong);
-  border-radius: var(--radius);
-  text-decoration: none;
-  color: inherit;
-  transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
-}
-
-.journey:hover,
-.journey:focus-visible {
-  border-color: var(--accent);
-  background: var(--accent-tint);
-}
-.journey:hover .journeyGo,
-.journey:focus-visible .journeyGo { background: var(--accent-hover); }
-
-
-
-.journeyTitle {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 1.2rem + 1.1vw, 2rem);
-  font-weight: 600;
-  color: var(--ink);
-  line-height: 1.1;
-  letter-spacing: var(--track-display);
-}
-
-.journeyCopy { color: var(--ink-muted); max-width: 34rem; font-size: var(--text-base); }
-
-.journeyEffort {
+.count {
+  margin: 0;
   font-size: var(--text-sm);
   color: var(--ink-faint);
-  padding-top: var(--s-1);
 }
 
-/* The affordance to proceed, stated rather than implied. */
-.journeyAction {
-  display: flex;
+/* Career exploration: a single card, deliberately narrower and quieter than the
+   two actions above it, so the hierarchy is legible without reading a word. */
+.secondary { padding-bottom: var(--s-6); }
+
+.career {
+  display: grid;
+  gap: var(--s-2);
+  max-width: 34rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.careerTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: var(--track-tight);
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.careerCopy {
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.careerGo {
+  display: inline-flex;
   align-items: center;
-  gap: var(--s-3);
-  margin-top: var(--s-4);
-  padding-top: var(--s-4);
-  border-top: 1px solid var(--hairline);
+  gap: var(--s-2);
+  margin-top: var(--s-2);
   font-weight: 600;
   color: var(--accent-text);
 }
 
-.journeyGo {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius);
-  background: var(--accent);
-  color: #fff;
-  flex: none;
-  transition: background-color var(--dur) var(--ease);
-}
-
-.secondary {
-  margin-top: var(--s-5);
-  color: var(--ink-muted);
-  font-size: var(--text-sm);
-  max-width: none;
-}
-
-.explain {
-  padding-block: clamp(1.5rem, 1rem + 2vw, 2.5rem) 0;
-}
-
-.explainHeading {
-  font-size: 1.15rem;
-  padding-top: 1.75rem;
-  border-top: 1px solid var(--line);
-  margin-bottom: 1.25rem;
-}
-
-.explainGrid {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.explainItem h3 {
-  font-family: var(--font-text);
-  font-size: 0.98rem;
-  font-weight: 600;
-  color: var(--ink-900);
-  margin-bottom: 0.35rem;
-}
-
-.explainItem p { font-size: 0.95rem; color: var(--ink-600); margin: 0; }
-
-@media (min-width: 62rem) {
-  .assurances { grid-template-columns: repeat(4, 1fr); }
-}
-
 @media (min-width: 46rem) {
-  .journeys { grid-template-columns: 1fr 1fr; }
-  .explainGrid { grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .title { font-size: clamp(2.75rem, 1.8rem + 3.6vw, 4rem); }
 }

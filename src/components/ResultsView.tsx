@@ -86,21 +86,22 @@ export function ResultsView({
         <h1 className={styles.title}>
           {journey === 'career'
             ? careerDirections.length
-              ? 'Directions worth exploring'
+              ? 'Career directions to explore'
               : 'Where to look next'
             : courseOptions.length
-              ? 'Starting points to consider'
+              ? 'Courses that may suit you'
               : 'What we found'}
         </h1>
         <p className={`lede ${styles.lede}`}>
           {journey === 'career'
-            ? 'These are ideas to look into, not a verdict on what you would be good at. Nothing here is an aptitude or personality result.'
-            : 'These options are shown so you can compare them. Entry requirements and costs are confirmed by the college, not by this guide.'}
+            ? 'Ideas to look into, not a verdict on what you would be good at.'
+            : 'Based on your answers, here are some courses to explore.'}
         </p>
+        {/* The count of everything that matched, without a sentence explaining why a
+            shortlist is a shortlist. The number is useful; the explanation was not. */}
         {results.totals && results.totals.directMatches > courseOptions.length ? (
           <p className={styles.totals}>
-            {results.totals.directMatches} courses matched your subject. We are showing a small,
-            varied selection rather than a long list.
+            {results.totals.directMatches} courses matched your subject
           </p>
         ) : null}
       </header>

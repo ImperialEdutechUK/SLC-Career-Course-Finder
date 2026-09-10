@@ -16,30 +16,21 @@ export const metadata: Metadata = {
 export default function AdviserPage() {
   return (
     <div className={`shell shell--narrow ${styles.page}`}>
-      <p className="eyebrow">Support</p>
       <h1>Talk to an adviser</h1>
-      <p className="lede">
-        Some things are easier to check with a person: whether a qualification is the one an
-        employer asked for, what a course actually costs in total, and whether you already meet
-        the entry requirements.
+      <p className={styles.lede}>
+        Need help choosing a course? Speak to South London College directly.
       </p>
 
-      <div className={styles.panel}>
-        <h2 className={styles.panelHeading}>Contact requests are not yet handled by this guide</h2>
-        <p>
-          {config.contactRequestsEnabled
-            ? 'Adviser requests are enabled for this environment.'
-            : 'Sending an adviser request from this page is switched off until message delivery, consent records and retention rules are in place. We would rather tell you that than show a form that quietly loses your message.'}
-        </p>
-        <p>
-          In the meantime, use the contact details on the college website. An adviser conversation
-          is not an application, and it does not commit you to anything.
-        </p>
-        <a className="btn btn--primary" href={config.slcCourseOrigin} rel="noopener noreferrer" target="_blank">
-          Go to southlondoncollege.org
-          <span className="visually-hidden"> (opens in a new tab)</span>
-        </a>
-      </div>
+      <a className="btn btn--primary btn--lg" href={config.slcCourseOrigin} rel="noopener noreferrer" target="_blank">
+        Contact South London College
+        <span className="visually-hidden"> (opens in a new tab)</span>
+      </a>
+
+      <p className={styles.note}>
+        {config.contactRequestsEnabled
+          ? 'Adviser requests are enabled for this environment.'
+          : 'Messages cannot be sent from this page yet, so use the contact details on the college website.'}
+      </p>
 
       <h2 className={styles.heading}>Useful things to ask</h2>
       <ul className={styles.list}>
@@ -51,8 +42,7 @@ export default function AdviserPage() {
       </ul>
 
       <p className={styles.footerNote}>
-        You can also <Link href="/courses">browse all courses</Link> or{' '}
-        <Link href="/">start the guide again</Link>.
+        Or <Link href="/courses">browse all courses</Link>.
       </p>
     </div>
   );

@@ -57,10 +57,8 @@ export function CatalogueBrowser({
       <header className={styles.header}>
         <p className="eyebrow">South London College</p>
         <h1>Browse all courses</h1>
-        <p className={`lede ${styles.lede}`}>
-          Every course in the published catalogue, across {taxonomy.length} subject areas. Prices,
-          entry requirements and study time are confirmed on each course page at the college, not
-          in this guide.
+        <p className={styles.lede}>
+          Explore all courses at South London College.
         </p>
       </header>
 
@@ -89,6 +87,51 @@ export function CatalogueBrowser({
           Filters{activeCount ? ` (${activeCount})` : ''}
         </button>
       </div>
+
+      {activeCount ? (
+        <div className={styles.chips}>
+          {categoryIds.map(id => (
+            <span key={id} className="chip">
+              {taxonomy.find(c => c.id === id)?.label ?? id}
+              <button
+                type="button"
+                className="chip__remove"
+                onClick={() => setCategoryIds(ids => ids.filter(item => item !== id))}
+              >
+                <span aria-hidden="true">×</span>
+                <span className="visually-hidden">Remove {taxonomy.find(c => c.id === id)?.label ?? id} filter</span>
+              </button>
+            </span>
+          ))}
+          {levelFilter.map(level => (
+            <span key={level} className="chip">
+              Level {level}
+              <button
+                type="button"
+                className="chip__remove"
+                onClick={() => setLevelFilter(items => items.filter(item => item !== level))}
+              >
+                <span aria-hidden="true">×</span>
+                <span className="visually-hidden">Remove Level {level} filter</span>
+              </button>
+            </span>
+          ))}
+          {bodyFilter.map(body => (
+            <span key={body} className="chip">
+              {body}
+              <button
+                type="button"
+                className="chip__remove"
+                onClick={() => setBodyFilter(items => items.filter(item => item !== body))}
+              >
+                <span aria-hidden="true">×</span>
+                <span className="visually-hidden">Remove {body} filter</span>
+              </button>
+            </span>
+          ))}
+          <button type="button" className={styles.clear} onClick={clearAll}>Clear all</button>
+        </div>
+      ) : null}
 
       <div className={styles.layout}>
         <aside className={`${styles.filters} ${filtersOpen ? styles.filtersOpen : ''}`} aria-label="Filter courses">

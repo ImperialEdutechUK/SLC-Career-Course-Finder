@@ -13,3 +13,16 @@
 .heading { font-size: 1.2rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
 .list { display: grid; gap: 0.5rem; max-width: 40rem; color: var(--ink-700); }
 .footerNote { font-size: 0.93rem; color: var(--ink-600); }
+
+.lede {
+  max-width: 42ch;
+  margin: 0 0 var(--s-5);
+  font-size: var(--text-md);
+  color: var(--ink-muted);
+}
+.note {
+  margin: var(--s-4) 0 0;
+  font-size: var(--text-sm);
+  color: var(--ink-faint);
+  max-width: 46ch;
+}

@@ -1,8 +1,9 @@
 .card {
   background: var(--surface);
   border: 1px solid var(--hairline);
-  border-radius: var(--radius);
+  border-radius: var(--radius-card);
   padding: clamp(var(--s-4), 0.85rem + 1.1vw, var(--s-6));
+  box-shadow: var(--depth-2);
 }
 
 .heading {
@@ -54,3 +55,4 @@
 /* Skip is pushed away from the two navigation buttons so it reads as a third,
    different kind of action rather than a peer of Back and Continue. */
 .footer > :last-child:nth-child(3) { margin-left: auto; }
+.body { display: grid; gap: var(--s-3); }

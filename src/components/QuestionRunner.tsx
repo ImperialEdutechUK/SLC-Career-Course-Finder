@@ -164,7 +164,13 @@ export function QuestionRunner({ journey }: { journey: JourneyId }) {
           <ProgressIndicator index={index} total={total} label={route.title} />
         </div>
 
-        {index === 0 ? <p className="info">{route.intro}</p> : null}
+        {index === 0 ? (
+          <p className="info">
+            {journey === 'course'
+              ? 'Answer a few questions to see suitable courses.'
+              : 'Answer a few questions to see career directions worth exploring.'}
+          </p>
+        ) : null}
 
         {index === 0 ? (
           <ReusedAnswers
@@ -182,9 +188,6 @@ export function QuestionRunner({ journey }: { journey: JourneyId }) {
           announce={announce}
           footer={
             <>
-              <button type="button" className="btn btn--secondary" onClick={onBack}>
-                {isFirst ? 'Back to start' : 'Back'}
-              </button>
               <button
                 type="button"
                 className="btn btn--primary"
@@ -192,6 +195,10 @@ export function QuestionRunner({ journey }: { journey: JourneyId }) {
                 disabled={evaluating}
               >
                 {evaluating ? 'Working it out…' : isLast ? 'See results' : 'Continue'}
+                {evaluating || isLast ? null : <Arrow />}
+              </button>
+              <button type="button" className="btn btn--secondary" onClick={onBack}>
+                Back
               </button>
               {question.allowSkip ? (
                 <button type="button" className="btn btn--quiet" onClick={onSkip}>
@@ -244,10 +251,18 @@ export function QuestionRunner({ journey }: { journey: JourneyId }) {
         ) : null}
 
         <p className={styles.reassure}>
-          Your answers stay on this page. We do not put them in the address bar, and you do not
-          need an account to see results. <Link href="/" className={styles.exit}>Start again</Link>
+          <Link href="/" className={styles.exit}>Start again</Link>
         </p>
       </div>
     </div>
+  );
+}
+
+function Arrow() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+      <path d="M5 12h13" />
+      <path d="m12 6 6 6-6 6" />
+    </svg>
   );
 }

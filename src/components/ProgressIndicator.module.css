@@ -28,13 +28,16 @@
 .track {
   display: flex;
   gap: 3px;
-  height: 4px;
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--bg-sunk);
 }
 
 .segment {
   flex: 1;
-  background: var(--hairline);
-  transition: background-color var(--dur) var(--ease);
+  background: transparent;
+  transition: background-color var(--dur-slow) var(--ease);
 }
 
 /* Answered. */
@@ -42,8 +45,4 @@
 
 /* Where you are now: the same accent, doubled in height so position is carried
    by more than colour. */
-.segmentCurrent {
-  background: var(--accent);
-  height: 8px;
-  margin-block: -2px;
-}
+.segmentCurrent { background: var(--accent); }

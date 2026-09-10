@@ -3,7 +3,7 @@
   border-bottom: 1px solid var(--hairline);
 }
 
-/* One clean rule in the single accent, not a multicolour gradient. */
+/* One clean rule in the single accent. */
 .rule {
   height: 3px;
   background: var(--accent-fill);
@@ -14,7 +14,7 @@
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 0.75rem 1.5rem;
-  padding-block: 0.7rem;
+  padding-block: var(--s-3);
 }
 
 .brand {
@@ -30,7 +30,7 @@
 .logo {
   flex: none;
   width: auto;
-  height: 46px;
+  height: 40px;
 }
 
 /* The service name sits behind a hairline, so the shield reads as the mark. */
@@ -69,8 +69,11 @@
 /* On the narrowest screens, keep only the primary catalogue link. */
 @media (max-width: 34rem) {
   .navLink:last-child { display: none; }
+  /* The name wrapped onto two lines and doubled the header height. The shield and
+     the one primary link are enough at this width. */
+  .service { display: none; }
   .navLink { padding-inline: 0.4rem; font-size: 0.85rem; }
-  .logo { height: 38px; }
+  .logo { height: 34px; }
   .service { font-size: 0.82rem; padding-left: 0.6rem; }
   .brand { gap: 0.6rem; }
 }
