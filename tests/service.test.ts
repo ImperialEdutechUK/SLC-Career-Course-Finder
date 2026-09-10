@@ -5,7 +5,7 @@ import { buildEngineRequest } from '@/lib/adapter/preferences';
 import { config } from '@/lib/config';
 
 function submit(journey: 'career' | 'course', answers: Record<string, unknown>, extra: Record<string, unknown> = {}) {
-  const validated = validateSubmission({ journey, questionnaireVersion: '2026-09-08.1', answers, ...extra });
+  const validated = validateSubmission({ journey, questionnaireVersion: '2026-09-08.2', answers, ...extra });
   if (!validated.ok || !validated.value) throw new Error(JSON.stringify(validated.errors));
   return validated.value;
 }
@@ -13,8 +13,7 @@ function submit(journey: 'career' | 'course', answers: Record<string, unknown>, 
 const COURSE = { F1: 'new_subject', F2: 'law', F3: 'new_to_subject', F4: null, F5: null };
 const CAREER = {
   C1: 'start_work', C2: ['support_people'], C3: ['help_others'],
-  C4: ['talk_people'], C5: 'starting_beginning', C6: 'introductory_course'
-};
+  C4: ['talk_people'], C5: 'starting_beginning', C6: 'introductory_course', C8: 'change_with_training' };
 
 describe('adapter preference mapping', () => {
   it('maps F1, F3 and F2 to the identical engine identifiers', () => {

@@ -17,8 +17,16 @@
  * 2. A third dimension reads C3, what would matter most to you in your work.
  *    Version 0.1 collected that answer and used it only to pick which sentence
  *    to show, so a learner answered a question that could not affect the result.
+ *
+ * Version 0.3 adds a fourth dimension for C8, appetite for change.
+ *
+ * `prefer_steady` means the work changes at a slower pace. It does NOT mean the
+ * work is safe from automation, and nothing in the interface may present it that
+ * way. The published evidence describes broad occupation groups; these ten
+ * families are editorial hypotheses, and no one has validated a correspondence
+ * between the two. See docs/QUESTIONNAIRE-CHANGE-PROPOSAL.md.
  */
-export const CAREER_MAP_VERSION = 'career-map-0.2.0-provisional';
+export const CAREER_MAP_VERSION = 'career-map-0.3.0-provisional';
 export const CAREER_MAP_REVIEW_STATUS = 'provisional_awaiting_slc_editorial_approval';
 
 /** Association strength: 1.0 central to the work, 0.6 a real part of it, 0.3 at the edges. */
@@ -32,6 +40,8 @@ export interface CareerFamilyMapping {
   daily: Record<string, number>;
   /** C3 "what would matter most" option ids, weighted. */
   values: Record<string, number>;
+  /** C8 appetite-for-change option ids, weighted. Pace of change, not job security. */
+  pace: Record<string, number>;
 }
 
 const MATRIX: CareerFamilyMapping[] = [
@@ -39,61 +49,71 @@ const MATRIX: CareerFamilyMapping[] = [
     id: 'care_support',
     activities: { support_people: 1, help_learning: 0.3 },
     daily: { talk_people: 1, hands_on: 0.6 },
-    values: { help_others: 1, fit_commitments: 0.3 }
+    values: { help_others: 1, fit_commitments: 0.3 },
+    pace: { change_with_training: 0.6, prefer_steady: 1 }
   },
   {
     id: 'education_development',
     activities: { help_learning: 1, support_people: 0.6, explain_choices: 0.3 },
     daily: { talk_people: 1, information_digital: 0.3 },
-    values: { help_others: 1, progression: 0.3 }
+    values: { help_others: 1, progression: 0.3 },
+    pace: { change_with_training: 1, prefer_steady: 0.6, keen_change: 0.3 }
   },
   {
     id: 'business_operations',
     activities: { organise_tasks: 1, solve_problems: 0.3 },
     daily: { focus_tasks: 1, information_digital: 0.6 },
-    values: { clear_routine: 0.6, progression: 0.6 }
+    values: { clear_routine: 0.6, progression: 0.6 },
+    pace: { change_with_training: 1, keen_change: 0.6 }
   },
   {
     id: 'finance_analysis',
     activities: { solve_problems: 1, organise_tasks: 0.6 },
     daily: { information_digital: 1, focus_tasks: 1 },
-    values: { progression: 1, clear_routine: 0.6 }
+    values: { progression: 1, clear_routine: 0.6 },
+    pace: { change_with_training: 1, keen_change: 0.6, prefer_steady: 0.3 }
   },
   {
     id: 'digital_technology',
     activities: { solve_problems: 1, make_improve: 0.6, create_ideas: 0.3 },
     daily: { information_digital: 1, focus_tasks: 0.6 },
-    values: { variety_challenge: 1, progression: 0.6, creativity: 0.3 }
+    values: { variety_challenge: 1, progression: 0.6, creativity: 0.3 },
+    pace: { keen_change: 1, change_with_training: 0.6 }
   },
   {
     id: 'practical_technical',
     activities: { make_improve: 1, solve_problems: 0.6, animals_nature: 0.3 },
     daily: { hands_on: 1, focus_tasks: 0.6 },
-    values: { variety_challenge: 0.6, clear_routine: 0.3 }
+    values: { variety_challenge: 0.6, clear_routine: 0.3 },
+    pace: { prefer_steady: 1, change_with_training: 0.6, keen_change: 0.3 }
   },
   {
     id: 'creative_communication',
     activities: { create_ideas: 1, explain_choices: 0.6 },
     daily: { information_digital: 0.6, talk_people: 0.6 },
-    values: { creativity: 1, variety_challenge: 0.6 }
+    values: { creativity: 1, variety_challenge: 0.6 },
+    pace: { keen_change: 1, change_with_training: 0.6 }
   },
   {
     id: 'people_commercial_services',
     activities: { explain_choices: 1, organise_tasks: 0.6, support_people: 0.3 },
     daily: { talk_people: 1, information_digital: 0.6 },
-    values: { progression: 0.6, variety_challenge: 0.6 }
+    values: { progression: 0.6, variety_challenge: 0.6 },
+    pace: { keen_change: 0.6, change_with_training: 0.6, prefer_steady: 0.3 }
   },
   {
     id: 'animals_environment',
     activities: { animals_nature: 1, make_improve: 0.3 },
     daily: { hands_on: 1, focus_tasks: 0.3 },
-    values: { variety_challenge: 0.3, fit_commitments: 0.3 }
+    values: { variety_challenge: 0.3, fit_commitments: 0.3 },
+    pace: { prefer_steady: 1, change_with_training: 0.6 }
   },
   {
     id: 'active_personal_services',
     activities: { support_people: 0.6, make_improve: 0.6, help_learning: 0.3 },
     daily: { hands_on: 1, talk_people: 0.6 },
-    values: { help_others: 0.6, fit_commitments: 0.6, variety_challenge: 0.3 }
+    values: { help_others: 0.6, fit_commitments: 0.6, variety_challenge: 0.3 },
+    pace: { change_with_training: 0.6, prefer_steady: 0.6, keen_change: 0.3 }
   }
 ];
 

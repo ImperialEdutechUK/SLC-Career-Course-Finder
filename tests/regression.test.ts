@@ -69,7 +69,7 @@ describe.each(FIXTURES.filter(f => f.kind === 'career'))('career $id: $descripti
   if (fixture.kind !== 'career') return;
 
   const validated = validateSubmission({
-    journey: 'career', questionnaireVersion: '2026-09-08.1', answers: fixture.answers, details: {}
+    journey: 'career', questionnaireVersion: '2026-09-08.2', answers: fixture.answers, details: {}
   });
 
   it('produces canonical answer ids that the contract accepts', () => {
@@ -133,7 +133,7 @@ describe.each(FIXTURES.filter(f => f.kind === 'course_release'))('course $id: $d
 
   const validated = validateSubmission({
     journey: 'course',
-    questionnaireVersion: '2026-09-08.1',
+    questionnaireVersion: '2026-09-08.2',
     answers: fixture.answers,
     details: fixture.details ?? {},
     filters: fixture.filters ?? {}

@@ -15,12 +15,12 @@ const ROUTES = ['career', 'course'] as const;
 
 describe('questionnaire configuration', () => {
   it('is the supplied content version', () => {
-    expect(questionnaire.contentVersion).toBe('2026-09-08.1');
+    expect(questionnaire.contentVersion).toBe('2026-09-08.2');
     expect(questionnaire.questionnaireId).toBe('slc_next_step_guide');
   });
 
   it('declares the expected question ids in order', () => {
-    expect(getRoute('career').baseQuestionIds).toEqual(['C1', 'C2', 'C3', 'C4', 'C5', 'C6']);
+    expect(getRoute('career').baseQuestionIds).toEqual(['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C8']);
     expect(getRoute('career').optionalQuestionIds).toEqual(['C7']);
     expect(getRoute('course').baseQuestionIds).toEqual(['F1', 'F2', 'F3', 'F4', 'F5']);
     expect(getRoute('course').optionalQuestionIds).toEqual(['F6']);
@@ -62,7 +62,7 @@ describe('questionnaire configuration', () => {
   });
 
   it('screen counts stay within the configured maximums', () => {
-    expect(getRoute('career').questionCount.maximumScreens).toBe(7);
+    expect(getRoute('career').questionCount.maximumScreens).toBe(8);
     expect(getRoute('course').questionCount.maximumScreens).toBe(6);
   });
 
@@ -216,7 +216,7 @@ describe('conditional detail fields', () => {
 describe('submission contract', () => {
   const valid = {
     journey: 'course',
-    questionnaireVersion: '2026-09-08.1',
+    questionnaireVersion: '2026-09-08.2',
     answers: { F1: 'new_subject', F2: 'law', F3: 'new_to_subject', F4: null, F5: null },
     details: {}
   };

@@ -5,7 +5,7 @@ full course catalogue. It helps a learner reach an understandable next step, and
 plainly what it does not know.
 
 Built from the supplied SLC developer package: `questionnaire.json` (content version
-`2026-09-08.1`) is the authority for every question, answer identifier, selection limit
+`2026-09-08.2`) is the authority for every question, answer identifier, selection limit
 and reuse rule, and the reference recommendation engine (`0.2.0`) is used unmodified as
 the only ranking authority.
 
@@ -72,7 +72,7 @@ configuration.
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
-| `QUESTIONNAIRE_VERSION` | `2026-09-08.1` | The only content version the API accepts |
+| `QUESTIONNAIRE_VERSION` | `2026-09-08.2` | The only content version the API accepts |
 | `SLC_COURSE_ORIGIN` | `https://southlondoncollege.org` | Where course links point |
 | `ALLOWED_COURSE_URL_HOSTS` | `southlondoncollege.org` | Exact lowercase hostnames the engine may serve. **Must be set explicitly in production** |
 | `CAREER_C7_ENABLED` | `false` | Optional career comparison. Needs reviewed scenario pairs (AR-007) |

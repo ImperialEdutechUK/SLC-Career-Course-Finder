@@ -11,8 +11,8 @@ import { requireQuestion } from '@/lib/questionnaire';
  * Expected values below are calculated by hand from that definition.
  */
 
-const score = (C2: string[], C4: string[] = [], C3: string[] = []) =>
-  scoreCareerDirections({ C2, C3, C4 });
+const score = (C2: string[], C4: string[] = [], C3: string[] = [], C8?: string) =>
+  scoreCareerDirections({ C2, C3, C4, ...(C8 ? { C8 } : {}) });
 const find = (result: ReturnType<typeof score>, id: string) =>
   result.ranked.find(item => item.familyId === id);
 
@@ -95,6 +95,31 @@ describe('normalised scoring', () => {
       .map(id => find(result, id)!.activity);
     expect(new Set(scores).size).toBeGreaterThan(1);
     expect(scores[0]).toBeGreaterThan(scores[1]);
+  });
+
+  it('reads C8 as a fourth dimension, at half weight so it orders rather than decides', () => {
+    const steady = score(['solve_problems'], ['hands_on'], [], 'prefer_steady');
+    const keen = score(['solve_problems'], ['hands_on'], [], 'keen_change');
+    // practical_technical is weighted prefer_steady 1.0 and keen_change 0.3.
+    expect(find(steady, 'practical_technical')!.pace).toBeCloseTo(0.5);
+    expect(find(keen, 'practical_technical')!.pace).toBeCloseTo(0.15);
+    // Appetite must never outweigh what the learner wants to do. Digital weights
+    // solve_problems as central; no C8 answer can pull practical above it on
+    // activity alone.
+    expect(find(keen, 'digital_technology')!.activity)
+      .toBeGreaterThan(find(keen, 'practical_technical')!.activity);
+  });
+
+  it('never lets appetite for change create a direction on its own', () => {
+    const result = score([], [], [], 'prefer_steady');
+    expect(result.ranked).toEqual([]);
+    expect(result.broadExploration).toBe(true);
+  });
+
+  it('treats an unsure appetite as no signal rather than a vote', () => {
+    const unsure = score(['solve_problems'], ['focus_tasks'], [], 'unsure');
+    const none = score(['solve_problems'], ['focus_tasks']);
+    expect(find(unsure, 'finance_analysis')!.score).toBe(find(none, 'finance_analysis')!.score);
   });
 
   it('reads C3 as a third dimension, so answering it can change the order', () => {

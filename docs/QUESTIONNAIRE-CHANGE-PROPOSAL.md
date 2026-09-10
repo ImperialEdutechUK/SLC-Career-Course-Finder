@@ -1,8 +1,10 @@
 # Proposed questionnaire change: 2026-09-08.1 → 2026-09-08.2
 
-**Status: draft for South London College. Nothing in this document is implemented.**
-The running service still serves `2026-09-08.1` unchanged, and
-`data/source/questionnaire.json` is byte-identical to the supplied package.
+**Status: Change 3 is implemented at the client's instruction. Changes 1 and 2 are
+still drafts.** The service now serves `2026-09-08.2` with C8 added as a seventh
+career question, and `data/source/questionnaire.json` has been edited. It is no
+longer identical to the supplied package. The college still needs to review all
+three changes, and Change 3 retrospectively.
 
 Raised because automation is now the most common worry learners bring to a
 careers conversation, and the career questionnaire currently has no way to hear
@@ -126,10 +128,17 @@ directions shown are more durable than the learner's current field.
 actually answer. It asks about their appetite, not about the future of the labour
 market, so it can be answered honestly.
 
-**What it changes.** It becomes a fourth scoring dimension in the career map at
-weight 1, alongside activities, daily work and values. Directions differ
-genuinely in pace of change, and that is an editorial judgement of the same kind
-as every other row in the matrix.
+**What it changes.** It becomes a fourth scoring dimension in the career map.
+Directions differ genuinely in pace of change, and that is an editorial judgement
+of the same kind as every other row in the matrix.
+
+**Weight, revised during implementation from 1 to 0.5.** At full weight it
+overrode the daily-work answer: a learner who chose problem solving and hands-on
+work was shown finance ahead of practical work purely on appetite, which the
+regression fixture caught. C8 is a single select, so unlike the multi-select
+dimensions it is never divided by a second answer and would otherwise dominate.
+It is also the least concrete thing asked. Appetite now orders the list rather
+than deciding it.
 
 **Draft weights, for the college to accept or reject:**
 
@@ -150,9 +159,10 @@ as every other row in the matrix.
 jobs are safe from AI". It means the work changes at a slower pace, which is a
 different claim and the only one the evidence supports.
 
-**Question count.** Career goes from six questions to seven. If the college would
-rather not lengthen it, C8 replaces C6 ("How would you like to start exploring
-this?"), which currently affects wording only.
+**Question count.** Career has gone from six questions to seven, at the client's
+instruction. C8 sits after C6 and before the optional C7 branch. If the college
+would rather not lengthen it, C8 can replace C6 ("How would you like to start
+exploring this?"), which affects wording only.
 
 ---
 

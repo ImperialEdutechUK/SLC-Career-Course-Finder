@@ -82,7 +82,7 @@ describe('journey navigation', () => {
   });
 
   it('shows six career screens and five course screens with no branches', () => {
-    expect(visibleQuestionIds(newJourney('career'))).toEqual(['C1', 'C2', 'C3', 'C4', 'C5', 'C6']);
+    expect(visibleQuestionIds(newJourney('career'))).toEqual(['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C8']);
     expect(visibleQuestionIds(newJourney('course'))).toEqual(['F1', 'F2', 'F3', 'F4', 'F5']);
   });
 

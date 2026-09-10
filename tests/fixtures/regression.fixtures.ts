@@ -89,7 +89,8 @@ export type Fixture = CareerFixture | ReleaseCourseFixture | SyntheticCourseFixt
 
 const CAREER_BASE = {
   C1: 'start_work', C2: ['support_people'], C3: ['help_others'],
-  C4: ['talk_people'], C5: 'starting_beginning', C6: 'introductory_course'
+  C4: ['talk_people'], C5: 'starting_beginning', C6: 'introductory_course',
+  C8: 'change_with_training'
 } as Record<string, AnswerValue>;
 
 const career = (id: string, group: FixtureGroup, description: string,
@@ -135,15 +136,15 @@ export const FIXTURES: Fixture[] = [
   career('C-003', 'tied_directions', 'Problem solving with focused work separates analysis from the rest',
     { C2: ['solve_problems'], C4: ['focus_tasks'] }, {
       state: 'career_directions',
-      familyIds: ['finance_analysis', 'digital_technology', 'practical_technical'],
+      familyIds: ['finance_analysis', 'digital_technology', 'business_operations'],
       tiedFamilyIds: ['finance_analysis']
     }),
 
-  career('C-004', 'tied_directions', 'A daily preference breaks a tie without inventing a bonus',
+  career('C-004', 'tied_directions', 'Activity and daily pull different ways and both directions stay visible',
     { C2: ['solve_problems'], C4: ['hands_on'] }, {
       state: 'career_directions',
-      familyIds: ['practical_technical', 'digital_technology', 'finance_analysis'],
-      tiedFamilyIds: ['practical_technical']
+      familyIds: ['finance_analysis', 'practical_technical', 'digital_technology'],
+      tiedFamilyIds: ['finance_analysis', 'practical_technical']
     }),
 
   career('C-005', 'unknown_answers', 'An unsure activity answer never produces a direction',
@@ -259,8 +260,8 @@ export const FIXTURES: Fixture[] = [
   career('C-022', 'beginner', 'Digital work appears from problem solving plus digital tools',
     { C2: ['solve_problems'], C4: ['information_digital'] }, {
       state: 'career_directions',
-      familyIds: ['digital_technology', 'finance_analysis', 'business_operations'],
-      tiedFamilyIds: ['digital_technology', 'finance_analysis']
+      familyIds: ['finance_analysis', 'digital_technology', 'business_operations'],
+      tiedFamilyIds: ['finance_analysis']
     }),
 
   // ---------------------------------------------------- course route, real release

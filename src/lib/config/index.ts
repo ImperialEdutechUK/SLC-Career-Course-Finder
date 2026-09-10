@@ -9,7 +9,7 @@ function flag(name: string, fallback: boolean): boolean {
 }
 
 export const config = {
-  questionnaireVersion: process.env.QUESTIONNAIRE_VERSION ?? '2026-09-08.1',
+  questionnaireVersion: process.env.QUESTIONNAIRE_VERSION ?? '2026-09-08.2',
   slcCourseOrigin: process.env.SLC_COURSE_ORIGIN ?? 'https://southlondoncollege.org',
   allowedCourseUrlHosts: (process.env.ALLOWED_COURSE_URL_HOSTS ?? 'southlondoncollege.org')
     .split(',').map(host => host.trim().toLowerCase()).filter(Boolean),

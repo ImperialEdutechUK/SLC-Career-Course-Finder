@@ -6,7 +6,8 @@ import { CAREER_FAMILY_MATRIX, type CareerFamilyMapping } from './matrix';
  *   activity(f) = 2 x SUM weight(f, a) / |A|     A = explicit C2 activities
  *   daily(f)    = 1 x SUM weight(f, d) / |D|     D = explicit C4 choices
  *   values(f)   = 1 x SUM weight(f, v) / |V|     V = explicit C3 choices
- *   score(f)    = activity(f) + daily(f) + values(f)
+ *   pace(f)     = 0.5 x SUM weight(f, p) / |P|   P = explicit C8 choice
+ *   score(f)    = activity(f) + daily(f) + values(f) + pace(f)
  *
  * Three things this keeps from version 0.1, because they are what stop the
  * scoring from overclaiming:
@@ -21,12 +22,17 @@ import { CAREER_FAMILY_MATRIX, type CareerFamilyMapping } from './matrix';
  *   contribute nothing rather than counting as a vote for nothing.
  *
  * What changed in 0.2: weights are graded rather than 0/1, and C3 now counts.
- * Ties still stay visible. Nothing here reads the course catalogue, and nothing
- * here measures ability, personality or aptitude.
+ * What changed in 0.3: C8, appetite for change, becomes a fourth dimension.
+ *
+ * C8 orders directions by how fast the work changes. It is not a statement about
+ * job security, and `prefer_steady` must never be presented as safe from
+ * automation. Ties still stay visible. Nothing here reads the course catalogue,
+ * and nothing here measures ability, personality or aptitude.
  */
 
 export const C4_NON_ACTIVITY_IDS = Object.freeze(['mixed_activities', 'unsure']);
 export const C3_NON_VALUE_IDS = Object.freeze(['unsure']);
+export const C8_NON_PACE_IDS = Object.freeze(['unsure']);
 export const C2_UNKNOWN_ID = 'unsure';
 
 export interface FamilyScore {
@@ -34,10 +40,12 @@ export interface FamilyScore {
   activity: number;
   daily: number;
   values: number;
+  pace: number;
   score: number;
   matchedActivityIds: string[];
   matchedDailyIds: string[];
   matchedValueIds: string[];
+  matchedPaceIds: string[];
 }
 
 export interface CareerScoringResult {
@@ -63,25 +71,35 @@ function scoreFamily(
   family: CareerFamilyMapping,
   activities: string[],
   daily: string[],
-  values: string[]
+  values: string[],
+  pace: string[]
 ): FamilyScore {
   const a = weighted(activities, family.activities);
   const d = weighted(daily, family.daily);
   const v = weighted(values, family.values);
+  const p = weighted(pace, family.pace);
 
   const activity = activities.length === 0 ? 0 : (2 * a.total) / activities.length;
   const dailyScore = daily.length === 0 ? 0 : d.total / daily.length;
   const valueScore = values.length === 0 ? 0 : v.total / values.length;
+  // Half weight, and deliberately. C8 is a single select, so unlike the
+  // multi-select dimensions it never gets divided by a second answer and would
+  // otherwise dominate. It is also the least concrete thing asked: what someone
+  // wants to do and how they want to spend a day are firmer evidence than how
+  // they feel about change. Appetite orders the list; it does not decide it.
+  const paceScore = pace.length === 0 ? 0 : (0.5 * p.total) / pace.length;
 
   return {
     familyId: family.id,
     activity,
     daily: dailyScore,
     values: valueScore,
-    score: activity + dailyScore + valueScore,
+    pace: paceScore,
+    score: activity + dailyScore + valueScore + paceScore,
     matchedActivityIds: a.matched,
     matchedDailyIds: d.matched,
-    matchedValueIds: v.matched
+    matchedValueIds: v.matched,
+    matchedPaceIds: p.matched
   };
 }
 
@@ -89,8 +107,15 @@ export function scoreCareerDirections(answers: Record<string, unknown>): CareerS
   const activities = explicit(answers.C2, [C2_UNKNOWN_ID]);
   const daily = explicit(answers.C4, C4_NON_ACTIVITY_IDS);
   const values = explicit(answers.C3, C3_NON_VALUE_IDS);
+  // C8 is a single select, so it arrives as a string rather than an array.
+  const pace = explicit(
+    typeof answers.C8 === 'string' ? [answers.C8] : answers.C8,
+    C8_NON_PACE_IDS
+  );
 
-  const scored = CAREER_FAMILY_MATRIX.map(family => scoreFamily(family, activities, daily, values));
+  const scored = CAREER_FAMILY_MATRIX.map(
+    family => scoreFamily(family, activities, daily, values, pace)
+  );
 
   const ranked = scored
     .filter(item => item.activity > 0)

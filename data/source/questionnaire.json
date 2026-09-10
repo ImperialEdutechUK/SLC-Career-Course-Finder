@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "questionnaireId": "slc_next_step_guide",
-  "contentVersion": "2026-09-08.1",
+  "contentVersion": "2026-09-08.2",
   "locale": "en-GB",
   "status": "proposed_content_requires_learner_testing_and_slc_review",
   "positioning": "Guided exploration and provisional course shortlisting; not a validated aptitude, personality or admission assessment.",
@@ -24,21 +24,22 @@
       "title": "Explore career ideas",
       "description": "Not sure which direction to take? Explore a few options based on what interests you.",
       "intro": "There are no right answers. Choose what sounds interesting, even if you have never done it before. You can change your answers at any time.",
-      "effortCopy": "Six questions, with one optional comparison if it would help narrow your ideas.",
+      "effortCopy": "Seven questions, with one optional comparison if it would help narrow your ideas.",
       "baseQuestionIds": [
         "C1",
         "C2",
         "C3",
         "C4",
         "C5",
-        "C6"
+        "C6",
+        "C8"
       ],
       "optionalQuestionIds": [
         "C7"
       ],
       "questionCount": {
-        "baseScreens": 6,
-        "maximumScreens": 7,
+        "baseScreens": 7,
+        "maximumScreens": 8,
         "maximumOptionalDetailFields": 0,
         "countShownMustReflectActualBranch": true
       },
@@ -308,6 +309,37 @@
           "use": "Choose the primary next action. Wanting a small first step must not remove longer career possibilities."
         },
         {
+          "id": "C8",
+          "type": "single_select",
+          "title": "How would you feel about your work changing over the next few years?",
+          "hint": "There is no right answer. Both kinds of work exist.",
+          "required": true,
+          "allowSkip": false,
+          "minSelections": 1,
+          "maxSelections": 1,
+          "options": [
+            {
+              "id": "keen_change",
+              "label": "I want work that keeps changing, and I like learning new tools"
+            },
+            {
+              "id": "change_with_training",
+              "label": "Some change is fine if I am trained for it"
+            },
+            {
+              "id": "prefer_steady",
+              "label": "I would rather the work stayed broadly the same"
+            },
+            {
+              "id": "unsure",
+              "label": "I'm still working this out",
+              "exclusive": true,
+              "isUnknown": true
+            }
+          ],
+          "use": "Order directions by pace of change. Never present as a prediction about job security, and never describe an answer as safe from automation."
+        },
+        {
           "id": "C7",
           "type": "single_select",
           "title": "Which of these would you be more interested in trying?",
@@ -560,7 +592,7 @@
             },
             {
               "id": "help_me_explore",
-              "label": "I'm not sure — help me explore",
+              "label": "I'm not sure \u2014 help me explore",
               "exclusive": true,
               "isUnknown": true,
               "action": "offer_career_route_without_discarding_existing_answers"
@@ -644,11 +676,11 @@
             },
             {
               "id": "2_to_4_hours",
-              "label": "2–4 hours"
+              "label": "2\u20134 hours"
             },
             {
               "id": "5_to_8_hours",
-              "label": "5–8 hours"
+              "label": "5\u20138 hours"
             },
             {
               "id": "9_or_more_hours",
