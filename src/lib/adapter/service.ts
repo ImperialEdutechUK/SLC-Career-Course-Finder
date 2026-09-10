@@ -213,6 +213,7 @@ export function recommendCareerDirections(submission: ValidatedSubmission): Reco
       whyThisAppeared: why,
       everydayActivity: content.everydayActivity,
       thingToInvestigate: investigate,
+      howWorkIsChanging: content.changing,
       nextStep: nextStepWording(c6, c1, c5),
       slcCoverage: coverage,
       suggestedSubjectIds: available,

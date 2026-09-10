@@ -42,6 +42,8 @@ export interface CareerDirection {
   whyThisAppeared: string;
   everydayActivity: string;
   thingToInvestigate: string;
+  /** How work in this direction is changing, as a question to ask an employer. */
+  howWorkIsChanging: string;
   nextStep: string;
   slcCoverage: 'reviewed_links_available' | 'outside_reviewed_coverage' | 'partial_reviewed_coverage';
   suggestedSubjectIds: string[];

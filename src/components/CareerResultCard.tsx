@@ -49,6 +49,10 @@ export function CareerResultCard({
           <h4>A useful next step</h4>
           <p>{direction.nextStep}</p>
         </div>
+        <div className={styles.block}>
+          <h4>How this work is changing</h4>
+          <p>{direction.howWorkIsChanging}</p>
+        </div>
       </div>
 
       {coverage ? <p className={styles.coverage}>{coverage}</p> : null}
