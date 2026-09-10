@@ -1,77 +1,47 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import styles from './about.module.css';
-import { getManifest, getRelease } from '@/lib/catalogue/release';
-import { config } from '@/lib/config';
 
 export const metadata: Metadata = {
-  title: 'How this guide works',
-  description: 'What the Career & Course Finder does with your answers, and what it will not claim.'
+  title: 'How this works',
+  description: 'What this guide does, what it keeps, and what it will not guess at.'
 };
 
+/**
+ * Short on purpose. The commitments that matter are kept, in plain sentences:
+ * nothing is stored, nothing is invented, no AI writes any of it. The catalogue
+ * release and version identifiers are gone from here; operations reads them at
+ * /api/v1/health/ready, which is where they belong.
+ */
 export default function AboutPage() {
-  const release = getRelease();
-  const manifest = getManifest();
-
   return (
     <div className={`shell shell--narrow ${styles.page}`}>
-      <p className="eyebrow">About</p>
-      <h1>How this guide works</h1>
-      <p className="lede">
-        This is a guide, not an assessment. It helps you find a next step worth looking into, and
-        it tells you what it does not know.
+      <h1>How this works</h1>
+
+      <p className={styles.lede}>
+        Answer a few questions and this guide suggests career directions worth exploring,
+        or courses at South London College if you already know your subject. It takes a
+        few minutes and there is nothing to sign up for.
       </p>
 
-      <h2>Your answers</h2>
       <p>
-        Answers stay on the page for the visit only. They are not written into the address bar,
-        not stored in your browser, and not sent to analytics or advertising services. You do not
-        need an account, an email address or a telephone number to see results.
+        Your answers stay on the page for this visit only. They are not saved, not put in
+        the address bar, and not sent to advertising or analytics. You do not need an
+        account, an email address or a phone number.
       </p>
 
-      <h2>How options are chosen</h2>
       <p>
-        Course options come from a deterministic matching engine that compares your confirmed
-        subject and preferences against approved catalogue records. Career directions come from a
-        separate reviewed matrix of activities, not from whichever courses happen to be for sale.
-      </p>
-      <p>
-        We do not show match percentages. The internal relevance figure is a ranking aid, not a
-        probability that a course suits you, so publishing it would be misleading.
+        Where we do not hold a fact, we say so instead of guessing. Prices, entry
+        requirements and weekly study time are confirmed by the college, not here, so
+        check those before you enrol. Nothing on this site is written by AI, and there
+        are no match percentages, because a ranking figure is not a probability that a
+        course suits you.
       </p>
 
-      <h2>What is still unknown</h2>
-      <p>
-        This release publishes what the college&rsquo;s own {release.snapshotPeriod} course listing
-        states: titles, subject areas, level labels and awarding body labels. It does not state
-        prices, entry requirements, weekly study time or verified regulated status, so those stay
-        unknown here. An unknown price is never treated as free or affordable, and an unknown
-        requirement is never treated as met.
+      <p className={styles.next}>
+        <Link href="/guide/career">Explore career ideas</Link> or{' '}
+        <Link href="/adviser">talk to an adviser</Link>.
       </p>
-
-      <h2>Artificial intelligence</h2>
-      <p>
-        {config.aiExplanationsEnabled
-          ? 'AI wording is enabled in this environment. It may only rephrase approved statements.'
-          : 'No AI is used. Every explanation on this site comes from a fixed template written from approved facts.'}{' '}
-        AI can never change which courses appear, their order, their price, their requirements or
-        their qualification status.
-      </p>
-
-      <h2>Accessibility</h2>
-      <p>
-        The service targets WCAG 2.2 AA: native form controls, visible focus, keyboard operation,
-        announced question changes, no meaning carried by colour alone, and layouts that work at
-        320 pixels and at 200% text zoom.
-      </p>
-
-      <dl className={styles.versions}>
-        <div><dt>Catalogue release</dt><dd>{manifest.activeReleaseId}</dd></div>
-        <div><dt>Source snapshot</dt><dd>{release.snapshotPeriod}, audited {release.auditedOn}</dd></div>
-        <div><dt>Questionnaire</dt><dd>{manifest.questionnaireVersion}</dd></div>
-        <div><dt>Editorial rules</dt><dd>{manifest.editorialRulesVersion}</dd></div>
-        <div><dt>Career map</dt><dd>{config.careerMapVersion}</dd></div>
-        <div><dt>Review status</dt><dd>{manifest.reviewStatus.replace(/_/g, ' ')}</dd></div>
-      </dl>
     </div>
   );
 }

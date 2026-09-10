@@ -25,6 +25,7 @@ import {
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
 const SOURCE = join(root, 'data/source/catalog_staging.json');
+const QUESTIONNAIRE = join(root, 'data/source/questionnaire.json');
 const AUDIT = join(root, 'data/source/catalog_audit.json');
 const OUT_DIR = join(root, 'data/generated');
 
@@ -265,7 +266,10 @@ function main() {
     publishedAt: release.publishedAt,
     previousReleaseId: previous && previous.activeReleaseId !== releaseId ? previous.activeReleaseId : (previous?.previousReleaseId ?? null),
     availableReleases: known.sort(),
-    questionnaireVersion: '2026-09-08.1',
+    // Read from the questionnaire rather than restated here. Hardcoding it meant
+    // that adding C8 left the manifest, and therefore /api/v1/health/ready,
+    // reporting a version the service no longer served.
+    questionnaireVersion: JSON.parse(readFileSync(QUESTIONNAIRE, 'utf8')).contentVersion,
     editorialRulesVersion: EDITORIAL_RULES_VERSION,
     reviewStatus: EDITORIAL_REVIEW_STATUS,
     emergencySuppressionList: []
