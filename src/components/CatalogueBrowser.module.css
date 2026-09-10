@@ -76,9 +76,19 @@
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  transition: border-color var(--step) ease, box-shadow var(--step) ease;
+  transition: border-color var(--step) ease, box-shadow var(--step) ease,
+              transform var(--step) ease;
 }
-.card:hover { border-color: var(--green-600); box-shadow: var(--shadow-card); }
+
+/* Flat at rest on purpose. With 393 tiles on one page, depth on every one of them
+   is noise rather than hierarchy, so it is spent on the tile being considered. */
+.card:hover,
+.card:focus-within {
+  border-color: var(--green-600);
+  background: var(--surface-lit);
+  box-shadow: var(--edge-top), var(--lift-card);
+  transform: translateY(-2px);
+}
 
 .cardCategory {
   margin: 0;

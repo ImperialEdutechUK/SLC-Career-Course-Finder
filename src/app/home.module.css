@@ -16,9 +16,10 @@
   padding: 1.15rem 1.25rem;
   display: grid;
   gap: 0.7rem;
-  background: var(--surface);
+  background: var(--surface-lit);
   border: 1px solid var(--green-200);
   border-radius: var(--radius-lg);
+  box-shadow: var(--edge-top), var(--lift-rest);
   font-size: 0.93rem;
   color: var(--ink-700);
 }
@@ -53,20 +54,24 @@
   align-content: start;
   gap: 0.5rem;
   padding: clamp(1.15rem, 0.85rem + 1.3vw, 1.75rem);
-  background: var(--surface);
+  background: var(--surface-lit);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-lg);
   text-decoration: none;
   color: inherit;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--edge-top), var(--lift-card);
   transition: border-color var(--step) ease, transform var(--step) ease, box-shadow var(--step) ease;
 }
 
-.journey:hover {
+/* The page asks one question and these are the two answers, so this is where the
+   depth is spent. Focus lifts them too: a keyboard user gets the same affordance. */
+.journey:hover,
+.journey:focus-visible {
   border-color: var(--green-600);
-  box-shadow: var(--shadow-raised);
-  transform: translateY(-1px);
+  box-shadow: var(--edge-top), var(--lift-raised);
+  transform: translateY(-3px);
 }
+.journey:active { transform: translateY(0); box-shadow: var(--press); }
 
 .journeyTop {
   display: grid;

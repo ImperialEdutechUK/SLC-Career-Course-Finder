@@ -1,9 +1,9 @@
 .card {
-  background: var(--surface);
+  background: var(--surface-lit);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: clamp(1.25rem, 0.9rem + 1.5vw, 2.25rem);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--edge-top), var(--lift-card);
 }
 
 .heading {
@@ -30,6 +30,7 @@
   border: 1px solid #e6b4b4;
   border-left: 4px solid #9c2323;
   border-radius: var(--radius);
+  box-shadow: var(--press);
   color: #7a1f1f;
   font-size: 0.94rem;
   font-weight: 500;

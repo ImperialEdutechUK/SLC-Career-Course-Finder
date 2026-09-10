@@ -98,8 +98,29 @@
   --radius: 6px;
   --radius-lg: 10px;
 
-  --shadow-card: 0 1px 2px rgba(23, 33, 36, 0.05);
-  --shadow-raised: 0 2px 10px rgba(23, 33, 36, 0.08);
+  /* ------------------------------------------------------------------ depth
+     A prospectus is printed card stock, so the surfaces here behave like paper
+     laid on paper rather than glass floating in space. Light falls from above:
+     every raised surface gets a pale top edge, a tight contact shadow where it
+     meets the page, and a wider, softer ambient one.
+
+     Depth is assigned by what a thing is, not sprinkled evenly. An answer is a
+     key you press. A result is an object worth picking up. A catalogue tile is
+     one of 393 and stays flat until you reach for it. Giving all four the same
+     shadow would flatten that meaning back out. */
+  --edge-top: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --edge-inner: inset 0 -1px 0 rgba(20, 32, 38, 0.06);
+
+  --lift-rest: 0 1px 1px rgba(20, 32, 38, 0.04), 0 1px 3px rgba(20, 32, 38, 0.05);
+  --lift-card: 0 1px 2px rgba(20, 32, 38, 0.05), 0 6px 14px -4px rgba(20, 32, 38, 0.09);
+  --lift-raised: 0 2px 4px rgba(20, 32, 38, 0.06), 0 14px 28px -8px rgba(20, 32, 38, 0.14);
+  --press: inset 0 2px 4px rgba(20, 32, 38, 0.10);
+
+  /* Barely a gradient, but it stops a white card reading as a white hole. */
+  --surface-lit: linear-gradient(180deg, #ffffff 0%, #fafcfd 100%);
+
+  --shadow-card: var(--lift-card);
+  --shadow-raised: var(--lift-raised);
 
   --step: 200ms;
 }
@@ -245,12 +266,18 @@ ul, ol { margin: 0 0 1rem; padding-left: 1.2rem; }
   background-color: #0e74a6;
   background-image: var(--action-gradient);
   color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), var(--lift-card);
 }
 .btn--primary:hover {
   background-color: #0c6692;
   background-image: var(--action-gradient-hover);
   color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), var(--lift-raised);
 }
+.btn--primary:active { transform: translateY(1px); box-shadow: var(--press); }
+
+.btn--secondary { box-shadow: var(--edge-top), var(--lift-rest); }
+.btn--secondary:active { transform: translateY(1px); box-shadow: var(--press); }
 
 .btn--secondary {
   background: var(--surface);
@@ -273,6 +300,8 @@ ul, ol { margin: 0 0 1rem; padding-left: 1.2rem; }
   background-image: none;
   color: var(--ink-400);
   border-color: var(--line);
+  box-shadow: none;
+  transform: none;
   cursor: not-allowed;
 }
 
@@ -281,15 +310,22 @@ ul, ol { margin: 0 0 1rem; padding-left: 1.2rem; }
 /* ----------------------------------------------------------------- cards */
 
 .panel {
-  background: var(--surface);
+  background: var(--surface-lit);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: clamp(1.1rem, 0.8rem + 1.2vw, 1.75rem);
+  box-shadow: var(--edge-top), var(--lift-card);
 }
 
-.panel--sunk { background: var(--surface-sunk); border-color: transparent; }
-.panel--tint { background: var(--green-50); border-color: var(--green-200); }
-.panel--info { background: var(--blue-100); border-color: #b6ddf2; }
+/* These three carry information rather than being objects, so they sit flat in
+   the page. A sunk panel that also floated would be saying two things at once. */
+.panel--sunk {
+  background: var(--surface-sunk);
+  border-color: transparent;
+  box-shadow: var(--press);
+}
+.panel--tint { background: var(--green-50); border-color: var(--green-200); box-shadow: none; }
+.panel--info { background: var(--blue-100); border-color: #b6ddf2; box-shadow: none; }
 
 /* ---------------------------------------------------------------- badges */
 
@@ -340,6 +376,9 @@ ul, ol { margin: 0 0 1rem; padding-left: 1.2rem; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  /* Depth stays; the movement does not. A hover that shifts the page under the
+     pointer is exactly what this preference is asking us not to do. */
+  *:hover, *:active { transform: none !important; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
